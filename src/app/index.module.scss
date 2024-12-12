@@ -1,0 +1,16 @@
+.hero {
+    background: var(--grey-1000-50-hover)
+}
+
+@counter-style custom-arrow {
+    system: cyclic;
+    symbols: "⮕";
+    suffix: " ";
+}
+
+.block,
+.hero {
+    & ul:not(:global(.fr-btns-group)) {
+        list-style: custom-arrow;
+    }
+}

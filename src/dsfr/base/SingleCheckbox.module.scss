@@ -1,0 +1,43 @@
+.fr-single-checkbox {
+    appearance: none !important;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 0.25rem;
+    background-size: 0.25rem 0.25rem, calc(100% - 0.25rem) 1px, 0.25rem 0.25rem, 1px calc(100% - 0.5rem), 0.25rem 0.25rem, calc(100% - 0.5rem) 1px, 0.25rem 0.25rem, 1px calc(100% - 0.5rem), 1rem;
+    background-position: 0 0, 0.25rem 0, 100% 0, 0 0.25rem, 100% 100%, calc(100% - 0.25rem) 100%, 0 100%, 100% 0.25rem, center;
+    background-repeat: no-repeat;
+    background-image: radial-gradient(at 5px 4px, transparent 4px, var(--border-action-high-blue-france) 4px, var(--border-action-high-blue-france) 5px, transparent 6px), linear-gradient(var(--border-action-high-blue-france), var(--border-action-high-blue-france)), radial-gradient(at calc(100% - 5px) 4px, transparent 4px, var(--border-action-high-blue-france) 4px, var(--border-action-high-blue-france) 5px, transparent 6px), linear-gradient(var(--border-action-high-blue-france), var(--border-action-high-blue-france)), radial-gradient(at calc(100% - 5px) calc(100% - 4px), transparent 4px, var(--border-action-high-blue-france) 4px, var(--border-action-high-blue-france) 5px, transparent 6px), linear-gradient(var(--border-action-high-blue-france), var(--border-action-high-blue-france)), radial-gradient(at 5px calc(100% - 4px), transparent 4px, var(--border-action-high-blue-france) 4px, var(--border-action-high-blue-france) 5px, transparent 6px), linear-gradient(var(--border-action-high-blue-france), var(--border-action-high-blue-france)), var(--data-uri-svg);
+
+    --data-uri-svg: none;
+
+    &:checked {
+        background-color: var(--background-active-blue-france);
+        background-image: radial-gradient(at 5px 4px, transparent 4px, var(--border-active-blue-france) 4px, var(--border-active-blue-france) 5px, transparent 6px), linear-gradient(var(--border-active-blue-france), var(--border-active-blue-france)), radial-gradient(at calc(100% - 5px) 4px, transparent 4px, var(--border-active-blue-france) 4px, var(--border-active-blue-france) 5px, transparent 6px), linear-gradient(var(--border-active-blue-france), var(--border-active-blue-france)), radial-gradient(at calc(100% - 5px) calc(100% - 4px), transparent 4px, var(--border-active-blue-france) 4px, var(--border-active-blue-france) 5px, transparent 6px), linear-gradient(var(--border-active-blue-france), var(--border-active-blue-france)), radial-gradient(at 5px calc(100% - 4px), transparent 4px, var(--border-active-blue-france) 4px, var(--border-active-blue-france) 5px, transparent 6px), linear-gradient(var(--border-active-blue-france), var(--border-active-blue-france)), var(--data-uri-svg);
+
+        --data-uri-svg: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23f5f5fe' d='M10 15.17l9.2-9.2 1.4 1.42L10 18l-6.36-6.36 1.4-1.42z'/></svg>");
+
+        :root[data-fr-theme=dark] & {
+            --data-uri-svg: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23000091' d='M10 15.17l9.2-9.2 1.4 1.42L10 18l-6.36-6.36 1.4-1.42z'/></svg>");
+        }
+    }
+
+
+    &:disabled {
+        background-image: radial-gradient(at 5px 4px, transparent 4px, var(--background-disabled-grey) 4px, var(--background-disabled-grey) 5px, transparent 6px), linear-gradient(var(--background-disabled-grey), var(--background-disabled-grey)), radial-gradient(at calc(100% - 5px) 4px, transparent 4px, var(--background-disabled-grey) 4px, var(--background-disabled-grey) 5px, transparent 6px), linear-gradient(var(--background-disabled-grey), var(--background-disabled-grey)), radial-gradient(at calc(100% - 5px) calc(100% - 4px), transparent 4px, var(--background-disabled-grey) 4px, var(--background-disabled-grey) 5px, transparent 6px), linear-gradient(var(--background-disabled-grey), var(--background-disabled-grey)), radial-gradient(at 5px calc(100% - 4px), transparent 4px, var(--background-disabled-grey) 4px, var(--background-disabled-grey) 5px, transparent 6px), linear-gradient(var(--background-disabled-grey), var(--background-disabled-grey)), var(--data-uri-svg);
+
+        &:checked {
+            background-color: var(--background-disabled-grey);
+
+            --data-uri-svg: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23929292' d='M10 15.17l9.2-9.2 1.4 1.42L10 18l-6.36-6.36 1.4-1.42z'/></svg>");
+
+            :root[data-fr-theme=dark] & {
+                --data-uri-svg: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23666' d='M10 15.17l9.2-9.2 1.4 1.42L10 18l-6.36-6.36 1.4-1.42z'/></svg>");
+            }
+        }
+    }
+}
+
+.fr-single-checkbox--sm {
+    width: 1rem;
+    height: 1rem;
+}

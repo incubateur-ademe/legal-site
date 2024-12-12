@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* background */
+
+/* -- custom */
+.no-bg {
+    background: none;
+}
+
+/* === */
+
+/* === based on dsfr === */
+/* typo */
+.text-dsfr-neutral {
+    color: var(--text-default-grey);
+}
+
+.text-dsfr-success {
+    color: var(--text-default-success);
+}
+
+.text-dsfr-warning {
+    color: var(--text-default-warning);
+}
+
+.text-dsfr-error {
+    color: var(--text-default-error);
+}
+
+.text-dsfr-action-high-blue-france {
+    color: var(--text-action-high-blue-france);
+}
+
+/* background */
+.bg-dsfr-alt-grey {
+    background-color: var(--background-alt-grey);
+}
+
+/* === */
+
+svg.dsfr-svg {
+    --color: var(--artwork-major-blue-france);
+}
+
+svg.dsfr-svg-hover:hover {
+    --color: var(--artwork-major-blue-france-hover);
+}
+
+svg.dsfr-svg-active:active {
+    --color: var(--artwork-major-blue-france-active);
+}
+
+
+/* === shine === */
+.shimmer {
+    mask: linear-gradient(-60deg, #000 30%, #0003, #000 70%) right/300% 100%;
+    background-repeat: no-repeat;
+    animation: 20s ease-out infinite shimmer;
+}
+
+@keyframes shimmer {
+    10%, 100% {
+        mask-position: left
+    }
+}

@@ -1,0 +1,37 @@
+name: Lint
+
+on: [pull_request, push]
+
+concurrency:
+  cancel-in-progress: true
+  group: lint-${{ github.ref }}
+
+jobs:
+  code:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: .nvmrc
+          cache: "yarn"
+      - name: Install dependencies
+        run: |
+          yarn --frozen-lockfile
+      - name: Lint
+        run: |
+          yarn lint
+
+  docker:
+    name: Lint Dockerfile
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Lint Dockerfile
+        uses: hadolint/hadolint-action@v2.1.0
+        with:
+          recursive: true

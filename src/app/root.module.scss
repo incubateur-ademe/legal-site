@@ -1,0 +1,17 @@
+.app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    background-color: var(--background-default-grey);
+    --idle: transparent;
+    --hover: var(--background-default-grey-hover);
+    --active: var(--background-default-grey-active);
+    color: var(--text-default-grey);
+}
+
+.content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}

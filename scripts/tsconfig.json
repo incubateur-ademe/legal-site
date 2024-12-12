@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "es2023"
+    ],
+    "module": "node16",
+    "target": "es2022",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node16",
+    "resolveJsonModule": true,
+    "baseUrl": "./",
+    "paths": {
+      "@lib/*": [
+        "../src/lib/*"
+      ],
+      "@api/*": [
+        "../src/api/*"
+      ],
+    }
+  },
+  "ts-node": {
+    "transpileOnly": true,
+    "require": [
+      "tsconfig-paths/register"
+    ]
+  }
+}

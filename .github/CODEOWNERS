@@ -1,0 +1,3 @@
+# Protect workflow files
+.github/workflows/*.yml @incubateur-ademe/core
+.github/CODEOWNERS @incubateur-ademe/core

@@ -1,0 +1,23 @@
+{
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.mdx": "never"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[mdx]": {
+    "editor.defaultFormatter": "vscode.markdown-language-features"
+  },
+  "files.associations": {
+    ".env*": "dotenv",
+  },
+  "mdx.server.enable": true,
+}

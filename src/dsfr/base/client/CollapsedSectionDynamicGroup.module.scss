@@ -1,0 +1,129 @@
+@media print {
+    .title {
+        color: var(--text-title-grey) !important;
+        margin-bottom: 2rem !important;
+    }
+
+    .button,
+    .bullet {
+        display: none !important;
+    }
+
+    .fr-sr-only {
+        display: block !important;
+    }
+}
+
+@media screen {
+    .head {
+        padding: .5rem;
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 1em;
+        cursor: pointer;
+    }
+
+    .hiddenContent {
+        clip: rect(0, 0, 0, 0);
+        border: 0;
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        white-space: nowrap;
+        width: 1px;
+    }
+}
+
+.title,
+.bullet {
+    position: relative;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.title {
+    flex-grow: 1;
+    color: var(--text-action-high-blue-france);
+    font-weight: 500;
+    // font-size: 1.425rem;
+    margin: 0;
+    // line-height: 1.25;
+    padding-right: 2.5rem;
+}
+
+.bullet {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    background-color: var(--background-action-high-blue-france);
+    color: var(--text-inverted-blue-france);
+    border-radius: 50%;
+}
+
+.hide {
+    visibility: hidden;
+
+}
+
+.content {
+    padding-top: 1.5rem;
+    padding-left: 3.9rem;
+}
+
+.content h4 {
+    font-weight: 700;
+    font-size: 1rem !important;
+    line-height: 1.5rem !important;
+}
+
+.content h3 {
+    font-weight: 700;
+    font-size: 1.25rem !important;
+    line-height: 1.75rem !important;
+}
+
+.content h4+ol,
+.content h4+ul {
+    margin-top: -0.75rem;
+}
+
+.content>*+h3 {
+    margin-top: 2.5rem;
+}
+
+.content>* {
+    margin: var(--text-spacing);
+}
+
+.button {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: transparent;
+    width: 100%;
+}
+
+
+.icon {
+    color: var(--text-action-high-blue-france);
+}
+
+.body {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: .75rem
+}
