@@ -1,3 +1,5 @@
+"use client";
+
 import { breakpoints } from "@codegouvfr/react-dsfr/fr/breakpoints";
 import { useEffect, useState } from "react";
 

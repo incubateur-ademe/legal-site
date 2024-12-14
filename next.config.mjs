@@ -79,8 +79,7 @@ const config = {
   },
   experimental: {
     typedRoutes: true,
-    // serverComponentsExternalPackages: ["next-auth"],
-    serverMinification: false,
+    serverMinification: true,
   },
   eslint: {
     ignoreDuringBuilds: true,
