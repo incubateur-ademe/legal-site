@@ -1,3 +1,5 @@
+"use client";
+
 import { Children, isValidElement, type PropsWithChildren, type ReactNode, useEffect, useRef } from "react";
 
 /**

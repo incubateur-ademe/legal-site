@@ -1,6 +1,7 @@
 // @ts-check
 
 import createMDX from "@next/mdx";
+import MonacoEditorWebpackPlugin from "monaco-editor-webpack-plugin";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkGfm from "remark-gfm";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
@@ -69,11 +70,20 @@ const ContentSecurityPolicy = Object.entries(csp)
 /** @type {import('next').NextConfig} */
 const config = {
   poweredByHeader: false,
-  webpack: config => {
-    config.module.rules.push({
-      test: /\.woff2$/,
+  webpack: (/** @type {import("webpack").Configuration} */ config, options) => {
+    config.module?.rules?.push({
+      test: /\.(woff2|webmanifest|ttf)$/,
       type: "asset/resource",
     });
+
+    if (!options.isServer) {
+      config.plugins?.push(
+        new MonacoEditorWebpackPlugin({
+          languages: ["markdown"],
+          filename: "static/[name].worker.js",
+        }),
+      );
+    }
 
     return config;
   },
@@ -81,6 +91,7 @@ const config = {
     typedRoutes: true,
     serverMinification: true,
   },
+  serverExternalPackages: ["monaco-editor"],
   eslint: {
     ignoreDuringBuilds: true,
   },

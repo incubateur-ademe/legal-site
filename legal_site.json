@@ -1,0 +1,23 @@
+{
+  "general": {
+    "site_name": "Legal Site",
+    "site_tagline": "A site for legal stuff",
+    "site_host": "https://legal.beta.gouv.fr",
+    "site_contact": "legal@beta.gouv.fr"
+  },
+  "mailer": {
+    "smtp_host": "127.0.0.1",
+    "smtp_port": 25,
+    "smtp_user": "user",
+    "smtp_password": "password",
+    "smtp_ssl": false,
+    "from_email": "Legal.Beta <legal@beta.gouv.fr>"
+  },
+  "matomo": {
+    "url": "https://stats.beta.gouv.fr",
+    "site_id": 1
+  },
+  "security": {
+    "auth_secret": "secret"
+  }
+}

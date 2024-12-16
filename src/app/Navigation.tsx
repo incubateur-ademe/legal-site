@@ -21,9 +21,9 @@ export const Navigation = () => {
           isActive: !segment,
         },
         {
-          text: "Templates",
+          text: "Template",
           linkProps: {
-            href: "/templates",
+            href: "/template",
           },
           isActive: segment === "templates",
         },
