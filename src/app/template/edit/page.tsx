@@ -1,4 +1,5 @@
 import { ClientOnly } from "@/components/utils/ClientOnly";
+import { Container } from "@/dsfr";
 
 import { MdxEditor } from "./MdxEditor";
 
@@ -9,11 +10,11 @@ const TemplateEdit = async () => {
   const template = await rawTemplate.text();
 
   return (
-    <div style={{ height: "100vh" }}>
+    <Container ptmd="14v" mbmd="14v" className="min-h-64 max-h-full">
       <ClientOnly>
         <MdxEditor defaultValue={template} />
       </ClientOnly>
-    </div>
+    </Container>
   );
 };
 

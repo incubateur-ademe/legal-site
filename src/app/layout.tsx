@@ -138,7 +138,6 @@ const RootLayout = ({ children }: PropsWithChildren) => {
                 />
                 <ClientAnimate as="main" id={contentId} className={styles.content}>
                   {config.env === "prod" ? (
-                    // TODO: disable when site is ready
                     <SystemMessageDisplay code="construction" noRedirect />
                   ) : config.maintenance ? (
                     <SystemMessageDisplay code="maintenance" noRedirect />

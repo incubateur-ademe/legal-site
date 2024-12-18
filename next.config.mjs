@@ -79,7 +79,7 @@ const config = {
     if (!options.isServer) {
       config.plugins?.push(
         new MonacoEditorWebpackPlugin({
-          languages: ["markdown"],
+          languages: ["markdown", "mdx"],
           filename: "static/[name].worker.js",
         }),
       );
