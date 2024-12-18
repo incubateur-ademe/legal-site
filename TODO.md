@@ -10,6 +10,9 @@
 ### Login
 - [ ] checker les comptes inactifs
 
+### Editeur
+- [ ] hover et auto completion sur les variables
+
 ## Think tank
 - github sha as id pour les templates (/template/mentions-legales/[groupId]/[id]/edit ; ex: "/template/mentions-legales/default/a34bcde/edit" ou "/template/mentions-legales/ademe/ef828ab9/create (ou generate)" pour créer un fichier à partir d'un template)
 - tout le monde peut créer ou dupliquer un template, mais une fois créé le groupe appartient au créateur et les personnes accordées (droit par personne, par se, ou par incubateur, avec TTL)
