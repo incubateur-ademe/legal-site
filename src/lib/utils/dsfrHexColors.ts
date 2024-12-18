@@ -1,3 +1,3 @@
-import { fr } from '@codegouvfr/react-dsfr';
+import { fr } from "@codegouvfr/react-dsfr";
 
-export const frHexColor = fr.colors.getHex({isDark: false});
+export const frHexColor = fr.colors.getHex({ isDark: false });

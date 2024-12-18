@@ -1,12 +1,12 @@
 "use client";
 
-import { frHexColor } from '@/utils/dsfrHexColors';
-import { frHexColorDark } from '@/utils/dsfrHexDarkColors';
-import { fr } from '@codegouvfr/react-dsfr';
 import { useIsDark } from "@codegouvfr/react-dsfr/useIsDark";
 import { Editor, loader } from "@monaco-editor/react";
 import * as monaco from "monaco-editor";
 import { conf as mdxConf, language as mdxLangage } from "monaco-editor/esm/vs/basic-languages/mdx/mdx";
+
+import { frHexColor } from "@/utils/dsfrHexColors";
+import { frHexColorDark } from "@/utils/dsfrHexDarkColors";
 
 loader.config({
   monaco,
@@ -70,7 +70,6 @@ void loader.init().then(monacoInstance => {
     inherit: true,
     colors: {
       "editor.background": frHexColorDark.decisions.background.raised.grey.default,
-      
     },
     rules: [
       { token: "mustache-variable", foreground: textDefaultInfoDark, background: backgroundContrastInfoDark },
@@ -85,8 +84,18 @@ void loader.init().then(monacoInstance => {
       "editor.background": frHexColor.decisions.background.raised.grey.default,
     },
     rules: [
-      { token: "mustache-variable", foreground: textDefaultInfoLight, background: backgroundContrastInfoLight, fontStyle: "bold underline" },
-      { token: "mustache-bracket", foreground: bracketColor, background: backgroundContrastInfoLight, fontStyle: "bold underline" },
+      {
+        token: "mustache-variable",
+        foreground: textDefaultInfoLight,
+        background: backgroundContrastInfoLight,
+        fontStyle: "bold underline",
+      },
+      {
+        token: "mustache-bracket",
+        foreground: bracketColor,
+        background: backgroundContrastInfoLight,
+        fontStyle: "bold underline",
+      },
     ],
   });
 });
