@@ -12,14 +12,14 @@ const templateVarMap = {
 };
 
 const Template = async () => {
-  const [metadata, templateContent] = await mdxFetcher(
+  const { content, frontmatter } = await mdxFetcher(
     "https://raw.githubusercontent.com/incubateur-ademe/legal-site-templates-test/refs/heads/main/mentions-legales.md",
     templateVarMap,
   );
   return (
     <>
-      <code>{JSON.stringify({ metadata })}</code>
-      {templateContent}
+      <code>{JSON.stringify({ frontmatter })}</code>
+      {content}
     </>
   );
 };

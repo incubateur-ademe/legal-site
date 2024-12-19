@@ -1,24 +1,13 @@
-import Mustache from "mustache";
-import { compileMDX } from "next-mdx-remote/rsc";
-import { type ReactElement } from "react";
+import { type CompileMDXResult } from "next-mdx-remote/rsc";
 
-export async function mdxFetcher(
-  template: string,
-  data: Record<string, unknown>,
-): Promise<[metadata: Record<string, unknown>, templateContent: ReactElement]> {
+import { mdxRenderer } from "./renderer";
+
+export async function mdxFetcher(template: string, data: Record<string, unknown>): Promise<CompileMDXResult> {
   const res = await fetch(template);
   if (!res.ok) {
     throw new Error("Failed to fetch MDX");
   }
   const file = await res.text();
 
-  const templated = Mustache.render(file, data);
-
-  const { frontmatter, content } = await compileMDX({
-    source: templated,
-    options: {
-      parseFrontmatter: true,
-    },
-  });
-  return [frontmatter, content];
+  return mdxRenderer(file, data);
 }

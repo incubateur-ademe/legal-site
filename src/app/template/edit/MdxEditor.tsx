@@ -1,12 +1,18 @@
 "use client";
 
+import Input from "@codegouvfr/react-dsfr/Input";
 import { useIsDark } from "@codegouvfr/react-dsfr/useIsDark";
 import { Editor, loader } from "@monaco-editor/react";
 import * as monaco from "monaco-editor";
 import { conf as mdxConf, language as mdxLangage } from "monaco-editor/esm/vs/basic-languages/mdx/mdx";
+import { type ReactElement, useEffect, useState } from "react";
 
+import { Grid, GridCol } from "@/dsfr";
+import { mdxRenderer } from "@/lib/mdx/renderer";
 import { frHexColor } from "@/utils/dsfrHexColors";
 import { frHexColorDark } from "@/utils/dsfrHexDarkColors";
+
+import style from "./MdxEditor.module.scss";
 
 loader.config({
   monaco,
@@ -102,18 +108,48 @@ void loader.init().then(monacoInstance => {
 
 export const MdxEditor = ({ defaultValue }: { defaultValue: string }) => {
   const { isDark } = useIsDark();
+  const [mdxSource, setMdxSource] = useState<string>(defaultValue);
+  const [frontmatter, setFrontmatter] = useState<Record<string, unknown>>({});
+  const [content, setContent] = useState<ReactElement | null>(null);
+
+  function handleEditorChange(value?: string) {
+    value && setMdxSource(value);
+  }
+
+  useEffect(() => {
+    void (async () => {
+      const { content, frontmatter } = await mdxRenderer(mdxSource, {});
+      setFrontmatter(frontmatter);
+      setContent(content);
+    })();
+  }, [mdxSource]);
+
   return (
-    <Editor
-      defaultValue={defaultValue}
-      language="mdx-mustache"
-      theme={`mdx-mustache-theme-${isDark ? "dark" : "light"}`}
-      // wrapperProps={{
-      //   // style: {
-      //   //   // height: "100%",
-      //   // },
-      // }}
-      // className={style.editor}
-      height="28em"
-    />
+    <Grid haveGutters className={style.editor}>
+      <GridCol base={2}>
+        <form>
+          <Input label="Var 1" />
+          <Input label="Value 1" />
+        </form>
+      </GridCol>
+      <GridCol base={5}>
+        <Editor
+          defaultValue={defaultValue}
+          language="mdx-mustache"
+          theme={`mdx-mustache-theme-${isDark ? "dark" : "light"}`}
+          onChange={handleEditorChange}
+          options={{
+            automaticLayout: true,
+            codeLens: false,
+            scrollBeyondLastLine: false,
+            wordWrap: "bounded",
+          }}
+        />
+      </GridCol>
+      <GridCol base={5} className="overflow-auto h-full">
+        <code>{JSON.stringify({ frontmatter })}</code>
+        {content}
+      </GridCol>
+    </Grid>
   );
 };

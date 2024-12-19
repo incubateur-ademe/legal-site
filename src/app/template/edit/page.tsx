@@ -10,7 +10,7 @@ const TemplateEdit = async () => {
   const template = await rawTemplate.text();
 
   return (
-    <Container ptmd="14v" mbmd="14v" className="min-h-64 max-h-full">
+    <Container ptmd="14v" mbmd="14v" className="min-h-64 max-h-full" fluid>
       <ClientOnly>
         <MdxEditor defaultValue={template} />
       </ClientOnly>
