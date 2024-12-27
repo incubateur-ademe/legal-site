@@ -42,7 +42,10 @@ export const config = {
     },
     templates: {
       git: {
-        url: ensureApiEnvVar(process.env.TEMPLATES_GIT_URL, "../legal-site-templates"),
+        url: ensureApiEnvVar(
+          process.env.TEMPLATES_GIT_URL,
+          "https://github.com/incubateur-ademe/legal-site-templates-test",
+        ),
         gpg_private_key: ensureApiEnvVar(process.env.TEMPLATES_GIT_GPG_PRIVATE_KEY, ""),
         gpg_passphrase: ensureApiEnvVar(process.env.TEMPLATES_GIT_GPG_PASSPHRASE, ""),
         author: {
