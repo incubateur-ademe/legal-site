@@ -1,5 +1,5 @@
 import fs from "fs";
-import { CheckRepoActions, type SimpleGit, simpleGit } from "simple-git";
+import { type SimpleGit, simpleGit } from "simple-git";
 
 import { config } from "@/config";
 
@@ -18,6 +18,7 @@ export class SimpleGitRepo implements IGitRepo {
 
   private async init() {
     if (!this.configDone) {
+      await this.git.clone(config.api.templates.git.url, ".");
       await this.git
         .addConfig("user.email", config.api.templates.git.author.email)
         .addConfig("user.name", config.api.templates.git.author.name)
@@ -28,9 +29,6 @@ export class SimpleGitRepo implements IGitRepo {
       this.configDone = true;
     }
 
-    if (!(await this.git.checkIsRepo(CheckRepoActions.IS_REPO_ROOT))) {
-      await this.git.clone(config.api.templates.git.url, ".");
-    }
     await this.git.fetch(["-p"]);
     await this.git.checkout("main");
   }
