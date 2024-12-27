@@ -100,6 +100,12 @@ const config = {
   },
   env,
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
+  rewrites: async () => [
+    {
+      source: "/startup/:startupId/:templateType.:ext(html|md|txt|pdf)",
+      destination: "/startup/:startupId/:templateType/:ext",
+    },
+  ],
   async headers() {
     return [
       {

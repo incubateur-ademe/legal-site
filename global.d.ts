@@ -10,3 +10,19 @@ declare module "monaco-editor/esm/vs/basic-languages/*" {
   export const conf: monaco.languages.LanguageConfiguration;
   export const language: monaco.languages.IMonarchLanguage;
 }
+
+declare module "@codegouvfr/react-dsfr/dsfr/*.svg" {
+  import { type StaticImageData } from "next/image";
+
+  const value: StaticImageData;
+  // eslint-disable-next-line import/no-default-export
+  export default value;
+}
+
+declare module "@/dsfr/*.svg" {
+  import { type StaticImageData } from "next/image";
+
+  const value: StaticImageData;
+  // eslint-disable-next-line import/no-default-export
+  export default value;
+}

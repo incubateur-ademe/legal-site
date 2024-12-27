@@ -19,5 +19,14 @@
   },
   "security": {
     "auth_secret": "secret"
+  },
+  "templates": {
+    "git_url": "../legal-sites-templates-test",
+    "git_gpg_private_key": "",
+    "git_gpg_passphrase": "",
+    "tmp_dir": "/tmp"
+  },
+  "github": {
+    "token": ""
   }
 }

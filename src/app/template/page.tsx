@@ -1,4 +1,5 @@
 import { mdxFetcher } from "@/lib/mdx/fetcher";
+import { TemplateTypeEnum } from "@/lib/repo/IGitRepo";
 
 const templateVarMap = {
   nom_produit: "Legal.Beta",
@@ -13,8 +14,10 @@ const templateVarMap = {
 
 const Template = async () => {
   const { content, frontmatter } = await mdxFetcher(
-    "https://raw.githubusercontent.com/incubateur-ademe/legal-site-templates-test/refs/heads/main/mentions-legales.md",
-    templateVarMap,
+    "nosgestesclimat",
+    "ademe",
+    TemplateTypeEnum.MentionsLegales,
+    "72c7813",
   );
   return (
     <>

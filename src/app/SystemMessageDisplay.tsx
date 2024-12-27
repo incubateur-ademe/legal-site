@@ -1,5 +1,5 @@
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
-import _artworkOvoidSvgUrl from "@codegouvfr/react-dsfr/dsfr/artwork/background/ovoid.svg";
+import artworkOvoidSvgUrl from "@codegouvfr/react-dsfr/dsfr/artwork/background/ovoid.svg";
 import artworkCalendarSvgUrl from "@codegouvfr/react-dsfr/dsfr/artwork/pictograms/digital/calendar.svg";
 import artworkSearchSvgUrl from "@codegouvfr/react-dsfr/dsfr/artwork/pictograms/digital/search.svg";
 import artworkPadlockSvgUrl from "@codegouvfr/react-dsfr/dsfr/artwork/pictograms/system/padlock.svg";
@@ -11,14 +11,12 @@ import { type ReactNode } from "react";
 import { Box, Container, Grid, GridCol } from "@/dsfr";
 import artworkInProgressSvgUrl from "@/dsfr/artwork/pictograms/digital/in-progress.svg";
 
-const artworkOvoidSvgUrl = _artworkOvoidSvgUrl as StaticImageData;
-
 const artworkMap = {
-  calendar: artworkCalendarSvgUrl as StaticImageData,
-  inProgress: artworkInProgressSvgUrl as StaticImageData,
-  padlock: artworkPadlockSvgUrl as StaticImageData,
-  technicalError: artworkTechnicalErrorSvgUrl as StaticImageData,
-  search: artworkSearchSvgUrl as StaticImageData,
+  calendar: artworkCalendarSvgUrl,
+  inProgress: artworkInProgressSvgUrl,
+  padlock: artworkPadlockSvgUrl,
+  technicalError: artworkTechnicalErrorSvgUrl,
+  search: artworkSearchSvgUrl,
 };
 
 interface SystemCodeMap {
@@ -66,8 +64,8 @@ export const systemCodes = {
     headline: "Connexion non autorisée.",
     body: (
       <>
-        L'email avec lequel vous avez tenté de vous connecter n'est pas autorisé. Si vous pensez qu'il s'agit d'une
-        erreur, veuillez contacter l'équipe transverse.
+        L'identifiant avec lequel vous avez tenté de vous connecter n'est pas autorisé (compte inactif ou filtré). Si
+        vous pensez qu'il s'agit d'une erreur, veuillez contacter l'équipe transverse.
       </>
     ),
     pictogram: artworkMap.padlock,
