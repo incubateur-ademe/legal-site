@@ -34,10 +34,10 @@
   resolved "https://registry.yarnpkg.com/@babel/helper-validator-identifier/-/helper-validator-identifier-7.25.9.tgz#24b64e2c3ec7cd3b3c547729b8d16871f22cbdc7"
   integrity sha512-Ed61U6XJc3CVRfkERJWDz4dJwKe7iLmmJsbOGu9wSloNSFttHV0I8g6UAgb7qnK5ly5bGLPd4oXZlxCdANBOWQ==
 
-"@codegouvfr/react-dsfr@^1.16.4":
-  version "1.16.4"
-  resolved "https://registry.yarnpkg.com/@codegouvfr/react-dsfr/-/react-dsfr-1.16.4.tgz#6cfcfcf944ec0dcd6cfe3018d2fc8bd6f74b0402"
-  integrity sha512-nowg/cHFUCRxnt55YqlVp8na3Unv7dEjsohm9ak92gIP3YIVYr+AOPXgDSSB3mkOxoUyR2yTZLUGEA48jy5FSQ==
+"@codegouvfr/react-dsfr@^1.16.5-rc.0":
+  version "1.16.5-rc.0"
+  resolved "https://registry.yarnpkg.com/@codegouvfr/react-dsfr/-/react-dsfr-1.16.5-rc.0.tgz#c2a64108dee6f5b3dd91556f006c1a8125185e82"
+  integrity sha512-dOPtRYCz/m6UEAtCdNrjOp0ii8W7lD91yX/WC+YOfTcDw2CYesuJTJZRJZ9goQNtbOgzFM0ZL4oWRpR8TMDIcQ==
   dependencies:
     tsafe "^1.8.5"
     yargs-parser "^21.1.1"

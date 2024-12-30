@@ -1,11 +1,15 @@
 "use client";
 
+import { fr } from "@codegouvfr/react-dsfr";
+import Button from "@codegouvfr/react-dsfr/Button";
 import Input from "@codegouvfr/react-dsfr/Input";
 import { useIsDark } from "@codegouvfr/react-dsfr/useIsDark";
 import { Editor, loader } from "@monaco-editor/react";
 import * as monaco from "monaco-editor";
 import { conf as mdxConf, language as mdxLangage } from "monaco-editor/esm/vs/basic-languages/mdx/mdx";
-import { type ReactElement, useEffect, useState } from "react";
+import { Fragment, type ReactElement, useEffect, useState } from "react";
+import { useFieldArray, useForm } from "react-hook-form";
+import { z } from "zod";
 
 import { Grid, GridCol } from "@/dsfr";
 import { mdxRenderer } from "@/lib/mdx/renderer";
@@ -106,11 +110,49 @@ void loader.init().then(monacoInstance => {
   });
 });
 
+const mdxEditorFormSchema = z.object({
+  variables: z
+    .array(
+      z.object({
+        name: z.string().min(1),
+        description: z.string().optional().default(""),
+      }),
+    )
+    .refine(
+      data =>
+        // Check that all variables have a unique name
+        new Set(data.map(({ name }) => name)).size === data.length,
+      {
+        message: "Les noms de variables doivent être uniques",
+      },
+    ),
+  mdxContent: z.string(),
+});
+
+type MdxEditorFormType = z.infer<typeof mdxEditorFormSchema>;
+
 export const MdxEditor = ({ defaultValue }: { defaultValue: string }) => {
   const { isDark } = useIsDark();
   const [mdxSource, setMdxSource] = useState<string>(defaultValue);
   const [frontmatter, setFrontmatter] = useState<Record<string, unknown>>({});
   const [content, setContent] = useState<ReactElement | null>(null);
+
+  const {
+    register,
+    formState: { errors, isValid },
+    watch,
+    handleSubmit,
+    control,
+  } = useForm<MdxEditorFormType>();
+
+  const {
+    fields: varFields,
+    append: appendVar,
+    remove: removeVar,
+  } = useFieldArray({
+    control,
+    name: "variables",
+  });
 
   function handleEditorChange(value?: string) {
     value && setMdxSource(value);
@@ -125,31 +167,81 @@ export const MdxEditor = ({ defaultValue }: { defaultValue: string }) => {
   }, [mdxSource]);
 
   return (
-    <Grid haveGutters className={style.editor}>
-      <GridCol base={2}>
-        <form>
-          <Input label="Var 1" />
-          <Input label="Value 1" />
-        </form>
-      </GridCol>
-      <GridCol base={5}>
-        <Editor
-          defaultValue={defaultValue}
-          language="mdx-mustache"
-          theme={`mdx-mustache-theme-${isDark ? "dark" : "light"}`}
-          onChange={handleEditorChange}
-          options={{
-            automaticLayout: true,
-            codeLens: false,
-            scrollBeyondLastLine: false,
-            wordWrap: "bounded",
-          }}
-        />
-      </GridCol>
-      <GridCol base={5} className="overflow-auto h-full">
-        <code>{JSON.stringify({ frontmatter })}</code>
-        {content}
-      </GridCol>
-    </Grid>
+    <form onSubmit={void handleSubmit(data => console.log(data))}>
+      <Grid haveGutters className={style.editor}>
+        <GridCol base={2} px="3w">
+          <Button
+            size="small"
+            priority="secondary"
+            iconId="fr-icon-add-line"
+            type="button"
+            onClick={() =>
+              appendVar(
+                { name: "", description: "" },
+                { shouldFocus: true, focusName: `variables.${varFields.length}.name` },
+              )
+            }
+          >
+            Ajouter une variable
+          </Button>
+          {varFields.map((field, index) => {
+            const name = `variables.${index}.name` as const;
+            const description = `variables.${index}.description` as const;
+            return (
+              <Fragment key={field.id}>
+                <hr className={fr.cx("fr-mt-2w", "fr-pb-1w")} />
+                <Input
+                  nativeInputProps={{
+                    ...register(name),
+                    placeholder: `Nom ${index + 1}`,
+                  }}
+                  hideLabel
+                  label={`Nom variable ${index + 1}`}
+                  action={
+                    <Button
+                      iconId="fr-icon-delete-line"
+                      type="button"
+                      priority="secondary"
+                      title="Supprimer la variable"
+                      onClick={() => removeVar(index)}
+                    />
+                  }
+                />
+                <Input
+                  textArea
+                  classes={{
+                    nativeInputOrTextArea: "resize-y",
+                  }}
+                  nativeTextAreaProps={{
+                    ...register(description),
+                    placeholder: `Description ${index + 1}`,
+                  }}
+                  hideLabel
+                  label={`Description variable ${index + 1}`}
+                />
+              </Fragment>
+            );
+          })}
+        </GridCol>
+        <GridCol base={5}>
+          <Editor
+            defaultValue={defaultValue}
+            language="mdx-mustache"
+            theme={`mdx-mustache-theme-${isDark ? "dark" : "light"}`}
+            onChange={handleEditorChange}
+            options={{
+              automaticLayout: true,
+              codeLens: false,
+              scrollBeyondLastLine: false,
+              wordWrap: "bounded",
+            }}
+          />
+        </GridCol>
+        <GridCol base={5} className="overflow-auto h-full">
+          <code>{JSON.stringify({ frontmatter })}</code>
+          {content}
+        </GridCol>
+      </Grid>
+    </form>
   );
 };

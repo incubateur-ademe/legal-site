@@ -20,7 +20,7 @@
     "generateEnvDeclaration": "yarn run-script scripts/generateEnvDeclaration.ts"
   },
   "dependencies": {
-    "@codegouvfr/react-dsfr": "^1.16.4",
+    "@codegouvfr/react-dsfr": "^1.16.5-rc.0",
     "@formkit/auto-animate": "^0.8.2",
     "@hookform/resolvers": "^3.9.1",
     "@incubateur-ademe/next-auth-espace-membre-provider": "^0.0.6",
