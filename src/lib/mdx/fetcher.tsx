@@ -1,24 +1,19 @@
-import Mustache from "mustache";
-import { compileMDX } from "next-mdx-remote/rsc";
-import { type ReactElement } from "react";
+"use server";
+
+import { type CompileMDXResult } from "next-mdx-remote/rsc";
+
+import { gitRepo } from "../repo";
+import { type GitSha7, type TemplateType } from "../repo/IGitRepo";
+import { mdxRenderer } from "./renderer";
 
 export async function mdxFetcher(
-  template: string,
-  data: Record<string, unknown>,
-): Promise<[metadata: Record<string, unknown>, templateContent: ReactElement]> {
-  const res = await fetch(template);
-  if (!res.ok) {
-    throw new Error("Failed to fetch MDX");
-  }
-  const file = await res.text();
+  startupId: string,
+  groupId: string,
+  type: TemplateType,
+  templateVersion?: GitSha7,
+): Promise<CompileMDXResult> {
+  const file = await gitRepo.getTemplate(groupId, type, templateVersion);
+  const data = await gitRepo.getVariablesForPage(startupId, groupId, templateVersion!);
 
-  const templated = Mustache.render(file, data);
-
-  const { frontmatter, content } = await compileMDX({
-    source: templated,
-    options: {
-      parseFrontmatter: true,
-    },
-  });
-  return [frontmatter, content];
+  return mdxRenderer(file, data);
 }

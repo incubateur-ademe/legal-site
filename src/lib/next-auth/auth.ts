@@ -38,11 +38,6 @@ export const {
   handlers: { GET, POST },
 } = NextAuth({
   secret: config.api.security.auth.secret,
-  theme: {
-    logo: "/img/ademe-incubateur-logo.png",
-    brandColor: "#0053B3",
-    colorScheme: "auto",
-  },
   pages: {
     signIn: "/login",
     signOut: "/logout",
@@ -71,6 +66,7 @@ export const {
         from: config.api.mailer.from,
       }),
     ),
+    // TODO
     // WebAuthn,
     // Passkey({
     //   registrationOptions: {},

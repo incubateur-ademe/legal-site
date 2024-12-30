@@ -79,7 +79,7 @@ const config = {
     if (!options.isServer) {
       config.plugins?.push(
         new MonacoEditorWebpackPlugin({
-          languages: ["markdown"],
+          languages: ["markdown", "mdx"],
           filename: "static/[name].worker.js",
         }),
       );
@@ -100,6 +100,12 @@ const config = {
   },
   env,
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
+  rewrites: async () => [
+    {
+      source: "/startup/:startupId/:templateType.:ext(html|md|txt|pdf)",
+      destination: "/startup/:startupId/:templateType/:ext",
+    },
+  ],
   async headers() {
     return [
       {

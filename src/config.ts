@@ -40,5 +40,27 @@ export const config = {
       apiKey: ensureApiEnvVar(process.env.ESPACE_MEMBRE_API_KEY, ""),
       url: ensureApiEnvVar(process.env.ESPACE_MEMBRE_URL, "https://espace-membre.incubateur.net"),
     },
+    templates: {
+      git: {
+        url: ensureApiEnvVar(
+          process.env.TEMPLATES_GIT_URL,
+          "https://github.com/incubateur-ademe/legal-site-templates-test",
+        ),
+        gpg_private_key: ensureApiEnvVar(process.env.TEMPLATES_GIT_GPG_PRIVATE_KEY, ""),
+        gpg_passphrase: ensureApiEnvVar(process.env.TEMPLATES_GIT_GPG_PASSPHRASE, ""),
+        author: {
+          email: ensureApiEnvVar(process.env.TEMPLATES_GIT_AUTHOR_EMAIL, "bot@email.com"),
+          name: ensureApiEnvVar(process.env.TEMPLATES_GIT_AUTHOR_NAME, "Bot"),
+        },
+        committer: {
+          email: ensureApiEnvVar(process.env.TEMPLATES_GIT_COMMITTER_EMAIL, "bot@email.com"),
+          name: ensureApiEnvVar(process.env.TEMPLATES_GIT_COMMITTER_NAME, "Bot"),
+        },
+      },
+      tmpdir: ensureApiEnvVar(process.env.TEMPLATES_TMPDIR, "./templates_tmp"),
+    },
+    github: {
+      token: ensureApiEnvVar(process.env.TEMPLATES_GITHUB_TOKEN, ""),
+    },
   },
 } as const;
