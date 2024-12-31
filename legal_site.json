@@ -36,5 +36,12 @@
   },
   "github": {
     "token": ""
+  },
+  "redis": {
+    "base": "legal_site",
+    "host": "",
+    "port": 6379,
+    "tls": false,
+    "password": ""
   }
 }

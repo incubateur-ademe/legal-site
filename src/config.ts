@@ -79,5 +79,12 @@ export const config = {
     github: {
       token: ensureApiEnvVar(process.env.TEMPLATES_GITHUB_TOKEN, ""),
     },
+    redis: {
+      base: ensureApiEnvVar(process.env.REDIS_BASE, "legal-site"),
+      host: ensureApiEnvVar(process.env.REDIS_HOST, "localhost"),
+      port: ensureApiEnvVar(process.env.REDIS_PORT, Number, 6379),
+      tls: ensureApiEnvVar(process.env.REDIS_TLS, isTruthy, false),
+      password: ensureApiEnvVar(process.env.REDIS_PASSWORD, ""),
+    },
   },
 } as const;
