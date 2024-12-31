@@ -13,13 +13,13 @@ declare module "next-auth" {
   }
 
   interface Session {
-    user: AdapterUser;
+    user: AdapterUser & { isAdmin?: boolean };
   }
 }
 
 declare module "@auth/core/jwt" {
   interface JWT {
-    user: AdapterUser;
+    user: AdapterUser & { isAdmin?: boolean };
   }
 }
 
@@ -83,6 +83,7 @@ export const {
             emailVerified: new Date(),
             id: espaceMembreMember.username,
             image: espaceMembreMember.avatar,
+            isAdmin: config.api.templates.admins.includes(espaceMembreMember.username),
           },
         };
       }

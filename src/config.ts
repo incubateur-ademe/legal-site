@@ -41,6 +41,23 @@ export const config = {
       url: ensureApiEnvVar(process.env.ESPACE_MEMBRE_URL, "https://espace-membre.incubateur.net"),
     },
     templates: {
+      admins: ensureApiEnvVar(
+        process.env.TEMPLATES_ADMINS,
+        v =>
+          v
+            .trim()
+            .split(",")
+            .map(a => a.trim())
+            .filter(Boolean),
+        [
+          "lilian.sagetlethias",
+          "julien.bouqillon",
+          "lucas.charrier",
+          "alexandre.le.borgne",
+          "wissem.bellili",
+          "osiris.moukoko",
+        ],
+      ),
       git: {
         url: ensureApiEnvVar(
           process.env.TEMPLATES_GIT_URL,

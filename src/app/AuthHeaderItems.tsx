@@ -14,10 +14,9 @@ export const UserHeaderItem = () => {
         <HeaderQuickAccessItem
           key="hqai-authenticated-user"
           quickAccessItem={{
-            iconId: "fr-icon-account-fill",
+            iconId: session.data.user.isAdmin ? "fr-icon-admin-fill" : "fr-icon-account-fill",
             text: `${session.data.user.name}`,
-            linkProps: {
-              href: "#",
+            buttonProps: {
               onClick(e) {
                 e.preventDefault();
               },
@@ -32,8 +31,7 @@ export const UserHeaderItem = () => {
           quickAccessItem={{
             iconId: "fr-icon-account-fill",
             text: <Skeleton width={200} highlightColor="var(--text-action-high-blue-france)" />,
-            linkProps: {
-              href: "#",
+            buttonProps: {
               onClick(e) {
                 e.preventDefault();
               },

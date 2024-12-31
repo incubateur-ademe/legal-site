@@ -24,7 +24,15 @@
     "git_url": "../legal-sites-templates-test",
     "git_gpg_private_key": "",
     "git_gpg_passphrase": "",
-    "tmp_dir": "/tmp"
+    "tmp_dir": "/tmp",
+    "admins": [
+      "lilian.sagetlethias",
+      "julien.bouqillon",
+      "lucas.charrier",
+      "alexandre.le.borgne",
+      "wissem.bellili",
+      "osiris.moukoko"
+    ]
   },
   "github": {
     "token": ""

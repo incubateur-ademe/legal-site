@@ -10,7 +10,7 @@
 - [ ] https://legal.beta.gouv.fr/startup/carte-verte/politique-confidentialite
 - [ ] https://legal.beta.gouv.fr/startup/carte-verte/politique-confidentialite.(txt|md|html)
 - [ ] https://legal.beta.gouv.fr/startup/territoires-en-transitions/aldo/politique-confidentialite.(txt|md|html) (en cas de produit supplémentaire)
-- [ ] github en backend pour profiter du versionning
+- [x] github en backend pour profiter du versionning
 ### Login
 - [x] checker les comptes inactifs
 
