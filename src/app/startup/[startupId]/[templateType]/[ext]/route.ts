@@ -17,7 +17,6 @@ type Param = { ext: PageExt; startupId: string; templateType: TemplateTypeEnum }
 
 export async function GET(request: Request, { params }: { params: Promise<Param> }) {
   const { ext, startupId, templateType } = await params;
-  console.log({ ext, startupId, templateType });
   const { content, frontmatter } = await mdxFetcher(startupId, "ademe", templateType, "72c7813");
 
   switch (ext) {

@@ -43,7 +43,7 @@ const csp = {
   ],
   "font-src": ["'self'"],
   "media-src": ["'self'"],
-  "img-src": ["'self'", "data:"],
+  "img-src": ["'self'", "data:", "espace-membre.incubateur.net"],
   "script-src": [
     "'self'",
     "'unsafe-inline'",
@@ -106,6 +106,17 @@ const config = {
       destination: "/startup/:startupId/:templateType/:ext",
     },
   ],
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "espace-membre.incubateur.net",
+        pathname: "/api/member/*/image",
+        port: "",
+        search: "",
+      },
+    ],
+  },
   async headers() {
     return [
       {

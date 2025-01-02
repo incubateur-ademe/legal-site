@@ -15,7 +15,6 @@ const Template = async () => {
 
   const templates = await useCase.execute();
 
-  console.log(session?.user);
   return (
     <Container my="4w">
       {session && (

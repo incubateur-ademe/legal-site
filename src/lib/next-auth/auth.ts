@@ -20,10 +20,6 @@ const redis = createStorage({
 });
 
 declare module "next-auth" {
-  interface Account {
-    user: AdapterUser;
-  }
-
   interface Session {
     user: AdapterUser & { isAdmin?: boolean };
   }
