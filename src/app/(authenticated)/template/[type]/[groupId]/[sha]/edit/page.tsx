@@ -4,7 +4,7 @@ import { Container } from "@/dsfr";
 import { MdxEditor } from "./MdxEditor";
 
 interface Params {
-  groupeId: string;
+  groupId: string;
   sha: string;
   type: string;
 }
@@ -14,9 +14,9 @@ interface Props {
 }
 
 const TemplateEdit = async ({ params }: Props) => {
-  const { groupeId, sha, type } = await params;
+  const { groupId, sha, type } = await params;
   const rawTemplate = await fetch(
-    `https://raw.githubusercontent.com/incubateur-ademe/legal-site-templates-test/${sha}/templates/${groupeId}/${type}.md`,
+    `https://raw.githubusercontent.com/incubateur-ademe/legal-site-templates-test/${sha}/templates/${groupId}/${type}.md`,
   );
   const template = await rawTemplate.text();
 

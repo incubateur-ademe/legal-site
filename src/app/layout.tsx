@@ -20,7 +20,6 @@ import { SkeletonTheme } from "react-loading-skeleton";
 import { Brand } from "@/components/Brand";
 import { ClientAnimate } from "@/components/utils/ClientAnimate";
 import { config } from "@/config";
-import { auth } from "@/lib/next-auth/auth";
 
 import { FooterPersonalDataPolicyItem } from "../consentManagement";
 import { defaultColorScheme } from "../defaultColorScheme";
@@ -58,8 +57,7 @@ export const metadata: Metadata = {
 
 const lang = "fr";
 
-const RootLayout = async ({ children }: PropsWithChildren) => {
-  const session = await auth();
+const RootLayout = ({ children }: PropsWithChildren) => {
   return (
     <html lang={lang} {...getHtmlAttributes({ defaultColorScheme, lang })} className={cx(styles.app)}>
       <head>

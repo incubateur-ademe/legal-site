@@ -58,9 +58,7 @@ const Template = async () => {
           row: [
             {
               children: (
-                <Link href={`/template/${template.type}/${template.groupId}/${template.sha}/edit`}>
-                  {template.groupId}
-                </Link>
+                <Link href={`/template/${template.type}/${template.groupId}/${template.sha}`}>{template.groupId}</Link>
               ),
             },
             {

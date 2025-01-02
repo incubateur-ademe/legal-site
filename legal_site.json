@@ -32,7 +32,9 @@
       "alexandre.le.borgne",
       "wissem.bellili",
       "osiris.moukoko"
-    ]
+    ],
+    "main_branch": "main",
+    "provider": "github"
   },
   "github": {
     "token": ""

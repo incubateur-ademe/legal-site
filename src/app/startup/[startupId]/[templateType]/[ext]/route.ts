@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-import { mdxFetcher } from "@/lib/mdx/fetcher";
 import { type TemplateTypeEnum } from "@/lib/repo/IGitRepo";
 
 enum PageExtEnum {
@@ -17,11 +16,11 @@ type Param = { ext: PageExt; startupId: string; templateType: TemplateTypeEnum }
 
 export async function GET(request: Request, { params }: { params: Promise<Param> }) {
   const { ext, startupId, templateType } = await params;
-  const { content, frontmatter } = await mdxFetcher(startupId, "ademe", templateType, "72c7813");
+  // const { content, frontmatter } = await mdxFetcher(startupId, "ademe", templateType, "72c7813");
 
   switch (ext) {
     case PageExtEnum.HTML:
-      return new Response((await import("react-dom/server")).renderToString(content), {
+      return new Response((await import("react-dom/server")).renderToString(""), {
         headers: { "Content-Type": "text/html; charset=utf-8", encoding: "iso8859-1" },
       });
     case PageExtEnum.MARKDOWN:
