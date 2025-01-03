@@ -36,11 +36,8 @@ export class SimpleGitRepo implements IGitRepo {
       this.configDone = true;
     }
 
-    console.log("Fetching templates");
     await this.git.fetch(["-p"]);
-    console.log("Checking out", config.api.templates.git.mainBranch);
     await this.git.checkout(config.api.templates.git.mainBranch);
-    console.log("Pulling latest changes");
     await this.git.pull();
   }
 

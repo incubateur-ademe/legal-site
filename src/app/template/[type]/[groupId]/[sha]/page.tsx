@@ -11,14 +11,14 @@ import { Container, Grid, GridCol } from "@/dsfr";
 import { RecapCard } from "@/dsfr/base/RecapCard";
 import { auth } from "@/lib/next-auth/auth";
 import { gitRepo } from "@/lib/repo";
-import { type TemplateType, TemplateTypeName } from "@/lib/repo/IGitRepo";
+import { type GitSha7, type TemplateType, TemplateTypeName } from "@/lib/repo/IGitRepo";
 import { mdxService } from "@/lib/services";
 import { GetTemplateWithDisplayableContent } from "@/useCases/GetTemplateWithDisplayableContent";
 import { toFrenchDateHour } from "@/utils/data";
 
 interface Params {
   groupId: string;
-  sha: string;
+  sha: GitSha7;
   type: TemplateType;
 }
 
@@ -41,6 +41,7 @@ const TemplateView = async ({ params }: Props) => {
     <Container ptmd="14v" mbmd="14v">
       <ButtonsGroup
         inlineLayoutWhen="sm and up"
+        buttonsEquisized
         buttons={[
           {
             children: "Retour",
@@ -53,12 +54,14 @@ const TemplateView = async ({ params }: Props) => {
           },
           {
             children: "Dupliquer",
-            linkProps: {
-              href: `/template/${type}/${groupId}/${sha}/duplicate`,
-            },
+            disabled: true,
+            // linkProps: {
+            //   href: `/template/${type}/${groupId}/${sha}/duplicate`,
+            // },
             iconId: "ri-file-copy-line",
             iconPosition: "right",
             priority: "tertiary",
+            title: "Fonctionnalité à venir",
           },
           {
             children: "Éditer",
