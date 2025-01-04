@@ -3,7 +3,7 @@ import { type ReactElement } from "react";
 import { type GitSha7, type IGitRepo, type Template, type TemplateType } from "@/lib/repo/IGitRepo";
 import { type MdxService } from "@/lib/services/MdxService";
 
-import { AbstractCachedUseCase } from "./AbstractCacheUsedCase";
+import { AbstractCachedUseCase } from "./AbstractCacheUseCase";
 
 export interface GetTemplateWithDisplayableContentIntput {
   groupId: string;

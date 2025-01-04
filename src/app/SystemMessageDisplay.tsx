@@ -29,6 +29,34 @@ interface SystemCodeMap {
 }
 
 export const systemCodes = {
+  "401": {
+    title: "Erreur de connexion",
+    headline: "Connexion non autorisée.",
+    body: (
+      <>
+        L'identifiant avec lequel vous avez tenté de vous connecter n'est pas autorisé (compte inconnu, inactif, ou
+        filtré). Si vous pensez qu'il s'agit d'une erreur, veuillez contacter un·e admin.
+      </>
+    ),
+    pictogram: artworkMap.padlock,
+  },
+  get unauthorized() {
+    return this["401"];
+  },
+  "403": {
+    title: "Accès refusé",
+    headline: "Opération non autorisée.",
+    body: (
+      <>
+        Vous n'avez pas les droits nécessaires pour accéder à cette page. Si vous pensez qu'il s'agit d'une erreur,
+        veuillez contacter un·e admin.
+      </>
+    ),
+    pictogram: artworkMap.padlock,
+  },
+  get forbidden() {
+    return this["403"];
+  },
   "404": {
     title: "Page non trouvée",
     headline: "La page que vous cherchez est introuvable. Excusez-nous pour la gène occasionnée.",
@@ -39,6 +67,9 @@ export const systemCodes = {
       </>
     ),
     pictogram: artworkMap.search,
+  },
+  get "not-found"() {
+    return this["404"];
   },
   "500": {
     title: "Erreur inattendue",
@@ -59,19 +90,11 @@ export const systemCodes = {
     body: <>Nous travaillons pour le rétablir le plus rapidement possible.</>,
     pictogram: artworkMap.inProgress,
   },
-  "login-AuthorizedCallbackError": {
-    title: "Erreur de connexion",
-    headline: "Connexion non autorisée.",
-    body: (
-      <>
-        L'identifiant avec lequel vous avez tenté de vous connecter n'est pas autorisé (compte inactif ou filtré). Si
-        vous pensez qu'il s'agit d'une erreur, veuillez contacter l'équipe transverse.
-      </>
-    ),
-    pictogram: artworkMap.padlock,
+  get "login-AuthorizedCallbackError"() {
+    return this["401"];
   },
   get "login-AccessDenied"() {
-    return this["login-AuthorizedCallbackError"];
+    return this["401"];
   },
 } satisfies SystemCodeMap;
 

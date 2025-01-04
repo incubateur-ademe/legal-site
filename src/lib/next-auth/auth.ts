@@ -43,6 +43,8 @@ const espaceMembreProvider = EspaceMembreProvider({
 
 export const {
   auth,
+  signIn,
+  signOut,
   handlers: { GET, POST },
 } = NextAuth({
   secret: config.api.security.auth.secret,

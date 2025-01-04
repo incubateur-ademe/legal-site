@@ -2,7 +2,7 @@ import fs from "fs";
 import fsP from "fs/promises";
 import matter from "gray-matter";
 import path from "path";
-import { type SimpleGit, simpleGit } from "simple-git";
+import { CheckRepoActions, type SimpleGit, simpleGit } from "simple-git";
 
 import { config } from "@/config";
 import { illogical } from "@/utils/error";
@@ -10,35 +10,66 @@ import { validateTemplateMeta } from "@/utils/templateMeta";
 
 import { type GitSha7, type IGitRepo, type Template, type TemplateType, type TemplateVersions } from "../IGitRepo";
 
+// TODO: Add pool to avoid multiple concurrent git operations
+// like Map<repoPath, {git: SimpleGit, configDone: boolean}>
+
 export class SimpleGitRepo implements IGitRepo {
   private readonly git: SimpleGit;
+  // private readonly remote: "local" | "origin" = config.api.templates.git.provider === "local" ? "local" : "origin";
+  private readonly remote = "origin";
   private configDone = false;
+  private readonly tmpdir = path.resolve(config.api.templates.tmpdir);
 
   constructor() {
-    if (!fs.existsSync(config.api.templates.tmpdir)) {
-      fs.mkdirSync(config.api.templates.tmpdir, { recursive: true });
+    if (!fs.existsSync(this.tmpdir)) {
+      fs.mkdirSync(this.tmpdir, { recursive: true });
     }
-    this.git = simpleGit(config.api.templates.tmpdir);
+    this.git = simpleGit(this.tmpdir);
   }
 
   private async init() {
     if (!this.configDone) {
-      if (!(await this.git.checkIsRepo())) {
+      if (!(await this.git.checkIsRepo(CheckRepoActions.IS_REPO_ROOT))) {
         await this.git.clone(config.api.templates.git.url, ".");
       }
+      await this.git.addConfig("core.worktree", this.tmpdir);
       await this.git
-        .addConfig("user.email", config.api.templates.git.author.email)
-        .addConfig("user.name", config.api.templates.git.author.name)
-        .addConfig("user.signingkey", config.api.templates.git.gpgPrivateKey)
-        .addConfig("commit.gpgSign", "true")
+        .addConfig("user.email", config.api.templates.git.committer.email)
+        .addConfig("user.name", config.api.templates.git.committer.name)
         .addConfig("pull.rebase", "false");
+
+      if (config.api.templates.git.gpgPrivateKey) {
+        await this.git
+          .addConfig("user.signingkey", config.api.templates.git.gpgPrivateKey)
+          .addConfig("commit.gpgSign", "true");
+      }
+
+      // const remotes = await this.git.getRemotes();
+      // if (!remotes.some(r => r.name === this.remote)) {
+      //   await this.git.addRemote(this.remote, this.getAuthRemoteUrl());
+      // }
+      await this.git.removeRemote("origin").addRemote("origin", this.getAuthRemoteUrl());
 
       this.configDone = true;
     }
 
-    await this.git.fetch(["-p"]);
+    await this.git.fetch(this.remote, ["-p"]);
     await this.git.checkout(config.api.templates.git.mainBranch);
-    await this.git.pull();
+    await this.git.pull(this.remote, config.api.templates.git.mainBranch, {
+      // "--set-upstream-to": `${this.remote}/${config.api.templates.git.mainBranch}`,
+    });
+  }
+
+  private getAuthRemoteUrl() {
+    if (config.api.templates.git.provider === "local") {
+      return config.api.templates.git.url;
+    }
+
+    const { providerToken, providerUser } = config.api.templates.git;
+    const url = new URL(config.api.templates.git.url);
+    url.username = providerUser;
+    url.password = providerToken;
+    return url.toString();
   }
 
   private async getShaAndHVersionForTemplate(
@@ -73,7 +104,7 @@ export class SimpleGitRepo implements IGitRepo {
   public async getAllTemplates(): Promise<Template[]> {
     await this.init();
 
-    const templateBasePath = `${config.api.templates.tmpdir}/templates/`;
+    const templateBasePath = `${this.tmpdir}/templates/`;
     const files = await fsP.readdir(templateBasePath, {
       recursive: true,
       withFileTypes: true,
@@ -104,7 +135,7 @@ export class SimpleGitRepo implements IGitRepo {
   public async getTemplate(groupId: string, type: TemplateType, templateVersion?: GitSha7): Promise<Template> {
     const content = await this.getTemplateRaw(groupId, type, templateVersion);
 
-    const templateBasePath = `${config.api.templates.tmpdir}/templates/`;
+    const templateBasePath = `${this.tmpdir}/templates/`;
     const filePath = path.resolve(templateBasePath, groupId, `${type}.md`);
     const { data } = matter(content);
 
@@ -141,5 +172,25 @@ export class SimpleGitRepo implements IGitRepo {
     const raw = await this.git.show([`HEAD:var/${startupId}/${templateGroupId}-${templateVersion}.json`]);
 
     return JSON.parse(raw) as Record<string, unknown>;
+  }
+
+  public async saveTemplate(
+    template: Template,
+    content: string,
+    comment?: string,
+    author?: { email: string; name: string },
+  ): Promise<GitSha7> {
+    const filePath = path.resolve(template.path);
+    const commitMessage = `template(${template.groupId}): ${template.type} - ${comment || "Update"}`;
+    await this.init();
+    await fsP.writeFile(filePath, content);
+    const commitResult = await this.git
+      .add(filePath)
+      .commit(commitMessage, filePath, author && { "--author": `${author.name} <${author.email}>` });
+
+    const _pushResult = await this.git.push(this.remote);
+    // TODO: handle push errors
+
+    return commitResult.commit.substring(0, 7);
   }
 }

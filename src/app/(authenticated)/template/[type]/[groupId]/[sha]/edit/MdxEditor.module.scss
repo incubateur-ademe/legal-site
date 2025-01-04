@@ -1,3 +1,7 @@
 .editor {
     height: 36rem;
 }
+
+.variables-panel--error {
+    border-color: var(--border-action-high-error);
+}

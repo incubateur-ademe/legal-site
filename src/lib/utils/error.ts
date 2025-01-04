@@ -1,15 +1,25 @@
 export class AppError extends Error {
-  constructor(message?: string) {
-    super(message);
-    this.name = "AppError";
-  }
+  public readonly name: string = "AppError";
 }
 
 export class IllogicalError extends AppError {
-  constructor(message?: string) {
-    super(message);
-    this.name = "IllogicalError";
-  }
+  public readonly name: string = "IllogicalError";
+}
+
+export class UnexpectedError extends AppError {
+  public readonly name: string = "UnexpectedError";
+}
+
+export class UnexpectedRepositoryError extends UnexpectedError {
+  public readonly name: string = "UnexpectedRepositoryError";
+}
+
+export class UnexpectedMailerError extends UnexpectedError {
+  public readonly name: string = "UnexpectedMailerError";
+}
+
+export class UnexpectedSessionError extends UnexpectedError {
+  public readonly name: string = "UnexpectedSessionError";
 }
 
 export const notImplemented = () => {

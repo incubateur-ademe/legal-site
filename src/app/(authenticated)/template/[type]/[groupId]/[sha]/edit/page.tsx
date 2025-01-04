@@ -1,23 +1,25 @@
+import { z } from "zod";
+
 import { ClientOnly } from "@/components/utils/ClientOnly";
 import { Container } from "@/dsfr";
 import { gitRepo } from "@/lib/repo";
-import { type GitSha7, type TemplateType } from "@/lib/repo/IGitRepo";
+import { GitSha7, TemplateType } from "@/lib/repo/IGitRepo";
 import { mdxService } from "@/lib/services";
 import { GetTemplateWithRawContent } from "@/useCases/GetTemplateWithRawContent";
+import { withValidation } from "@/utils/next";
 
 import { MdxEditor } from "./MdxEditor";
 
-interface Params {
-  groupId: string;
-  sha: GitSha7;
-  type: TemplateType;
-}
+const paramsSchema = z.object({
+  groupId: z.string(),
+  sha: GitSha7,
+  type: TemplateType,
+});
 
-interface Props {
-  params: Promise<Params>;
-}
-
-const TemplateEdit = async ({ params }: Props) => {
+const TemplateEdit = withValidation(
+  { paramsSchema },
+  { notFound: true },
+)(async ({ params }) => {
   const { groupId, sha, type } = await params;
   const useCase = new GetTemplateWithRawContent(mdxService, gitRepo);
   const { raw, template } = await useCase.execute({ groupId, templateId: sha, type });
@@ -25,10 +27,10 @@ const TemplateEdit = async ({ params }: Props) => {
   return (
     <Container className="min-h-64 max-h-full" ptmd="14v" mbmd="14v" size="md" fluid mx="3w">
       <ClientOnly>
-        <MdxEditor defaultValue={raw} />
+        <MdxEditor raw={raw} template={template} />
       </ClientOnly>
     </Container>
   );
-};
+});
 
 export default TemplateEdit;

@@ -253,10 +253,10 @@
   resolved "https://registry.yarnpkg.com/@img/sharp-win32-x64/-/sharp-win32-x64-0.33.5.tgz#56f00962ff0c4e0eb93d34a047d29fa995e3e342"
   integrity sha512-MpY/o8/8kj+EcnxwvrP4aTJSWw/aZ7JIGR4aBeZkZw5B7/Jn+tY9/VNwtcoGmdT7GfggGIU4kygOMSbYnOrAbg==
 
-"@incubateur-ademe/next-auth-espace-membre-provider@^0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@incubateur-ademe/next-auth-espace-membre-provider/-/next-auth-espace-membre-provider-0.0.7.tgz#d5c085960f811b5082668a7a4aec20fe451e16cf"
-  integrity sha512-4MOTIrium3GUoHIr8TmSFjfg+1qmt8M0P5UoPejii+NSc5LxqZ7p3ZWvozy81r3BI1ju8JSX6AR8THEiCQhrTQ==
+"@incubateur-ademe/next-auth-espace-membre-provider@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@incubateur-ademe/next-auth-espace-membre-provider/-/next-auth-espace-membre-provider-0.0.8.tgz#83382620933132c39e78304ab14735ab41fd8331"
+  integrity sha512-Eyuax8dzbRHaJmKLGFfO7e5jvcjUCpbQqKqI7HmRI6IAPJhyB8npcSwGfXacnG6JrjQkFkBbm9L9dKyNAEp6rQ==
 
 "@ioredis/commands@^1.1.1":
   version "1.2.0"
@@ -4461,6 +4461,11 @@ semver@^7.3.7, semver@^7.6.0, semver@^7.6.3:
   version "7.6.3"
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.6.3.tgz#980f7b5550bc175fb4dc09403085627f9eb33143"
   integrity sha512-oVekP1cKtI+CTDvHWYFUcMtsK/00wmAEfyqKfNdARm8u1wNVhSgaX7A8d4UuIlUI5e84iEwOhs7ZPYRmzU9U6A==
+
+server-only@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/server-only/-/server-only-0.0.1.tgz#0f366bb6afb618c37c9255a314535dc412cd1c9e"
+  integrity sha512-qepMx2JxAa5jjfzxG79yPPq+8BuFToHd1hm7kI+Z4zAq1ftQiP7HcxMhDDItrbtwVeLg/cY2JnKnrcFkmiswNA==
 
 set-function-length@^1.2.1:
   version "1.2.2"

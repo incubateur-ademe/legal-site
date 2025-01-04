@@ -1,9 +1,10 @@
-import matter from "gray-matter";
+import matter, { stringify as matterStringify } from "gray-matter";
 import Mustache from "mustache";
 import { compileMDX } from "next-mdx-remote/rsc";
 import { cache, type ReactElement } from "react";
 
 import { validateTemplateMeta } from "@/utils/templateMeta";
+import { type SimpleObject } from "@/utils/types";
 
 const cachedMatter = cache(matter);
 const cachedMustache = cache(Mustache.render);
@@ -13,21 +14,34 @@ export class MdxService {
     const source = cachedMustache(rawContent, data);
     const { content } = await compileMDX({
       source,
+      options: {
+        parseFrontmatter: true,
+      },
     });
     return content;
   }
 
-  public async renderRawAsDisplayableComponent(rawContent: string): Promise<ReactElement> {
-    const { data, content } = cachedMatter(rawContent);
+  public async renderRawAsDisplayableComponent(
+    rawContent: string,
+    variables?: SimpleObject<string>,
+  ): Promise<ReactElement> {
+    let usedVars = variables;
+    if (!usedVars) {
+      const { data } = cachedMatter(rawContent);
+      usedVars = validateTemplateMeta(data).variables;
+    }
 
-    const metadata = validateTemplateMeta(data);
-    const fakeVariables = Object.fromEntries(Object.entries(metadata.variables).map(([k]) => [k, `\\{\\{${k}\\}\\}`]));
+    const fakeVariables = Object.fromEntries(Object.entries(usedVars).map(([k]) => [k, `\\{\\{${k}\\}\\}`]));
 
-    return this.renderRawAsComponent(content, fakeVariables);
+    return this.renderRawAsComponent(rawContent, fakeVariables);
   }
 
   public removeMetadataFromRaw(rawContent: string): string {
     const { content } = cachedMatter(rawContent);
     return content;
+  }
+
+  public addMetadataToRaw(rawContent: string, metadata: Record<string, unknown>): string {
+    return matterStringify(rawContent, metadata);
   }
 }
