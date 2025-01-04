@@ -1,6 +1,6 @@
 import { notFound, redirect, unauthorized } from "next/navigation";
 import { type NextRequest, type NextResponse } from "next/server";
-import { type JSX } from "react";
+import { type ReactElement } from "react";
 import { type z } from "zod";
 
 import { type ClearObject, type EmptyObject, type Nothing } from "./types";
@@ -50,17 +50,18 @@ interface ValidationOptionsWithRedirect {
 export type ValidationOptions = ValidationOptionsWithNotFound | ValidationOptionsWithRedirect;
 
 type ZodNextPage<
-  Param extends z.ZodType | object | string = string,
+  Params extends z.ZodType | object | string = string,
   SearchParams extends z.ZodType | object | string = never,
-> = (props: NextServerPageProps<Param, SearchParams>) => JSX.Element | Promise<JSX.Element>;
+> = (props: NextServerPageProps<Params, SearchParams>) => Promise<ReactElement> | ReactElement;
 
 export const withValidation =
   <Params extends z.ZodType, SearchParams extends z.ZodType, TPage extends ZodNextPage<Params, SearchParams>>(
     schemas: { paramsSchema?: Params; searchParamsSchema?: SearchParams },
     options?: ValidationOptions,
   ) =>
-  (page: TPage): ZodNextPage<Params, SearchParams> =>
-  async props => {
+  (page: TPage): (() => ReactElement) =>
+  // @ts-expect-error - This is a hack to make the types work
+  async (props: NextServerPageProps<Params, SearchParams>) => {
     const { paramsSchema, searchParamsSchema } = schemas;
     const newProps = { ...props } as PropValueAsZod<Params, "params"> & PropValueAsZod<SearchParams, "searchParams">;
     if (paramsSchema) {
