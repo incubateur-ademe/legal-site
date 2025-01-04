@@ -9,16 +9,17 @@ import Link from "next/link";
 import { ClientOnly } from "@/components/utils/ClientOnly";
 import { Container, Grid, GridCol } from "@/dsfr";
 import { RecapCard } from "@/dsfr/base/RecapCard";
+import { Heading } from "@/dsfr/base/Typography";
 import { auth } from "@/lib/next-auth/auth";
 import { gitRepo } from "@/lib/repo";
-import { type TemplateType, TemplateTypeName } from "@/lib/repo/IGitRepo";
+import { type GitSha7, type TemplateType, TemplateTypeName } from "@/lib/repo/IGitRepo";
 import { mdxService } from "@/lib/services";
 import { GetTemplateWithDisplayableContent } from "@/useCases/GetTemplateWithDisplayableContent";
 import { toFrenchDateHour } from "@/utils/data";
 
 interface Params {
   groupId: string;
-  sha: string;
+  sha: GitSha7;
   type: TemplateType;
 }
 
@@ -36,11 +37,25 @@ const TemplateView = async ({ params }: Props) => {
   const variablesEntries = Object.entries(template.variables);
 
   const hasNewerVersion = template.versions[0].sha !== sha;
+  const currentVersion = template.versions.find(v => v.sha === sha)!;
 
   return (
     <Container ptmd="14v" mbmd="14v">
+      <h1>
+        {TemplateTypeName[template.type]} ({template.groupId})
+      </h1>
+      <Heading
+        as="h2"
+        variant="h4"
+        text={
+          <i>
+            version {template.sha} du {toFrenchDateHour(currentVersion.date)}
+          </i>
+        }
+      ></Heading>
       <ButtonsGroup
         inlineLayoutWhen="sm and up"
+        buttonsEquisized
         buttons={[
           {
             children: "Retour",
@@ -53,12 +68,14 @@ const TemplateView = async ({ params }: Props) => {
           },
           {
             children: "Dupliquer",
-            linkProps: {
-              href: `/template/${type}/${groupId}/${sha}/duplicate`,
-            },
+            disabled: true,
+            // linkProps: {
+            //   href: `/template/${type}/${groupId}/${sha}/duplicate`,
+            // },
             iconId: "ri-file-copy-line",
             iconPosition: "right",
             priority: "tertiary",
+            title: "Fonctionnalité à venir",
           },
           {
             children: "Éditer",
@@ -94,6 +111,9 @@ const TemplateView = async ({ params }: Props) => {
                 Auteurice :{" "}
                 {session?.user.username === template.author ? <Tag small>Vous</Tag> : <b>{template.author}</b>}
                 <br />
+                Éditeurice :{" "}
+                {session?.user.username === template.author ? <Tag small>Vous</Tag> : <b>{template.lastEditor}</b>}
+                <br />
                 Description : <b>{template.description}</b>
                 <br />
                 Type : <Tag small>{TemplateTypeName[type]}</Tag>
@@ -107,8 +127,7 @@ const TemplateView = async ({ params }: Props) => {
                   </a>
                 </b>
                 <br />
-                Commentaire:{" "}
-                <code>{template.versions.find(v => v.sha === sha)?.comment || "(pas de commentaires)"}</code>
+                Commentaire: <code>{currentVersion.comment || "(pas de commentaires)"}</code>
               </>
             }
           />

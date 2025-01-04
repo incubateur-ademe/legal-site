@@ -75,6 +75,8 @@ export const config = {
         },
         mainBranch: ensureApiEnvVar(process.env.TEMPLATES_GIT_MAIN_BRANCH, "main"),
         provider: ensureApiEnvVar<"github" | "gitlab" | "local">(process.env.TEMPLATES_GIT_PROVIDER, "github"),
+        providerUser: ensureApiEnvVar(process.env.TEMPLATES_GIT_PROVIDER_USER, ""),
+        providerToken: ensureApiEnvVar(process.env.TEMPLATES_GIT_PROVIDER_TOKEN, ""),
       },
       tmpdir: ensureApiEnvVar(process.env.TEMPLATES_TMPDIR, "./templates_tmp"),
     },

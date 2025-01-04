@@ -14,11 +14,16 @@ type DefaultEnsureNextEnvVar = <T extends primitive | primitive[]>(
   defaultValue?: T,
 ) => T | string;
 
+/**
+ * Avoid having "bad" literals as defined type. (e.g. `""` instead of `string`)
+ */
+type RemoveUselessLiterals<T> = T extends "" ? string : T extends boolean ? boolean : T extends number ? number : T;
+
 type EnsureNextEnvVar = {
   (envVar: string | undefined): asserts envVar is string;
-  <T>(envVar: string | undefined, defaultValue: T): T;
-  <T>(envVar: string | undefined, transformer: (envVar: string) => T): T;
-  <T>(envVar: string | undefined, transformer: (envVar: string) => T, defaultValue: T): T;
+  <T>(envVar: string | undefined, defaultValue: T): RemoveUselessLiterals<T>;
+  <T>(envVar: string | undefined, transformer: (envVar: string) => T): RemoveUselessLiterals<T>;
+  <T>(envVar: string | undefined, transformer: (envVar: string) => T, defaultValue: T): RemoveUselessLiterals<T>;
 };
 type primitive = boolean | number | string;
 

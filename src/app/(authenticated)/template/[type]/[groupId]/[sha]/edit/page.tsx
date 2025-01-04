@@ -1,32 +1,36 @@
+import { z } from "zod";
+
 import { ClientOnly } from "@/components/utils/ClientOnly";
 import { Container } from "@/dsfr";
+import { gitRepo } from "@/lib/repo";
+import { GitSha7, TemplateType } from "@/lib/repo/IGitRepo";
+import { mdxService } from "@/lib/services";
+import { GetTemplateWithRawContent } from "@/useCases/GetTemplateWithRawContent";
+import { withValidation } from "@/utils/next";
 
 import { MdxEditor } from "./MdxEditor";
 
-interface Params {
-  groupId: string;
-  sha: string;
-  type: string;
-}
+const paramsSchema = z.object({
+  groupId: z.string(),
+  sha: GitSha7,
+  type: TemplateType,
+});
 
-interface Props {
-  params: Promise<Params>;
-}
-
-const TemplateEdit = async ({ params }: Props) => {
+const TemplateEdit = withValidation(
+  { paramsSchema },
+  { notFound: true },
+)(async ({ params }) => {
   const { groupId, sha, type } = await params;
-  const rawTemplate = await fetch(
-    `https://raw.githubusercontent.com/incubateur-ademe/legal-site-templates-test/${sha}/templates/${groupId}/${type}.md`,
-  );
-  const template = await rawTemplate.text();
+  const useCase = new GetTemplateWithRawContent(mdxService, gitRepo);
+  const { raw, template } = await useCase.execute({ groupId, templateId: sha, type });
 
   return (
-    <Container ptmd="14v" mbmd="14v" className="min-h-64 max-h-full" fluid>
+    <Container className="min-h-64 max-h-full" ptmd="14v" mbmd="14v" size="md" fluid mx="3w">
       <ClientOnly>
-        <MdxEditor defaultValue={template} />
+        <MdxEditor raw={raw} template={template} />
       </ClientOnly>
     </Container>
   );
-};
+});
 
 export default TemplateEdit;

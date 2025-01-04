@@ -26,13 +26,8 @@
 - par défaut, uniquement les admins peuvent editer le groupe "default"
 - liste des versions = histo git d'un fichier
 - stockage des mappings de variables sur git aussi avec un chemin "/var/[se]/[produit?]/mention-legales/[groupId]-[id].json", contenant
-```typescript
-type VarFile = Array<{
-  date: Date,
-  by: string, // person who has edited
-  mapping: Record<string, string>,
-}>;
-```
+- possibilité de recover un fichier supprimé (si fonction de suppression)
+- possibilité de rollback à une version précédente (ajout d'une version rollback comme nouvelle version)
 - anticiper le fait d'avoir plusieurs mentions legales si plusieurs produit (d'ou le "[produit?]"), sinon root par défaut 
 
 ## Navigation

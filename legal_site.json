@@ -34,7 +34,9 @@
       "osiris.moukoko"
     ],
     "main_branch": "main",
-    "provider": "github"
+    "provider": "github",
+    "provider_user": "",
+    "provider_token": ""
   },
   "github": {
     "token": ""

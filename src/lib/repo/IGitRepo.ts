@@ -23,6 +23,7 @@ export type TemplateType = z.infer<typeof TemplateType>;
 
 export const TemplateMeta = z.object({
   author: z.string(),
+  lastEditor: z.string(),
   description: z.string(),
   variables: z.record(z.string()),
 });
@@ -53,4 +54,10 @@ export interface IGitRepo {
     templateGroupId: string,
     templateVersion: GitSha7,
   ): Promise<Record<string, unknown>>;
+  saveTemplate(
+    template: Template,
+    content: string,
+    comment?: string,
+    author?: { email: string; name: string },
+  ): Promise<GitSha7>;
 }

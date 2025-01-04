@@ -15,6 +15,8 @@ const nextFiles = [
   "opengraph-image",
   "twitter-image",
   "not-found",
+  "forbidden",
+  "unauthorized",
   "default",
   "icon",
   "apple-icon",
