@@ -6,10 +6,16 @@ import { cache, type ReactElement } from "react";
 import { validateTemplateMeta } from "@/utils/templateMeta";
 import { type SimpleObject } from "@/utils/types";
 
+import { type Service } from "./types";
+
 const cachedMatter = cache(matter);
 const cachedMustache = cache(Mustache.render);
 
-export class MdxService {
+export class MdxService implements Service {
+  public init(): void {
+    // Nothing to do
+  }
+
   public async renderRawAsComponent(rawContent: string, data?: Record<string, unknown>): Promise<ReactElement> {
     const source = cachedMustache(rawContent, data);
     const { content } = await compileMDX({

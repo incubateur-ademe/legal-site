@@ -45,8 +45,33 @@ export type TemplateVersions = z.infer<typeof TemplateVersions>;
 export type TemplateMeta = z.infer<typeof TemplateMeta>;
 export type Template = z.infer<typeof Template>;
 
+export const GroupMembershipRule = z.object({
+  rule: z.union([
+    z.string().regex(/member\/[\w.]+/gi),
+    z.string().regex(/startup\/[\w.]+/gi),
+    z.string().regex(/incubator\/[\w.]+/gi),
+    z.string().regex(/animation\/[\w.]+/gi),
+    z.literal("*"),
+  ]),
+  ttlStart: z.date().optional(),
+  ttlEnd: z.date().optional(),
+});
+export const Group = z.object({
+  id: z.string(),
+  name: z.string(),
+  description: z.string(),
+  templates: z.array(Template),
+  owners: z.array(GroupMembershipRule.shape.rule),
+  membershipRules: z.array(GroupMembershipRule),
+});
+
+export type GroupMembershipRule = z.infer<typeof GroupMembershipRule>;
+export type Group = z.infer<typeof Group>;
+
 export interface IGitRepo {
-  getAllTemplates(): Promise<Template[]>;
+  getAllTemplates(groupId?: string): Promise<Template[]>;
+  getGroup(groupId: string): Promise<Group>;
+  getGroups(): Promise<Group[]>;
   getTemplate(groupId: string, type: TemplateType, templateVersion?: GitSha7): Promise<Template>;
   getTemplateRaw(groupId: string, type: TemplateType, templateVersion?: GitSha7): Promise<string>;
   getVariablesForPage(
@@ -54,6 +79,7 @@ export interface IGitRepo {
     templateGroupId: string,
     templateVersion: GitSha7,
   ): Promise<Record<string, unknown>>;
+  saveGroup(group: Group): Promise<void>;
   saveTemplate(
     template: Template,
     content: string,

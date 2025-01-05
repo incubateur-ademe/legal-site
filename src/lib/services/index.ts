@@ -1,3 +1,9 @@
+import { EspaceMembreService } from "./EspaceMembreService";
 import { MdxService } from "./MdxService";
 
-export const mdxService = new MdxService();
+const mdxService = new MdxService();
+const espaceMembreService = new EspaceMembreService();
+
+await Promise.all([mdxService.init(), espaceMembreService.init()]);
+
+export { espaceMembreService, mdxService };

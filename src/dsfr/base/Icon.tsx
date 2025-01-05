@@ -1,5 +1,6 @@
 import { type FrIconClassName } from "@codegouvfr/react-dsfr";
 import { cx, type CxArg } from "@codegouvfr/react-dsfr/tools/cx";
+import { type ReactNode } from "react";
 
 import { isBrowser } from "@/utils/browser";
 
@@ -29,7 +30,7 @@ export namespace IconProps {
      * @default left
      */
     iconPosition?: "left" | "right";
-    text: string;
+    text: ReactNode;
     textColor?: TextColorStyle;
     valign?: "bottom" | "top";
   }
