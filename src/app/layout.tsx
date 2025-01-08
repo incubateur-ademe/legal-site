@@ -1,4 +1,4 @@
-import "./global.css";
+import "./globals.scss";
 import "react-loading-skeleton/dist/skeleton.css";
 
 import { fr } from "@codegouvfr/react-dsfr";

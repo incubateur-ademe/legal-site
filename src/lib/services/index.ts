@@ -1,9 +1,19 @@
-import { EspaceMembreService } from "./EspaceMembreService";
+import { isBrowser } from "@/utils/browser";
+import { illogical } from "@/utils/error";
+
+import { getInstanceFn } from "./getInstance";
 import { MdxService } from "./MdxService";
+import { EspaceMembreService } from "./server/EspaceMembreService";
 
-const mdxService = new MdxService();
-const espaceMembreService = new EspaceMembreService();
+const isomorphicServices = {
+  mdx: MdxService,
+} as const;
+export const getService = getInstanceFn(isomorphicServices);
 
-await Promise.all([mdxService.init(), espaceMembreService.init()]);
-
-export { espaceMembreService, mdxService };
+export const getServerService = getInstanceFn(
+  {
+    ...isomorphicServices,
+    espaceMembre: EspaceMembreService,
+  } as const,
+  () => isBrowser && illogical("Should not be called on the client side"),
+);

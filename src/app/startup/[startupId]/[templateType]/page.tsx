@@ -1,4 +1,4 @@
-import { type TemplateTypeEnum } from "@/lib/repo/IGitRepo";
+import { type TemplateTypeEnum } from "@/lib/model/Template";
 
 const StartupLegalPage = async ({
   params,

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { type TemplateTypeEnum } from "@/lib/repo/IGitRepo";
+import { type TemplateTypeEnum } from "@/lib/model/Template";
 
 enum PageExtEnum {
   HTML = "html",

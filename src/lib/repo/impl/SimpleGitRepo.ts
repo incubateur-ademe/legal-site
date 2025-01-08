@@ -5,17 +5,12 @@ import path from "path";
 import { CheckRepoActions, type SimpleGit, simpleGit } from "simple-git";
 
 import { config } from "@/config";
+import { type Group } from "@/lib/model/Group";
+import { type GitSha7, type Template, type TemplateType, type TemplateVersions } from "@/lib/model/Template";
 import { illogical } from "@/utils/error";
 import { validateGroup, validateTemplateMeta } from "@/utils/templateMeta";
 
-import {
-  type GitSha7,
-  type Group,
-  type IGitRepo,
-  type Template,
-  type TemplateType,
-  type TemplateVersions,
-} from "../IGitRepo";
+import { type IGitRepo } from "../IGitRepo";
 
 // TODO: Add pool to avoid multiple concurrent git operations
 // like Map<repoPath, {git: SimpleGit, configDone: boolean}>
@@ -178,7 +173,8 @@ export class SimpleGitRepo implements IGitRepo {
   public async getTemplateRaw(groupId: string, type: TemplateType, templateVersion?: GitSha7): Promise<string> {
     await this.init();
     if (templateVersion) {
-      await this.git.checkout(templateVersion);
+      // TODO: handle errors / not found
+      const checkoutResult = await this.git.checkout(templateVersion);
     }
 
     return this.git.show([`HEAD:templates/${groupId}/${type}.md`]);
@@ -216,10 +212,13 @@ export class SimpleGitRepo implements IGitRepo {
     return commitResult.commit.substring(0, 7);
   }
 
-  public async getGroup(groupId: string) {
+  public async getGroup(groupId: string): Promise<Group | null> {
     await this.init();
 
     const groupPath = `${this.tmpdir}/templates/${groupId}/group.json`;
+    if (!fs.existsSync(groupPath)) {
+      return null;
+    }
     const content = await fsP.readFile(groupPath, { encoding: "utf-8" });
 
     const fileGroup = JSON.parse(content) as Partial<Group>;
@@ -238,7 +237,10 @@ export class SimpleGitRepo implements IGitRepo {
 
     const groupPath = `${this.tmpdir}/templates/${group.id}/group.json`;
     const commitMessage = `group(${group.id}): ${group.name} - Update`;
-    await fsP.writeFile(groupPath, JSON.stringify(validateGroup(group), null, 2));
+    const validated = { ...validateGroup(group) } as Partial<Group>;
+    delete validated.templates;
+    delete validated.id;
+    await fsP.writeFile(groupPath, JSON.stringify(validated, null, 2));
     const _commitResult = await this.git.add(groupPath).commit(commitMessage, groupPath);
 
     const _pushResult = await this.git.push(this.remote);

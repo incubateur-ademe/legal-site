@@ -1,4 +1,5 @@
-import { type Group, type TemplateMeta } from "../repo/IGitRepo";
+import { type Group } from "../model/Group";
+import { type TemplateMeta } from "../model/Template";
 
 export const validateTemplateMeta = (meta: Partial<TemplateMeta>): TemplateMeta => {
   const { author, lastEditor, description, variables } = meta;
@@ -24,6 +25,16 @@ export const validateGroup = (group: Partial<Group>): Group => {
     description: description || "",
     templates: templates || [],
     owners: owners || [],
-    membershipRules: membershipRules || [],
+    membershipRules: validateGroupRule(membershipRules || []),
   };
+};
+
+const validateGroupRule = (rules: Group["membershipRules"]): Group["membershipRules"] => {
+  return rules.map(rule => {
+    return {
+      rule: rule.rule || "",
+      ...(rule.ttlStart && { ttlStart: new Date(rule.ttlStart) }),
+      ...(rule.ttlEnd && { ttlEnd: new Date(rule.ttlEnd) }),
+    };
+  });
 };

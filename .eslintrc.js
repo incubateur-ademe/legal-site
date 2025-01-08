@@ -22,6 +22,7 @@ const nextFiles = [
   "apple-icon",
   "sitemap",
   "robots",
+  "global-error",
 ].join("|");
 
 // TODO: switch to flat config

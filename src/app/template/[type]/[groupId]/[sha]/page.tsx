@@ -10,10 +10,10 @@ import { ClientOnly } from "@/components/utils/ClientOnly";
 import { Container, Grid, GridCol } from "@/dsfr";
 import { RecapCard } from "@/dsfr/base/RecapCard";
 import { Heading } from "@/dsfr/base/Typography";
+import { type GitSha7, type TemplateType, TemplateTypeName } from "@/lib/model/Template";
 import { auth } from "@/lib/next-auth/auth";
 import { gitRepo } from "@/lib/repo";
-import { type GitSha7, type TemplateType, TemplateTypeName } from "@/lib/repo/IGitRepo";
-import { mdxService } from "@/lib/services";
+import { getService } from "@/lib/services";
 import { GetTemplateWithDisplayableContent } from "@/useCases/GetTemplateWithDisplayableContent";
 import { toFrenchDateHour } from "@/utils/data";
 
@@ -30,6 +30,7 @@ interface Props {
 const TemplateView = async ({ params }: Props) => {
   const session = await auth();
   const { groupId, sha, type } = await params;
+  const mdxService = await getService("mdx");
 
   const useCase = new GetTemplateWithDisplayableContent(mdxService, gitRepo);
 

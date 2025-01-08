@@ -1,4 +1,5 @@
-import { type IGitRepo, type Template } from "@/lib/repo/IGitRepo";
+import { type Template } from "@/lib/model/Template";
+import { type IGitRepo } from "@/lib/repo/IGitRepo";
 
 import { type UseCase } from "./types";
 

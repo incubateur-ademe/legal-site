@@ -10,7 +10,7 @@ import { useIsDark } from "@codegouvfr/react-dsfr/useIsDark";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Editor } from "@monaco-editor/react";
 import { redirect } from "next/navigation";
-import { Fragment, type ReactElement, useEffect, useState } from "react";
+import { Fragment, type ReactElement, use, useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -18,8 +18,8 @@ import { ClientAnimate } from "@/components/utils/ClientAnimate";
 import { Container, Grid, GridCol } from "@/dsfr";
 import { RecapCard } from "@/dsfr/base/RecapCard";
 import { CUSTOM_LANGUAGE_ID, getCustomThemeID, preloadMonacoReact } from "@/lib/client/monaco";
-import { type Template } from "@/lib/repo/IGitRepo";
-import { mdxService } from "@/lib/services";
+import { type Template } from "@/lib/model/Template";
+import { getService } from "@/lib/services";
 import { type SimpleObject } from "@/utils/types";
 
 import { saveTemplate } from "../actions";
@@ -66,12 +66,14 @@ interface MdxEditorProps {
   raw: string;
   template: Template;
 }
-
+const mdx = getService("mdx");
 export const MdxEditor = ({ raw, template }: MdxEditorProps) => {
   const { isDark } = useIsDark();
   const [mdxSource, setMdxSource] = useState<string>(raw);
   const [content, setContent] = useState<ReactElement | null>(null);
   const [saveError, setSaveError] = useState<string | null>(null);
+
+  const mdxService = use(mdx);
 
   const {
     register,
