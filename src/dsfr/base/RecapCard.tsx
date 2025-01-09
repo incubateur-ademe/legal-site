@@ -25,7 +25,7 @@ export namespace RecapCardProps {
   }
 
   export interface WithEditLink {
-    editLink?: string;
+    editLink?: boolean | string;
     sideButtonProps?: never;
   }
 

@@ -21,11 +21,18 @@ export const Navigation = () => {
           isActive: !segment,
         },
         {
-          text: "Template",
+          text: "Groupes",
+          linkProps: {
+            href: "/group",
+          },
+          isActive: segment === "group",
+        },
+        {
+          text: "Templates",
           linkProps: {
             href: "/template",
           },
-          isActive: segment === "templates",
+          isActive: segment === "template",
         },
         // ...(status === "authenticated"
         //   ? ((): MainNavigationProps.Item[] => {

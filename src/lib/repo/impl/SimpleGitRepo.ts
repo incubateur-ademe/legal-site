@@ -5,10 +5,12 @@ import path from "path";
 import { CheckRepoActions, type SimpleGit, simpleGit } from "simple-git";
 
 import { config } from "@/config";
+import { type Group } from "@/lib/model/Group";
+import { type GitSha7, type Template, type TemplateType, type TemplateVersions } from "@/lib/model/Template";
 import { illogical } from "@/utils/error";
-import { validateTemplateMeta } from "@/utils/templateMeta";
+import { validateGroup, validateTemplateMeta } from "@/utils/templateMeta";
 
-import { type GitSha7, type IGitRepo, type Template, type TemplateType, type TemplateVersions } from "../IGitRepo";
+import { type IGitRepo } from "../IGitRepo";
 
 // TODO: Add pool to avoid multiple concurrent git operations
 // like Map<repoPath, {git: SimpleGit, configDone: boolean}>
@@ -101,7 +103,7 @@ export class SimpleGitRepo implements IGitRepo {
     }
   }
 
-  public async getAllTemplates(): Promise<Template[]> {
+  public async getAllTemplates(groupId?: string): Promise<Template[]> {
     await this.init();
 
     const templateBasePath = `${this.tmpdir}/templates/`;
@@ -111,16 +113,31 @@ export class SimpleGitRepo implements IGitRepo {
       encoding: "utf-8",
     });
 
-    const templates: Template[] = files
+    const templates = files
       .filter(f => f.isFile())
       .map(f => {
-        const [groupId] = f.parentPath.split("/").reverse();
+        const [currentGroupId] = f.parentPath.split("/").reverse();
+        if (groupId && currentGroupId !== groupId) {
+          return null;
+        }
+        if (f.name === "group.json") {
+          return null;
+        }
         const [type] = f.name.split(".") as [TemplateType, string];
-        const filePath = path.resolve(templateBasePath, groupId, f.name);
+        const filePath = path.resolve(templateBasePath, currentGroupId, f.name);
         const content = fs.readFileSync(filePath, { encoding: "utf-8" });
         const { data } = matter(content);
-        return { groupId, type, path: filePath, ...validateTemplateMeta(data), githubUrl: "", sha: "", versions: [] };
-      });
+        return {
+          groupId: currentGroupId,
+          type,
+          path: filePath,
+          ...validateTemplateMeta(data),
+          githubUrl: "",
+          sha: "",
+          versions: [],
+        };
+      })
+      .filter(Boolean) as Template[];
 
     for (const template of templates) {
       const [sha, versions] = await this.getShaAndHVersionForTemplate(template);
@@ -156,7 +173,8 @@ export class SimpleGitRepo implements IGitRepo {
   public async getTemplateRaw(groupId: string, type: TemplateType, templateVersion?: GitSha7): Promise<string> {
     await this.init();
     if (templateVersion) {
-      await this.git.checkout(templateVersion);
+      // TODO: handle errors / not found
+      const checkoutResult = await this.git.checkout(templateVersion);
     }
 
     return this.git.show([`HEAD:templates/${groupId}/${type}.md`]);
@@ -192,5 +210,71 @@ export class SimpleGitRepo implements IGitRepo {
     // TODO: handle push errors
 
     return commitResult.commit.substring(0, 7);
+  }
+
+  public async getGroup(groupId: string): Promise<Group | null> {
+    await this.init();
+
+    const groupPath = `${this.tmpdir}/templates/${groupId}/group.json`;
+    if (!fs.existsSync(groupPath)) {
+      return null;
+    }
+    const content = await fsP.readFile(groupPath, { encoding: "utf-8" });
+
+    const fileGroup = JSON.parse(content) as Partial<Group>;
+
+    const templates = await this.getAllTemplates(groupId);
+
+    return validateGroup({
+      id: groupId,
+      templates,
+      ...fileGroup,
+    });
+  }
+
+  public async saveGroup(group: Group): Promise<void> {
+    await this.init();
+
+    const groupPath = `${this.tmpdir}/templates/${group.id}/group.json`;
+    // if file does not exist, create it
+    const exists = fs.existsSync(groupPath);
+    if (!exists) {
+      await fsP.mkdir(path.dirname(groupPath), { recursive: true });
+    }
+    const commitMessage = `group(${group.id}): ${group.name} - ${exists ? "Update" : "Create"}`;
+    const validated = { ...validateGroup(group) } as Partial<Group>;
+    delete validated.templates;
+    delete validated.id;
+    await fsP.writeFile(groupPath, JSON.stringify(validated, null, 2));
+    const _commitResult = await this.git.add(groupPath).commit(commitMessage, groupPath);
+
+    const _pushResult = await this.git.push(this.remote);
+  }
+
+  public async getGroups(): Promise<Group[]> {
+    await this.init();
+
+    const groupBasePath = `${this.tmpdir}/templates/`;
+    const files = await fsP.readdir(groupBasePath, {
+      recursive: true,
+      withFileTypes: true,
+      encoding: "utf-8",
+    });
+
+    const groups: Group[] = files
+      .filter(f => f.isFile() && f.name === "group.json")
+      .map(f => {
+        const [groupId] = f.parentPath.split("/").reverse();
+        const filePath = path.resolve(groupBasePath, groupId, f.name);
+        const content = fs.readFileSync(filePath, { encoding: "utf-8" });
+        return { ...validateGroup(JSON.parse(content) as Group), id: groupId };
+      });
+
+    for (const group of groups) {
+      const templates = await this.getAllTemplates();
+      group.templates = templates.filter(t => t.groupId === group.id);
+    }
+
+    return groups;
   }
 }

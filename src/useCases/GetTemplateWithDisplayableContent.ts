@@ -1,6 +1,7 @@
 import { type ReactElement } from "react";
 
-import { type GitSha7, type IGitRepo, type Template, type TemplateType } from "@/lib/repo/IGitRepo";
+import { type GitSha7, type Template, type TemplateType } from "@/lib/model/Template";
+import { type IGitRepo } from "@/lib/repo/IGitRepo";
 import { type MdxService } from "@/lib/services/MdxService";
 
 import { AbstractCachedUseCase } from "./AbstractCacheUseCase";

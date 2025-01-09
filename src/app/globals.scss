@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+.field-sizing-content {
+    field-sizing: content;
+}
+
+.field-sizing-fixed {
+    field-sizing: fixed;
+}
+
 /* background */
 
 /* -- custom */
@@ -61,7 +69,9 @@ svg.dsfr-svg-active:active {
 }
 
 @keyframes shimmer {
-    10%, 100% {
+
+    10%,
+    100% {
         mask-position: left
     }
 }

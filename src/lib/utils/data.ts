@@ -4,3 +4,9 @@ export function toFrenchDateHour(date: Date): string {
     timeStyle: "short",
   }).format(date);
 }
+
+export function toFrenchDate(date: Date, full?: boolean): string {
+  return new Intl.DateTimeFormat("fr-FR", {
+    dateStyle: full ? "full" : "short",
+  }).format(date);
+}

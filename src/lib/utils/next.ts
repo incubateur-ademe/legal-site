@@ -5,19 +5,23 @@ import { type z } from "zod";
 
 import { type ClearObject, type EmptyObject, type Nothing } from "./types";
 
-type PropValueAsString<T, TPropName extends string> = [T] extends [infer R extends string]
+type PropValueAsString<T, TPropName extends string, WithPartial extends boolean = true> = [T] extends [
+  infer R extends string,
+]
   ? "" extends R
     ? EmptyObject
     : {
-        [P in TPropName]: Promise<Partial<Record<R, string[] | string>>>;
+        [P in TPropName]: Promise<
+          WithPartial extends true ? Partial<Record<R, string[] | string>> : Record<R, string[] | string>
+        >;
       }
   : never;
 
-type PropValueAsObject<T, TPropName extends string> = T extends z.ZodType
+type PropValueAsObject<T, TPropName extends string, WithPartial extends boolean = true> = T extends z.ZodType
   ? never
   : T extends object
     ? {
-        [P in TPropName]: Promise<Partial<T>>;
+        [P in TPropName]: Promise<WithPartial extends true ? Partial<T> : T>;
       }
     : never;
 
@@ -33,11 +37,15 @@ export type NextServerPageProps<
   Params extends z.ZodType | object | string = string,
   SearchParams extends z.ZodType | object | string = never,
 > = (
-  | PropValueAsObject<SearchParams, "searchParams">
-  | PropValueAsString<SearchParams, "searchParams">
-  | PropValueAsZod<SearchParams, "searchParams">
+  | PropValueAsObject<Params, "params", false>
+  | PropValueAsString<Params, "params", false>
+  | PropValueAsZod<Params, "params">
 ) &
-  (PropValueAsObject<Params, "params"> | PropValueAsString<Params, "params"> | PropValueAsZod<Params, "params">);
+  (
+    | PropValueAsObject<SearchParams, "searchParams">
+    | PropValueAsString<SearchParams, "searchParams">
+    | PropValueAsZod<SearchParams, "searchParams">
+  );
 
 interface ValidationOptionsWithNotFound {
   notFound: true;
@@ -116,3 +124,30 @@ export type ServerActionResponse<TData = void, TError = string> =
   | ((TData extends Nothing ? EmptyObject : { data: TData }) & {
       ok: true;
     });
+
+const REDIRECT_ERROR_CODE = "NEXT_REDIRECT";
+export interface NextError extends Error {
+  digest?: string;
+}
+enum RedirectStatusCode {
+  SeeOther = 303,
+  TemporaryRedirect = 307,
+  PermanentRedirect = 308,
+}
+export function isRedirectError(error: NextError): boolean {
+  if (typeof error !== "object" || error === null || !("digest" in error) || typeof error.digest !== "string") {
+    return false;
+  }
+  const digest = error.digest.split(";");
+  const [errorCode, type] = digest;
+  const destination = digest.slice(2, -2).join(";");
+  const status = digest.at(-2);
+  const statusCode = Number(status);
+  return (
+    errorCode === REDIRECT_ERROR_CODE &&
+    (type === "replace" || type === "push") &&
+    typeof destination === "string" &&
+    !isNaN(statusCode) &&
+    statusCode in RedirectStatusCode
+  );
+}

@@ -32,6 +32,7 @@
 
 ## Navigation
 |- Accueil
+|- Groupes
 |- Templates
 |- Liste Startups (avec leurs pages)
 
@@ -59,10 +60,7 @@
 **Lecture seule**  `/template/mentions-legales/[groupId]/[id]`
 - [ ] Bouton pour éditer
 - [ ] Bouton pour créer une page à partir de ce template (`/template/mentions-legales/[groupId]/[id]/generate`)
-- [ ] Bouton pour voir les versions
-**Versions** `/template/mentions-legales/[groupId]/[id]/versions`
 - [ ] Liste des versions
-- [ ] Sélectionner deux versions pour comparer
 **Edition** `/template/mentions-legales/[groupId]/[id]/edit`
 - [ ] Bouton pour sauvegarder
 - [ ] Bouton pour annuler

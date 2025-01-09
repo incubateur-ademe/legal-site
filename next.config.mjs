@@ -88,7 +88,6 @@ const config = {
     return config;
   },
   experimental: {
-    typedRoutes: true,
     serverMinification: true,
     authInterrupts: true,
   },
