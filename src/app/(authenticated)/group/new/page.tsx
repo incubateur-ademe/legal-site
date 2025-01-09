@@ -1,8 +1,13 @@
+import { Container } from "@/dsfr";
+
+import { GroupForm } from "../Form";
+
 const NewGroupPage = () => {
   return (
-    <div>
-      <h1>New Group</h1>
-    </div>
+    <Container my="4w">
+      <h1>Créer un nouveau groupe</h1>
+      <GroupForm />
+    </Container>
   );
 };
 

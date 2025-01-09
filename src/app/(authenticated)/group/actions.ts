@@ -6,15 +6,24 @@ import { SaveGroup } from "@/useCases/SaveGroup";
 import { assertServerSession } from "@/utils/auth";
 import { type ServerActionResponse } from "@/utils/next";
 
-export async function saveGroup(group: Group): Promise<ServerActionResponse<void>> {
-  await assertServerSession({
-    groupOwner: group,
-  });
+export async function saveGroup(group: Group, newGroup = false): Promise<ServerActionResponse<void>> {
+  await assertServerSession(
+    newGroup
+      ? {
+          message: "Vous n'avez pas le droit de créer un groupe",
+        }
+      : {
+          groupOwner: {
+            check: group,
+            message: "Vous n'avez pas le droit de modifier ce groupe",
+          },
+        },
+  );
 
   const useCase = new SaveGroup(gitRepo);
 
   try {
-    await useCase.execute({ group });
+    await useCase.execute({ group, newGroup });
     return {
       ok: true,
     };

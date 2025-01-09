@@ -1,5 +1,6 @@
 "use client";
 
+import { fr } from "@codegouvfr/react-dsfr";
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import Input from "@codegouvfr/react-dsfr/Input";
@@ -10,6 +11,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { ClientAnimate } from "@/components/utils/ClientAnimate";
+import { ClientOnly } from "@/components/utils/ClientOnly";
 import { Grid, GridCol } from "@/dsfr";
 import { type Group, GroupRule } from "@/lib/model/Group";
 
@@ -31,6 +33,7 @@ export const GroupForm = ({ editGroup }: { editGroup?: Group }) => {
   const router = useRouter();
   const [step, setStep] = useState<keyof typeof RECAP_TITLES>("start");
   const [saveError, setSaveError] = useState<string | null>(null);
+
   const methods = useForm<FormType>({
     mode: "onChange",
     resolver: zodResolver(formSchema),
@@ -48,14 +51,17 @@ export const GroupForm = ({ editGroup }: { editGroup?: Group }) => {
   const { isValid, isDirty, errors } = formState;
 
   async function onSubmit(data: FormType) {
-    const response = await saveGroup({
-      id: data.id,
-      name: data.name,
-      description: data.description,
-      owners: data.owners.map(owner => owner.rule),
-      membershipRules: data.membershipRules,
-      templates: [],
-    });
+    const response = await saveGroup(
+      {
+        id: data.id,
+        name: data.name,
+        description: data.description,
+        owners: data.owners.map(owner => owner.rule),
+        membershipRules: data.membershipRules,
+        templates: [],
+      },
+      !editGroup,
+    );
 
     if (response.ok) {
       return router.push("/group");
@@ -64,11 +70,7 @@ export const GroupForm = ({ editGroup }: { editGroup?: Group }) => {
   }
 
   return (
-    <>
-      <ClientAnimate>
-        {saveError && <Alert title="Erreur lors de la sauvegarde" description={saveError} severity="error" closable />}
-      </ClientAnimate>
-
+    <ClientOnly>
       <FormProvider {...methods}>
         {/* <ReactHookFormDebug formState={formState} /> */}
         <Grid haveGutters>
@@ -80,12 +82,12 @@ export const GroupForm = ({ editGroup }: { editGroup?: Group }) => {
                 <RecapInfoHover step={"id"} setStep={setStep}>
                   <Input
                     label={RECAP_TITLES["id"]}
-                    {...register("id")}
                     state={errors.id && "error"}
                     stateRelatedMessage={errors.id?.message}
                     classes={{
                       nativeInputOrTextArea: "field-sizing-content !w-auto !min-w-64",
                     }}
+                    nativeInputProps={{ ...register("id") }}
                   />
                 </RecapInfoHover>
               )}
@@ -119,6 +121,17 @@ export const GroupForm = ({ editGroup }: { editGroup?: Group }) => {
                   withTtl
                 />
               </RecapInfoHover>
+              <ClientAnimate>
+                {saveError && (
+                  <Alert
+                    className={fr.cx("fr-mb-4w")}
+                    title="Erreur lors de la sauvegarde"
+                    description={saveError}
+                    severity="error"
+                    closable
+                  />
+                )}
+              </ClientAnimate>
               <ButtonsGroup
                 buttonsEquisized
                 inlineLayoutWhen="sm and up"
@@ -148,6 +161,6 @@ export const GroupForm = ({ editGroup }: { editGroup?: Group }) => {
           </GridCol>
         </Grid>
       </FormProvider>
-    </>
+    </ClientOnly>
   );
 };

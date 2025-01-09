@@ -57,8 +57,6 @@ const groupRuleExplainer: Record<GroupRuleType, (name: string) => string> = {
 };
 
 const groupRuleTtlExplainer = (ttlStart?: Date | null, ttlEnd?: Date | null): string => {
-  console.log("ttlStart", ttlStart);
-  console.log("ttlEnd", ttlEnd);
   if (ttlStart && ttlEnd) {
     return ` (entre le ${toFrenchDate(ttlStart, true)} et le ${toFrenchDate(ttlEnd, true)})`;
   }

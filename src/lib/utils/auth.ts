@@ -37,10 +37,11 @@ export const assertServerSession = async ({
   const shouldCheckStaff = typeof admin === "boolean" ? admin : admin?.check;
   const shouldCheckGroupOwner = groupOwner && "check" in groupOwner ? groupOwner?.check : groupOwner;
   const shouldCheckGroupMember = groupMember && "check" in groupMember ? groupMember?.check : groupMember;
-  const { isMember, isOwner } = await espaceMembreService.getMemberMembership(
-    session.user.username,
-    groupOwner as Group,
-  );
+
+  const { isMember, isOwner } =
+    shouldCheckGroupOwner || shouldCheckGroupMember
+      ? await espaceMembreService.getMemberMembership(session.user.username, groupOwner as Group)
+      : { isMember: false, isOwner: false };
 
   if (shouldCheckGroupOwner && shouldCheckStaff) {
     if (!(isOwner || session.user.isAdmin)) {

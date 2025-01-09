@@ -4,7 +4,7 @@ import { Container } from "@/dsfr";
 import { gitRepo } from "@/lib/repo";
 import { type NextServerPageProps } from "@/utils/next";
 
-import { GroupForm } from "./Form";
+import { GroupForm } from "../../Form";
 
 interface Params {
   groupId: string;

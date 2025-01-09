@@ -25,7 +25,6 @@ const TemplateEdit = withValidation(
   const mdxService = await getService("mdx");
   const useCase = new GetTemplateWithRawContent(mdxService, gitRepo);
   const { raw, template } = await useCase.execute({ groupId, templateId: sha, type });
-  console.log("Jusque là tout va bien", mdxService);
 
   return (
     <Container className="min-h-64 max-h-full" ptmd="14v" mbmd="14v" size="md" fluid mx="3w">
