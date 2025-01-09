@@ -236,7 +236,12 @@ export class SimpleGitRepo implements IGitRepo {
     await this.init();
 
     const groupPath = `${this.tmpdir}/templates/${group.id}/group.json`;
-    const commitMessage = `group(${group.id}): ${group.name} - Update`;
+    // if file does not exist, create it
+    const exists = fs.existsSync(groupPath);
+    if (!exists) {
+      await fsP.mkdir(path.dirname(groupPath), { recursive: true });
+    }
+    const commitMessage = `group(${group.id}): ${group.name} - ${exists ? "Update" : "Create"}`;
     const validated = { ...validateGroup(group) } as Partial<Group>;
     delete validated.templates;
     delete validated.id;
