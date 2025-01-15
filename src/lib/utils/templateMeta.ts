@@ -1,5 +1,6 @@
 import { type Group } from "../model/Group";
 import { type TemplateMeta } from "../model/Template";
+import { type Variable } from "../model/Variable";
 
 export const validateTemplateMeta = (meta: Partial<TemplateMeta>): TemplateMeta => {
   const { author, lastEditor, description, variables } = meta;
@@ -37,4 +38,20 @@ const validateGroupRule = (rules: Group["membershipRules"]): Group["membershipRu
       ...(rule.ttlEnd && { ttlEnd: new Date(rule.ttlEnd) }),
     };
   });
+};
+
+export const validateVariable = (variable: Partial<Variable>): Variable => {
+  const { author, lastEditor, description, variables, sha, group, gitProviderUrl, path, url } = variable;
+
+  return {
+    author: author || "",
+    lastEditor: lastEditor || "",
+    description: description || "",
+    variables: variables || {},
+    sha: sha || "",
+    group: group || "",
+    gitProviderUrl: gitProviderUrl || "",
+    path: path || "",
+    url: url || "",
+  };
 };

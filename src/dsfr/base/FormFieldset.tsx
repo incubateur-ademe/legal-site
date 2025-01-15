@@ -6,28 +6,22 @@ import { type PropsWithoutChildren } from "@/utils/types";
 
 import { Box } from "./Box";
 
-export type FormFieldsetProps = JSX.IntrinsicElements["fieldset"] & {
+export type FormFieldsetProps = {
   elements: ReactNode[];
   error?: ReactNode;
   hint?: ReactNode;
   legend: ReactNode;
+  nativeFieldsetProps?: PropsWithoutChildren<JSX.IntrinsicElements["fieldset"]>;
   valid?: ReactNode;
 };
-export const FormFieldset = ({
-  hint,
-  legend,
-  elements,
-  error,
-  valid,
-  ...rest
-}: PropsWithoutChildren<FormFieldsetProps>) => {
+export const FormFieldset = ({ hint, legend, elements, error, valid, nativeFieldsetProps }: FormFieldsetProps) => {
   const id = useId();
   const hasAssert = !!error || !!valid;
   const assertMessageId = `fr-fieldset-${id}-${error ? "error" : "valid"}`;
 
   return (
     <fieldset
-      {...rest}
+      {...nativeFieldsetProps}
       role="group"
       className={fr.cx("fr-fieldset", !!error && "fr-fieldset--error", !!valid && "fr-fieldset--valid")}
       aria-labelledby={cx(`fr-fieldset-${id}-legend`, hasAssert && assertMessageId)}

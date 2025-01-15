@@ -2,10 +2,7 @@ import "./globals.scss";
 import "react-loading-skeleton/dist/skeleton.css";
 
 import { fr } from "@codegouvfr/react-dsfr";
-import { Badge } from "@codegouvfr/react-dsfr/Badge";
-import { headerFooterDisplayItem } from "@codegouvfr/react-dsfr/Display";
-import { Footer } from "@codegouvfr/react-dsfr/Footer";
-import { Header, type HeaderProps } from "@codegouvfr/react-dsfr/Header";
+import { type HeaderProps } from "@codegouvfr/react-dsfr/Header";
 import { DsfrHead } from "@codegouvfr/react-dsfr/next-appdir/DsfrHead";
 import { DsfrProvider } from "@codegouvfr/react-dsfr/next-appdir/DsfrProvider";
 import { getHtmlAttributes } from "@codegouvfr/react-dsfr/next-appdir/getHtmlAttributes";
@@ -14,18 +11,20 @@ import { cx } from "@codegouvfr/react-dsfr/tools/cx";
 import { type Metadata } from "next";
 import Link from "next/link";
 import { SessionProvider } from "next-auth/react";
-import { type PropsWithChildren } from "react";
+import { type PropsWithChildren, type ReactNode } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 
-import { Brand } from "@/components/Brand";
 import { ClientAnimate } from "@/components/utils/ClientAnimate";
+import { ClientOnly } from "@/components/utils/ClientOnly";
 import { config } from "@/config";
 
-import { FooterPersonalDataPolicyItem } from "../consentManagement";
 import { defaultColorScheme } from "../defaultColorScheme";
 import { StartDsfr } from "../StartDsfr";
-import { LoginLogoutHeaderItem, UserHeaderItem } from "./AuthHeaderItems";
-import { Navigation } from "./Navigation";
+import { AuthFooter } from "./@default/AuthFooter";
+import { AuthHeader } from "./@default/AuthHeader";
+import { PublicFooter } from "./@public/PublicFooter";
+import { PublicHeader } from "./@public/PublicHeader";
+import { PublicSlotFilter } from "./PublicSlotFilter";
 import styles from "./root.module.scss";
 import { sharedMetadata } from "./shared-metadata";
 import { SystemMessageDisplay } from "./SystemMessageDisplay";
@@ -57,7 +56,12 @@ export const metadata: Metadata = {
 
 const lang = "fr";
 
-const RootLayout = ({ children }: PropsWithChildren) => {
+interface RootLayoutSlots {
+  default: ReactNode;
+  public: ReactNode;
+}
+
+const RootLayout = ({ children, default: defaultSlot, public: publicSlot }: PropsWithChildren<RootLayoutSlots>) => {
   return (
     <html lang={lang} {...getHtmlAttributes({ defaultColorScheme, lang })} className={cx(styles.app)}>
       <head>
@@ -73,8 +77,6 @@ const RootLayout = ({ children }: PropsWithChildren) => {
             "Marianne-Medium_Italic",
             "Marianne-Bold",
             "Marianne-Bold_Italic",
-            //"Spectral-Regular",
-            //"Spectral-ExtraBold"
           ]}
           doDisableFavicon
         />
@@ -101,83 +103,25 @@ const RootLayout = ({ children }: PropsWithChildren) => {
                   },
                 ]}
               />
-              <div className={styles.app} vaul-drawer-wrapper="true">
-                <Header
-                  navigation={config.maintenance ? null : <Navigation />}
-                  brandTop={<Brand />}
-                  homeLinkProps={{
-                    href: "/",
-                    title: `Accueil - ${config.name}`,
-                  }}
-                  serviceTitle={
-                    <>
-                      {config.name}
-                      &nbsp;
-                      <Badge as="span" noIcon severity="success">
-                        Beta
-                      </Badge>
-                      {config.maintenance && (
-                        <Badge as="span" noIcon severity="warning">
-                          Maintenance
-                        </Badge>
-                      )}
-                    </>
-                  }
-                  serviceTagline={config.tagline}
-                  operatorLogo={operatorLogo}
-                  classes={{
-                    operator: "shimmer",
-                  }}
-                  quickAccessItems={
-                    config.maintenance
-                      ? []
-                      : [<UserHeaderItem key="hqai-user" />, <LoginLogoutHeaderItem key="hqai-loginlogout" />].filter(
-                          Boolean,
-                        )
-                  }
+              <div className={styles.app}>
+                <PublicSlotFilter
+                  defaultChildren={<AuthHeader operatorLogo={operatorLogo} />}
+                  publicChildren={<PublicHeader operatorLogo={operatorLogo} />}
                 />
                 <ClientAnimate as="main" id={contentId} className={styles.content}>
                   {config.env === "prod" ? (
                     <SystemMessageDisplay code="construction" noRedirect />
                   ) : config.maintenance ? (
                     <SystemMessageDisplay code="maintenance" noRedirect />
+                  ) : defaultSlot || publicSlot ? (
+                    <PublicSlotFilter defaultChildren={defaultSlot} publicChildren={publicSlot} />
                   ) : (
-                    children
+                    <ClientOnly>{children}</ClientOnly>
                   )}
                 </ClientAnimate>
-                <Footer
-                  id={footerId}
-                  accessibility="non compliant"
-                  accessibilityLinkProps={{ href: "/accessibilite" }}
-                  contentDescription={`${config.name} est un service développé par l'accélérateur de la transition écologique de l'ADEME.`}
-                  operatorLogo={operatorLogo}
-                  bottomItems={[
-                    {
-                      text: "CGU",
-                      linkProps: { href: "/cgu" },
-                    },
-                    <FooterPersonalDataPolicyItem key="FooterPersonalDataPolicyItem" />,
-                    {
-                      ...headerFooterDisplayItem,
-                      iconId: "fr-icon-theme-fill",
-                    },
-                    // <FooterConsentManagementItem key="FooterConsentManagementItem" />,
-                    {
-                      text: `Version ${config.appVersion}.${config.appVersionCommit.slice(0, 7)}`,
-                      linkProps: {
-                        href: `${config.repositoryUrl}/commit/${config.appVersionCommit}` as never,
-                      },
-                    },
-                  ]}
-                  termsLinkProps={{ href: "/mentions-legales" }}
-                  license={
-                    <>
-                      Sauf mention contraire, tous les contenus de ce site sont sous{" "}
-                      <a href={`${config.repositoryUrl}/main/LICENSE`} target="_blank" rel="noreferrer">
-                        licence Apache 2.0
-                      </a>
-                    </>
-                  }
+                <PublicSlotFilter
+                  defaultChildren={<AuthFooter id={footerId} operatorLogo={operatorLogo} />}
+                  publicChildren={<PublicFooter id={footerId} operatorLogo={operatorLogo} />}
                 />
               </div>
             </SkeletonTheme>

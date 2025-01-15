@@ -1,4 +1,9 @@
-import { EspaceMembreClient, type Member } from "@incubateur-ademe/next-auth-espace-membre-provider/EspaceMembreClient";
+import {
+  EspaceMembreClient,
+  type IncubatorWithMembers,
+  type IncubatorWithStartups,
+  type Member,
+} from "@incubateur-ademe/next-auth-espace-membre-provider/EspaceMembreClient";
 
 import { config } from "@/config";
 import { getGroupMembership, type Group, type GroupMembership } from "@/lib/model/Group";
@@ -33,5 +38,25 @@ export class EspaceMembreService implements Service {
         : memberOrUsername;
 
     return getGroupMembership(member, group);
+  }
+
+  public async getIncubatorsWithMembers(): Promise<IncubatorWithMembers[]> {
+    return this.client.incubator.getAll({
+      withMembers: true,
+    });
+  }
+
+  public async getIncubatorsWithStartups(): Promise<IncubatorWithStartups[]> {
+    return this.client.incubator.getAll(
+      {
+        withStartups: true,
+      },
+      {
+        cache: "no-store",
+        next: {
+          revalidate: 0,
+        },
+      },
+    );
   }
 }

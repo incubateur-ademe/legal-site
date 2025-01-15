@@ -38,7 +38,7 @@ export class GetTemplateWithDisplayableContent extends AbstractCachedUseCase<
   }: GetTemplateWithDisplayableContentIntput): Promise<GetTemplateWithDisplayableContentOutput> {
     const template = await this.gitRepo.getTemplate(groupId, type, templateId);
     const fullRaw = await this.gitRepo.getTemplateRaw(groupId, type, templateId);
-    const content = await this.mdxService.renderRawAsDisplayableComponent(fullRaw);
+    const content = await this.mdxService.renderRawAsComponentWithFakeVariables(fullRaw);
     const raw = this.mdxService.removeMetadataFromRaw(fullRaw);
 
     return {
