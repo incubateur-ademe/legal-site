@@ -18,6 +18,13 @@ export const TemplateTypeName = {
   [TemplateTypeEnum.PolitiqueDeCookies]: "Cookies",
 } as const;
 
+export const TemplateTypeShortName = {
+  [TemplateTypeEnum.CGU]: "CGU",
+  [TemplateTypeEnum.MentionsLegales]: "ML",
+  [TemplateTypeEnum.PolitiqueDeConfidentialite]: "PC",
+  [TemplateTypeEnum.PolitiqueDeCookies]: "Cookies",
+} as const;
+
 export const TemplateType = z.nativeEnum(TemplateTypeEnum);
 export type TemplateType = z.infer<typeof TemplateType>;
 
@@ -38,7 +45,7 @@ export const Template = TemplateMeta.extend({
   groupId: z.string(),
   versions: TemplateVersions,
   path: z.string(),
-  githubUrl: z.string().url(),
+  gitProviderUrl: z.string().url(),
 });
 
 export type TemplateVersions = z.infer<typeof TemplateVersions>;

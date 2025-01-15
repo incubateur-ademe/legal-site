@@ -21,13 +21,13 @@ const redis = createStorage({
 
 declare module "next-auth" {
   interface Session {
-    user: AdapterUser & { isAdmin?: boolean };
+    user: AdapterUser & { isAdmin?: boolean; uuid: string };
   }
 }
 
 declare module "@auth/core/jwt" {
   interface JWT {
-    user: AdapterUser & { isAdmin?: boolean };
+    user: AdapterUser & { isAdmin?: boolean; uuid: string };
   }
 }
 
@@ -94,6 +94,7 @@ export const {
             username: espaceMembreMember.username,
             image: espaceMembreMember.avatar,
             isAdmin: config.api.templates.admins.includes(espaceMembreMember.username),
+            uuid: espaceMembreMember.uuid,
           },
         };
       }

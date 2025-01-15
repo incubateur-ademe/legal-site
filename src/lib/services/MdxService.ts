@@ -3,6 +3,7 @@ import Mustache from "mustache";
 import { compileMDX } from "next-mdx-remote/rsc";
 import { cache, type ReactElement } from "react";
 
+import { notImplemented } from "@/utils/error";
 import { validateTemplateMeta } from "@/utils/templateMeta";
 import { type SimpleObject } from "@/utils/types";
 
@@ -27,7 +28,7 @@ export class MdxService implements Service {
     return content;
   }
 
-  public async renderRawAsDisplayableComponent(
+  public async renderRawAsComponentWithFakeVariables(
     rawContent: string,
     variables?: SimpleObject<string>,
   ): Promise<ReactElement> {
@@ -49,5 +50,32 @@ export class MdxService implements Service {
 
   public addMetadataToRaw(rawContent: string, metadata: Record<string, unknown>): string {
     return matterStringify(rawContent, metadata);
+  }
+
+  public renderAsMarkdown(rawContent: string, data?: Record<string, unknown>): string {
+    return cachedMustache(this.removeMetadataFromRaw(rawContent), data);
+  }
+
+  public renderAsPlainText(rawContent: string, data?: Record<string, unknown>): string {
+    return this.renderAsMarkdown(rawContent, data)
+      .replace(/(\*\*|__)(.*?)\1/g, "$2") // Gras
+      .replace(/(\*|_)(.*?)\1/g, "$2") // Italique
+      .replace(/`([^`]*)`/g, "$1") // Inline code
+      .replace(/~~(.*?)~~/g, "$1") // Barré
+      .replace(/#+\s?(.*)/g, "$1\n") // Titres
+      .replace(/\[(.*?)\]\(.*?\)/g, "$1") // Liens
+      .replace(/!\[(.*?)\]\(.*?\)/g, "$1") // Images
+      .replace(/(\n\s*\n)/g, "\n\n") // Double saut de ligne pour les paragraphes
+      .replace(/^\s*[-*+]\s+/gm, "- ") // Listes
+      .replace(/^\s*\d+\.\s+/gm, "") // Listes numérotées
+      .trim(); // Suppression des espaces inutiles
+  }
+
+  public async renderAsHtml(rawContent: string, data?: Record<string, unknown>): Promise<string> {
+    return (await import("react-dom/server")).renderToString(await this.renderRawAsComponent(rawContent, data));
+  }
+
+  public renderAsPdf(rawContent: string, data?: Record<string, unknown>): Promise<Buffer> {
+    return notImplemented();
   }
 }

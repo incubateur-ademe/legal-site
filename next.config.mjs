@@ -102,8 +102,16 @@ const config = {
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
   rewrites: async () => [
     {
-      source: "/startup/:startupId/:templateType.:ext(html|md|txt|pdf)",
-      destination: "/startup/:startupId/:templateType/:ext",
+      source: "/startup/:startupId/:templateType.:ext",
+      destination: "/startup/:startupId/default/:templateType/:ext",
+    },
+    {
+      source: "/startup/:startupId/:variableId/:templateType.:ext",
+      destination: "/startup/:startupId/:variableId/:templateType/:ext",
+    },
+    {
+      source: "/startup/:startupId/:templateType",
+      destination: "/startup/:startupId/default/:templateType",
     },
   ],
   images: {

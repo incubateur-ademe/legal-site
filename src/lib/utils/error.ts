@@ -22,8 +22,12 @@ export class UnexpectedSessionError extends UnexpectedError {
   public readonly name: string = "UnexpectedSessionError";
 }
 
+export class NotImplementError extends AppError {
+  public readonly name: string = "NotImplementError";
+}
+
 export const notImplemented = () => {
-  throw new AppError();
+  throw new NotImplementError();
 };
 
 export const illogical = (message: string) => {
