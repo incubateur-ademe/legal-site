@@ -7,9 +7,9 @@
 
 
 ## Produit
-- [ ] https://legal.beta.gouv.fr/startup/carte-verte/politique-confidentialite
-- [ ] https://legal.beta.gouv.fr/startup/carte-verte/politique-confidentialite.(txt|md|html)
-- [ ] https://legal.beta.gouv.fr/startup/territoires-en-transitions/aldo/politique-confidentialite.(txt|md|html) (en cas de produit supplémentaire)
+- [x] https://legal.beta.gouv.fr/startup/carte-verte/politique-confidentialite
+- [x] https://legal.beta.gouv.fr/startup/carte-verte/politique-confidentialite.(txt|md|html)
+- [x] https://legal.beta.gouv.fr/startup/territoires-en-transitions/aldo/politique-confidentialite.(txt|md|html) (en cas de produit supplémentaire)
 - [x] github en backend pour profiter du versionning
 ### Login
 - [x] checker les comptes inactifs
@@ -17,18 +17,19 @@
 ### Editeur
 - [ ] hover et auto completion sur les variables
 - [x] preview
-- [ ] lock avec TTL sur l'édition si une autre personne est en train d'éditer
+- [ ] lock avec TTL sur l'édition si une autre personne est en train d'éditer ou éditeur collaboratif (Yjs + monaco https://github.com/yjs/y-monaco)
 
 ## Think tank
-- github sha as id pour les templates (/template/mentions-legales/[groupId]/[id]/edit ; ex: "/template/mentions-legales/default/a34bcde/edit" ou "/template/mentions-legales/ademe/ef828ab9/generate" pour créer un fichier à partir d'un template) - warning si la version (le sha) n'est pas la dernière
-- tout le monde peut créer ou dupliquer un template, mais une fois créé le groupe appartient au créateur et les personnes accordées (droit par personne, par se, ou par incubateur, avec TTL)
-- les variables d'un template sont enregistrées dans le frontmatter du fichier markdown
-- par défaut, uniquement les admins peuvent editer le groupe "default"
-- liste des versions = histo git d'un fichier
-- stockage des mappings de variables sur git aussi avec un chemin "/var/[se]/[produit?]/mention-legales/[groupId]-[id].json", contenant
-- possibilité de recover un fichier supprimé (si fonction de suppression)
-- possibilité de rollback à une version précédente (ajout d'une version rollback comme nouvelle version)
-- anticiper le fait d'avoir plusieurs mentions legales si plusieurs produit (d'ou le "[produit?]"), sinon root par défaut 
+- [x] github sha as id pour les templates (/template/mentions-legales/[groupId]/[id]/edit ; ex: "/template/mentions-legales/default/a34bcde/edit"
+- [ ] "/template/mentions-legales/ademe/ef828ab9/new" pour créer un fichier à partir d'un template) - warning si la version (le sha) n'est pas la dernière
+- [x] tout le monde peut créer ou dupliquer un template, mais une fois créé le groupe appartient au créateur et les personnes accordées (droit par personne, par se, ou par incubateur, avec TTL)
+- [x] les variables d'un template sont enregistrées dans le frontmatter du fichier markdown
+- [x] par défaut, uniquement les admins peuvent editer le groupe "default"
+- [x] liste des versions = histo git d'un fichier
+- [x] stockage des mappings de variables sur git aussi avec un chemin "/variables/[se]/[variableId]/mention-legales.json" ("variableId" = "default" ou autre chose)
+- [ ] possibilité de recover un fichier supprimé (si fonction de suppression)
+- [ ] possibilité de rollback à une version précédente (ajout d'une version rollback comme nouvelle version)
+- [x] anticiper le fait d'avoir plusieurs mentions legales si plusieurs produit (d'ou le "[variableId]"), sinon "default" par défaut 
 
 ## Navigation
 |- Accueil
@@ -44,18 +45,18 @@
   - [ ] Ajouter une nouvelle page légale
 
 ### Templates `/template`
-- [ ] Liste des templates
+- [x] Liste des templates
 - [ ] Bouton global pour créer un nouveau template
 - [ ] Recherche par nom
 - [ ] Filtre par type (mentions légales, politique de confidentialité, etc)
 - [ ] Bouton pour dupliquer un template
 
 #### Template
-- [ ] Nom
-- [ ] Description
-- [ ] Type
-- [ ] Variables
-- [ ] Version
+- [x] Nom
+- [x] Description
+- [x] Type
+- [x] Variables
+- [x] Version
 - [ ] Bouton pour dupliquer `/template/mentions-legales/[groupId]/[id]/duplicate`
 **Lecture seule**  `/template/mentions-legales/[groupId]/[id]`
 - [ ] Bouton pour éditer
@@ -67,7 +68,7 @@
 - [ ] Editeur / preview
 
 ### Liste Startups `/startup`
-- [ ] Liste des startups
+- [x] Liste des startups
 - [ ] Recherche par nom
 - [ ] Filtre par type (qui a mentions légales, politique de confidentialité, etc)
 - [ ] Bouton pour ajouter une page légale à une startup `/startup/[id]/new`
