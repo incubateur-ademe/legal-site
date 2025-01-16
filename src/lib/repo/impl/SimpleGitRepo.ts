@@ -27,10 +27,14 @@ export class SimpleGitRepo implements IGitRepo {
   private readonly seeddir = path.resolve("./db/seed");
 
   constructor() {
+    this.git = this.prepareSimpleGit();
+  }
+
+  private prepareSimpleGit() {
     if (!fs.existsSync(this.tmpdir)) {
       fs.mkdirSync(this.tmpdir, { recursive: true });
     }
-    this.git = simpleGit(this.tmpdir);
+    return simpleGit(this.tmpdir);
   }
 
   private async init(withPull = true): Promise<void> {
@@ -444,6 +448,10 @@ export class SimpleGitRepo implements IGitRepo {
     if (exists) {
       throw new UnexpectedError("Failed to clean local repo");
     }
+
+    this.configDone = false;
+    this.prepareSimpleGit();
+    await this.init();
 
     return `${this.tmpdir} cleaned`;
   }
