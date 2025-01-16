@@ -20,6 +20,7 @@ export namespace IGitRepo {
 }
 
 export interface IGitRepo {
+  cleanLocalRepo(): Promise<string>;
   getAllTemplates(groupId?: string): Promise<Template[]>;
   getAllVariables(): Promise<IGitRepo.AllVariables>;
   getGroup(groupId: string): Promise<Group | null>;

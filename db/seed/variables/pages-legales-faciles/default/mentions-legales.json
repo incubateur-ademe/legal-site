@@ -1,7 +1,7 @@
 {
   "author": "lilian.sagetlethias",
   "description": "Mentions légales par défaut de **cette** application",
-  "group": "ademe",
+  "group": "default",
   "sha": "<sha>",
   "lastEditor": "lilian.sagetlethias",
   "variables": {

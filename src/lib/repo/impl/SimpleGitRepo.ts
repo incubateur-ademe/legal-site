@@ -437,4 +437,20 @@ export class SimpleGitRepo implements IGitRepo {
     await this.git.push(this.remote, config.templates.git.mainBranch);
     console.info("🌱 Seeding done");
   }
+
+  public async cleanLocalRepo(): Promise<string> {
+    await fsP.rm(this.tmpdir, { recursive: true, force: true });
+    const exists = fs.existsSync(this.tmpdir);
+    if (exists) {
+      throw new UnexpectedError("Failed to clean local repo");
+    }
+
+    return `${this.tmpdir} cleaned`;
+  }
+
+  // TODO : plus tard avec xterm.js
+  // public async rawCmd(cmd: string): Promise<string> {
+  //   await this.init(false);
+  //   return this.git.raw(cmd.split(" "));
+  // }
 }
