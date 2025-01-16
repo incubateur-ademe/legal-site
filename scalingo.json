@@ -93,7 +93,7 @@
       "value": "$SCALINGO_REDIS_URL"
     },
     "NEXTAUTH_URL": {
-      "generator": "template",
+      "generator": "url",
       "template": "%URL%/api/auth"
     },
     "NEXT_PUBLIC_REPOSITORY_URL": {
