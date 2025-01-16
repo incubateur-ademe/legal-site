@@ -13,14 +13,9 @@ const { version } = packageJson;
 const isDeployment = !!process.env.SOURCE_VERSION;
 
 const env = {
-  NEXT_TELEMETRY_DISABLED: "1",
   NEXT_PUBLIC_APP_VERSION: version,
   NEXT_PUBLIC_APP_VERSION_COMMIT: isDeployment ? process.env.SOURCE_VERSION : "dev",
 };
-
-if (isDeployment) {
-  console.log("==== Incoming environment variables ====", { process: process.env, env });
-}
 
 const csp = {
   "default-src": ["'none'"],
