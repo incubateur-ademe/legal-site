@@ -12,7 +12,7 @@ export const GitManagement = () => {
   const [gitResult, setGitResult] = useState<string>("");
   return (
     <FormFieldset
-      legend="Git management"
+      legend="Git management (all operations includes a revalidation of the layout cache)"
       elements={[
         <ButtonsGroup
           key={0}
