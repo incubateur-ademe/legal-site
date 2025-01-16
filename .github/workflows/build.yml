@@ -22,5 +22,8 @@ jobs:
         run: |
           yarn --frozen-lockfile
       - name: Build and export
+        env:
+          NODE_ENV: production
+          ESPACE_MEMBRE_API_KEY: fakesecret
         run: |
           yarn build
