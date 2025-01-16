@@ -3,6 +3,11 @@
 declare namespace NodeJS {
     interface ProcessEnv {
         /**
+         * Dist: `1`  
+         * {@link [Local Env Dist](.env.development)}
+         */
+        NEXT_TELEMETRY_DISABLED?: string;
+        /**
          * Dist: `dev`  
          * {@link [Local Env Dist](.env.development)}
          */
@@ -27,6 +32,16 @@ declare namespace NodeJS {
          * {@link [Local Env Dist](.env.development)}
          */
         NEXT_PUBLIC_SITE_URL?: string;
+        /**
+         * Dist: `http://localhost:3000/api/auth`  
+         * {@link [Local Env Dist](.env.development)}
+         */
+        AUTH_URL?: string;
+        /**
+         * Dist: `0`  
+         * {@link [Local Env Dist](.env.development)}
+         */
+        AUTH_TRUST_HOST?: string;
         /**
          * No dist value.  
          * {@link [Local Env Dist](.env.development)}
@@ -189,6 +204,11 @@ Française`
          */
         REDIS_PASSWORD?: string;
         /**
+         * Dist: `redis://localhost:6379`  
+         * {@link [Local Env Dist](.env.development)}
+         */
+        REDIS_URL?: string;
+        /**
          * Dist: `1`  
          * {@link [Local Env Dist](.env.development)}
          */
@@ -208,11 +228,6 @@ Française`
          * {@link [Local Env Dist](.env.development)}
          */
         NEXT_PUBLIC_APP_VERSION_COMMIT?: string;
-        /**
-         * Dist: `http://localhost:3000/api/auth`  
-         * {@link [Local Env Dist](.env.development)}
-         */
-        NEXTAUTH_URL?: string;
         /**
          * Dist: `localhost`  
          * {@link [Local Env Dist](.env.development)}
@@ -256,11 +271,14 @@ Française`
     }
 }
 declare type ProcessEnvCustomKeys = 
+    | 'NEXT_TELEMETRY_DISABLED'
     | 'APP_ENV'
     | 'MAINTENANCE_MODE'
     | 'NODE_ENV'
     | 'NEXT_PUBLIC_REPOSITORY_URL'
     | 'NEXT_PUBLIC_SITE_URL'
+    | 'AUTH_URL'
+    | 'AUTH_TRUST_HOST'
     | 'ESPACE_MEMBRE_API_KEY'
     | 'ESPACE_MEMBRE_URL'
     | 'NEXT_PUBLIC_BRAND_NAME'
@@ -293,11 +311,11 @@ declare type ProcessEnvCustomKeys =
     | 'REDIS_PORT'
     | 'REDIS_TLS'
     | 'REDIS_PASSWORD'
+    | 'REDIS_URL'
     | 'NEXT_PUBLIC_MATOMO_SITE_ID'
     | 'NEXT_PUBLIC_MATOMO_URL'
     | 'NEXT_PUBLIC_APP_VERSION'
     | 'NEXT_PUBLIC_APP_VERSION_COMMIT'
-    | 'NEXTAUTH_URL'
     | 'HOSTNAME'
     | 'PORT'
     | 'CONTAINER_VERSION'

@@ -31,6 +31,11 @@
       "description": "Node environment",
       "value": "production"
     },
+    "NEXT_PUBLIC_BRAND_NAME": {
+      "description": "Nom de la marque",
+      "generator": "template",
+      "template": "%APP%"
+    },
     "TEMPLATES_GIT_MAIN_BRANCH": {
       "description": "Nom de la branche principale du dépôt git contenant les templates",
       "generator": "template",
@@ -48,9 +53,12 @@
       "description": "URL du serveur Redis",
       "value": "$SCALINGO_REDIS_URL"
     },
-    "NEXTAUTH_URL": {
+    "AUTH_URL": {
       "generator": "url",
       "template": "%URL%/api/auth"
+    },
+    "AUTH_TRUST_HOST": {
+      "value": "1"
     },
     "NEXT_PUBLIC_REPOSITORY_URL": {
       "description": "URL du dépôt git du projet",

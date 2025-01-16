@@ -64,7 +64,7 @@ const GroupListPage = async () => {
         </GridCol>
         {groups.map(async group => {
           let isInGroup = false;
-          if (session) {
+          if (session?.user) {
             const { isMember, isOwner } = await espaceMembreService.getMemberMembership(session.user.username, group);
             isInGroup = config.templates.admins.includes(session.user.username) || isOwner || isMember;
           }
