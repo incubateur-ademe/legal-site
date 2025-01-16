@@ -31,11 +31,6 @@
       "description": "Node environment",
       "value": "production"
     },
-    "ESPACE_MEMBRE_API_KEY": {
-      "description": "Clé d'API pour l'API Espace Membre",
-      "value": "",
-      "required": true
-    },
     "TEMPLATES_GIT_MAIN_BRANCH": {
       "description": "Nom de la branche principale du dépôt git contenant les templates",
       "generator": "template",
@@ -43,43 +38,7 @@
     },
     "TEMPLATES_GIT_URL": {
       "description": "URL du dépôt git contenant les templates",
-      "value": "https://github.com/incubateur-ademe/pages-legales-faciles-db-staging",
-      "required": true
-    },
-    "TEMPLATES_GIT_COMMITTER_EMAIL": {
-      "description": "Email du committer pour les modifications sur le dépôt git des templates",
-      "value": "",
-      "required": true
-    },
-    "TEMPLATES_GIT_COMMITTER_NAME": {
-      "description": "Nom du committer pour les modifications sur le dépôt git des templates",
-      "value": "",
-      "required": true
-    },
-    "MAILER_SMTP_HOST": {
-      "description": "Serveur SMTP pour l'envoi de mail",
-      "value": "",
-      "required": true
-    },
-    "MAILER_SMTP_PORT": {
-      "description": "Port du serveur SMTP pour l'envoi de mail",
-      "value": "1025",
-      "required": true
-    },
-    "MAILER_SMTP_PASSWORD": {
-      "description": "Mot de passe du serveur SMTP pour l'envoi de mail",
-      "value": "",
-      "required": true
-    },
-    "MAILER_SMTP_LOGIN": {
-      "description": "Login du serveur SMTP pour l'envoi de mail",
-      "value": "",
-      "required": true
-    },
-    "MAILER_SMTP_SSL": {
-      "description": "Utiliser SSL pour le serveur SMTP",
-      "value": "false",
-      "required": true
+      "value": "https://github.com/incubateur-ademe/pages-legales-faciles-db-staging"
     },
     "SECURITY_JWT_SECRET": {
       "description": "Secret pour la génération des JWT",
@@ -95,8 +54,7 @@
     },
     "NEXT_PUBLIC_REPOSITORY_URL": {
       "description": "URL du dépôt git du projet",
-      "value": "https://github.com/incubateur-ademe/pages-legales-faciles",
-      "required": true
+      "value": "https://github.com/incubateur-ademe/pages-legales-faciles"
     },
     "NEXT_PUBLIC_SITE_URL": {
       "description": "URL du site",
