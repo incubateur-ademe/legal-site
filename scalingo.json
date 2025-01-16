@@ -16,7 +16,7 @@
     }
   ],
   "scripts": {
-    "first-deploy": "yarn seed"
+    "first-deploy": "NODE_ENV=development yarn install --frozen-lockfile && NODE_ENV=production yarn seed && rm -rf node_modules"
   },
   "env": {
     "APP_ENV": {

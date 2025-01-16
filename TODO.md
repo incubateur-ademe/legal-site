@@ -30,6 +30,7 @@
 - [ ] possibilité de recover un fichier supprimé (si fonction de suppression)
 - [ ] possibilité de rollback à une version précédente (ajout d'une version rollback comme nouvelle version)
 - [x] anticiper le fait d'avoir plusieurs mentions legales si plusieurs produit (d'ou le "[variableId]"), sinon "default" par défaut 
+- [ ] GPG pour les commits
 
 ## Navigation
 |- Accueil

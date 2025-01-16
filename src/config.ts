@@ -78,11 +78,15 @@ export const config = {
         process.env.TEMPLATES_GIT_URL,
         "https://github.com/incubateur-ademe/legal-site-templates-test",
       ),
-      gpgPrivateKey: ensureApiEnvVar(process.env.TEMPLATES_GIT_GPG_PRIVATE_KEY, ""),
-      gpgPassphrase: ensureApiEnvVar(process.env.TEMPLATES_GIT_GPG_PASSPHRASE, ""),
-      author: {
-        email: ensureApiEnvVar(process.env.TEMPLATES_GIT_AUTHOR_EMAIL, "bot@email.com"),
-        name: ensureApiEnvVar(process.env.TEMPLATES_GIT_AUTHOR_NAME, "Bot"),
+      // gpgPrivateKey: ensureApiEnvVar(process.env.TEMPLATES_GIT_GPG_PRIVATE_KEY, ""),
+      get gpgPrivateKey() {
+        console.warn("TEMPLATES_GIT_GPG_PRIVATE_KEY is not supported yet");
+        return "";
+      },
+      // gpgPassphrase: ensureApiEnvVar(process.env.TEMPLATES_GIT_GPG_PASSPHRASE, ""),
+      get gpgPassphrase() {
+        console.warn("TEMPLATES_GIT_GPG_PASSPHRASE is not supported yet");
+        return "";
       },
       committer: {
         email: ensureApiEnvVar(process.env.TEMPLATES_GIT_COMMITTER_EMAIL, "bot@email.com"),
