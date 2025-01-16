@@ -8,7 +8,7 @@ import { config } from "@/config";
 import { type Group } from "@/lib/model/Group";
 import { type GitSha7, type Template, type TemplateType, type TemplateVersions } from "@/lib/model/Template";
 import { type Variable } from "@/lib/model/Variable";
-import { illogical } from "@/utils/error";
+import { illogical, UnexpectedError } from "@/utils/error";
 import { validateGroup, validateTemplateMeta, validateVariable } from "@/utils/templateMeta";
 
 import { CONFIG_EXT, GROUP_FILE, type IGitRepo, TEMPLATE_DIR, TEMPLATE_EXT, VARIABLE_DIR } from "../IGitRepo";
@@ -18,10 +18,13 @@ import { CONFIG_EXT, GROUP_FILE, type IGitRepo, TEMPLATE_DIR, TEMPLATE_EXT, VARI
 
 export class SimpleGitRepo implements IGitRepo {
   private readonly git: SimpleGit;
-  // private readonly remote: "local" | "origin" = config.api.templates.git.provider === "local" ? "local" : "origin";
+  // private readonly remote: "local" | "origin" = config.templates.git.provider === "local" ? "local" : "origin";
   private readonly remote = "origin";
   private configDone = false;
-  private readonly tmpdir = path.resolve(config.api.templates.tmpdir);
+  private readonly tmpdir = path.resolve(config.templates.tmpdir);
+  private readonly templateBasePath = path.resolve(this.tmpdir, TEMPLATE_DIR);
+  private readonly variableBasePath = path.resolve(this.tmpdir, VARIABLE_DIR);
+  private readonly seeddir = path.resolve("./db/seed");
 
   constructor() {
     if (!fs.existsSync(this.tmpdir)) {
@@ -30,20 +33,20 @@ export class SimpleGitRepo implements IGitRepo {
     this.git = simpleGit(this.tmpdir);
   }
 
-  private async init() {
+  private async init(withPull = true): Promise<void> {
     if (!this.configDone) {
       if (!(await this.git.checkIsRepo(CheckRepoActions.IS_REPO_ROOT))) {
-        await this.git.clone(config.api.templates.git.url, ".");
+        await this.git.clone(config.templates.git.url, ".");
       }
       await this.git.addConfig("core.worktree", this.tmpdir);
       await this.git
-        .addConfig("user.email", config.api.templates.git.committer.email)
-        .addConfig("user.name", config.api.templates.git.committer.name)
+        .addConfig("user.email", config.templates.git.committer.email)
+        .addConfig("user.name", config.templates.git.committer.name)
         .addConfig("pull.rebase", "false");
 
-      if (config.api.templates.git.gpgPrivateKey) {
+      if (config.templates.git.gpgPrivateKey) {
         await this.git
-          .addConfig("user.signingkey", config.api.templates.git.gpgPrivateKey)
+          .addConfig("user.signingkey", config.templates.git.gpgPrivateKey)
           .addConfig("commit.gpgSign", "true");
       }
 
@@ -51,25 +54,27 @@ export class SimpleGitRepo implements IGitRepo {
       // if (!remotes.some(r => r.name === this.remote)) {
       //   await this.git.addRemote(this.remote, this.getAuthRemoteUrl());
       // }
-      await this.git.removeRemote("origin").addRemote("origin", this.getAuthRemoteUrl());
+      await this.git.removeRemote(this.remote).addRemote(this.remote, this.getAuthRemoteUrl());
 
       this.configDone = true;
     }
 
-    await this.git.fetch(this.remote, ["-p"]);
-    await this.git.checkout(config.api.templates.git.mainBranch);
-    await this.git.pull(this.remote, config.api.templates.git.mainBranch, {
-      // "--set-upstream-to": `${this.remote}/${config.api.templates.git.mainBranch}`,
-    });
+    if (withPull) {
+      await this.git.fetch(this.remote, ["-p"]);
+      await this.git.checkout(config.templates.git.mainBranch);
+      await this.git.pull(this.remote, config.templates.git.mainBranch, {
+        // "--set-upstream-to": `${this.remote}/${config.templates.git.mainBranch}`,
+      });
+    }
   }
 
   private getAuthRemoteUrl() {
-    if (config.api.templates.git.provider === "local") {
-      return config.api.templates.git.url;
+    if (config.templates.git.provider === "local") {
+      return config.templates.git.url;
     }
 
-    const { providerToken, providerUser } = config.api.templates.git;
-    const url = new URL(config.api.templates.git.url);
+    const { providerToken, providerUser } = config.templates.git;
+    const url = new URL(config.templates.git.url);
     url.username = providerUser;
     url.password = providerToken;
     return url.toString();
@@ -100,13 +105,13 @@ export class SimpleGitRepo implements IGitRepo {
     templateVersion?: GitSha7;
     type: TemplateType;
   }): string {
-    switch (config.api.templates.git.provider) {
+    switch (config.templates.git.provider) {
       case "github":
-        return `${config.api.templates.git.url}/blob/${templateVersion || config.api.templates.git.mainBranch}/${TEMPLATE_DIR}/${groupId}/${type}.${TEMPLATE_EXT}`;
+        return `${config.templates.git.url}/blob/${templateVersion || config.templates.git.mainBranch}/${TEMPLATE_DIR}/${groupId}/${type}.${TEMPLATE_EXT}`;
       case "gitlab":
-        return `${config.api.templates.git.url}/-/blob/${templateVersion || config.api.templates.git.mainBranch}/${TEMPLATE_DIR}/${groupId}/${type}.${TEMPLATE_EXT}`;
+        return `${config.templates.git.url}/-/blob/${templateVersion || config.templates.git.mainBranch}/${TEMPLATE_DIR}/${groupId}/${type}.${TEMPLATE_EXT}`;
       case "local":
-        return `file://${config.api.templates.git.url}/${TEMPLATE_DIR}/${groupId}/${type}.${TEMPLATE_EXT}`;
+        return `file://${config.templates.git.url}/${TEMPLATE_DIR}/${groupId}/${type}.${TEMPLATE_EXT}`;
       default:
         return illogical("Unknown git provider");
     }
@@ -121,13 +126,13 @@ export class SimpleGitRepo implements IGitRepo {
     templateType: TemplateType;
     variableId?: string;
   }): string {
-    switch (config.api.templates.git.provider) {
+    switch (config.templates.git.provider) {
       case "github":
-        return `${config.api.templates.git.url}/blob/${config.api.templates.git.mainBranch}/${VARIABLE_DIR}/${startupId}/${variableId ? `${variableId}/` : ""}${templateType}.${CONFIG_EXT}`;
+        return `${config.templates.git.url}/blob/${config.templates.git.mainBranch}/${VARIABLE_DIR}/${startupId}/${variableId ? `${variableId}/` : ""}${templateType}.${CONFIG_EXT}`;
       case "gitlab":
-        return `${config.api.templates.git.url}/-/blob/${config.api.templates.git.mainBranch}/${VARIABLE_DIR}/${startupId}/${variableId ? `${variableId}/` : ""}${templateType}.${CONFIG_EXT}`;
+        return `${config.templates.git.url}/-/blob/${config.templates.git.mainBranch}/${VARIABLE_DIR}/${startupId}/${variableId ? `${variableId}/` : ""}${templateType}.${CONFIG_EXT}`;
       case "local":
-        return `file://${config.api.templates.git.url}/${VARIABLE_DIR}/${startupId}/${variableId ? `${variableId}/` : ""}${templateType}.${CONFIG_EXT}`;
+        return `file://${config.templates.git.url}/${VARIABLE_DIR}/${startupId}/${variableId ? `${variableId}/` : ""}${templateType}.${CONFIG_EXT}`;
       default:
         return illogical("Unknown git provider");
     }
@@ -136,8 +141,7 @@ export class SimpleGitRepo implements IGitRepo {
   public async getAllTemplates(groupId?: string): Promise<Template[]> {
     await this.init();
 
-    const templateBasePath = `${this.tmpdir}/${TEMPLATE_DIR}/`;
-    const files = await fsP.readdir(templateBasePath, {
+    const files = await fsP.readdir(this.templateBasePath, {
       recursive: true,
       withFileTypes: true,
       encoding: "utf-8",
@@ -154,7 +158,7 @@ export class SimpleGitRepo implements IGitRepo {
           return null;
         }
         const [type] = f.name.split(".") as [TemplateType, string];
-        const filePath = path.resolve(templateBasePath, currentGroupId, f.name);
+        const filePath = path.resolve(this.templateBasePath, currentGroupId, f.name);
         const content = fs.readFileSync(filePath, { encoding: "utf-8" });
         const { data } = matter(content);
         return {
@@ -186,8 +190,7 @@ export class SimpleGitRepo implements IGitRepo {
   public async getTemplate(groupId: string, type: TemplateType, templateVersion?: GitSha7): Promise<Template> {
     const content = await this.getTemplateRaw(groupId, type, templateVersion);
 
-    const templateBasePath = `${this.tmpdir}/${TEMPLATE_DIR}/`;
-    const filePath = path.resolve(templateBasePath, groupId, `${type}.${TEMPLATE_EXT}`);
+    const filePath = path.resolve(this.templateBasePath, groupId, `${type}.${TEMPLATE_EXT}`);
     const { data } = matter(content);
 
     const template = {
@@ -321,8 +324,7 @@ export class SimpleGitRepo implements IGitRepo {
   public async getAllVariables(): Promise<IGitRepo.AllVariables> {
     await this.init();
 
-    const variableBasePath = `${this.tmpdir}/${VARIABLE_DIR}/`;
-    const files = await fsP.readdir(variableBasePath, {
+    const files = await fsP.readdir(this.variableBasePath, {
       recursive: true,
       withFileTypes: true,
       encoding: "utf-8",
@@ -340,7 +342,7 @@ export class SimpleGitRepo implements IGitRepo {
       // if productId is not present, the key will be just "${startupId}"
       const [variableId, startupId] = f.parentPath.split("/").reverse() as [IGitRepo.VariableId, IGitRepo.StartupId];
       const [type] = f.name.split(".") as [TemplateType, string];
-      const filePath = path.resolve(variableBasePath, startupId, variableId, f.name);
+      const filePath = path.resolve(this.variableBasePath, startupId, variableId, f.name);
       const content = await fsP.readFile(filePath, { encoding: "utf-8" });
       const variablesObj = JSON.parse(content) as Variable;
       if (!variables[startupId]) {
@@ -358,5 +360,81 @@ export class SimpleGitRepo implements IGitRepo {
     }
 
     return variables;
+  }
+
+  public async seed(): Promise<void> {
+    if (!config._seeding) {
+      return;
+    }
+
+    console.info("🌱 Seeding templates and variables");
+    await this.init(false);
+    const branches = await this.git.branch();
+    if (branches.all.includes(config.templates.git.mainBranch)) {
+      throw new UnexpectedError(`Branch ${config.templates.git.mainBranch} already exists. Aborting seeding.`);
+    }
+
+    console.info("↳ Creating branch", config.templates.git.mainBranch);
+    await this.git.checkoutLocalBranch(config.templates.git.mainBranch);
+
+    // copy from seeddir folder into tmpdir
+    // first, commit the "templates" folder
+    // then get the sha of the commit
+    // then modify any "variables/*/*/*.json" file "sha" property to the commit sha before commiting a second time
+    // then push
+    // without using "this" methods (because of init() call)
+
+    console.info("↳ Copying seed templates");
+    await fsP.cp(this.seeddir, this.tmpdir, { recursive: true, preserveTimestamps: true });
+    await this.git.add(".");
+    console.info("↳ Committing seed templates");
+    const commitResult = await this.git.commit("seed: templates", TEMPLATE_DIR);
+    const sha = commitResult.commit.substring(0, 7);
+    console.info("🎉 Templates commited with sha", sha);
+
+    console.info("↳ Reading variables from", this.variableBasePath);
+    const variableFiles = await fsP.readdir(this.variableBasePath, {
+      recursive: true,
+      withFileTypes: true,
+      encoding: "utf-8",
+    });
+
+    console.info("↳ Updating variables with sha", sha);
+    let count = 0;
+    for (const f of variableFiles) {
+      if (!f.isFile()) {
+        continue;
+      }
+
+      const [variableId, startupId] = f.parentPath.split("/").reverse() as [IGitRepo.VariableId, IGitRepo.StartupId];
+      const filePath = path.resolve(this.variableBasePath, startupId, variableId, f.name);
+      const content = await fsP.readFile(filePath, { encoding: "utf-8" });
+      const variablesObj = JSON.parse(content) as Variable;
+      variablesObj.sha = sha;
+      await fsP.writeFile(filePath, JSON.stringify(variablesObj, null, 2));
+      console.info("↳ Updated", filePath);
+      count++;
+    }
+    console.info("🎉 Updated", count, "variables");
+
+    await this.git.add(".");
+    console.info("↳ Committing seed variables");
+    await this.git.commit("seed: variables", VARIABLE_DIR);
+
+    const readmePath = path.resolve(this.tmpdir, "README.md");
+    await fsP.writeFile(
+      readmePath,
+      (await fsP.readFile(readmePath, { encoding: "utf-8" }))
+        .replaceAll("<app_name>", config.templates.git.mainBranch)
+        .replaceAll("<source_repo_url>", config.repositoryUrl),
+    );
+    console.info("↳ Updated README.md");
+    await this.git.add(readmePath);
+    console.info("↳ Committing seed README.md");
+    await this.git.commit("seed: README", readmePath);
+
+    console.info("↳ Pushing seed");
+    await this.git.push(this.remote, config.templates.git.mainBranch);
+    console.info("🌱 Seeding done");
   }
 }

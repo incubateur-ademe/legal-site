@@ -38,4 +38,5 @@ export interface IGitRepo {
     comment?: string,
     author?: { email: string; name: string },
   ): Promise<GitSha7>;
+  seed(): Promise<void>;
 }

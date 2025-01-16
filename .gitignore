@@ -59,3 +59,8 @@ robots.txt
 /public/sitemap*.xml
 
 templates_tmp/
+
+# logos
+
+/public/images/custom/*
+!/public/images/custom/.gitkeep

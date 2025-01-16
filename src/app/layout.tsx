@@ -2,7 +2,6 @@ import "./globals.scss";
 import "react-loading-skeleton/dist/skeleton.css";
 
 import { fr } from "@codegouvfr/react-dsfr";
-import { type HeaderProps } from "@codegouvfr/react-dsfr/Header";
 import { DsfrHead } from "@codegouvfr/react-dsfr/next-appdir/DsfrHead";
 import { DsfrProvider } from "@codegouvfr/react-dsfr/next-appdir/DsfrProvider";
 import { getHtmlAttributes } from "@codegouvfr/react-dsfr/next-appdir/getHtmlAttributes";
@@ -32,23 +31,17 @@ import { SystemMessageDisplay } from "./SystemMessageDisplay";
 const contentId = "content";
 const footerId = "footer";
 
-const operatorLogo: HeaderProps["operatorLogo"] = {
-  imgUrl: "/img/ademe-incubateur-logo.png",
-  alt: "Accélérateur de la Transition Écologique",
-  orientation: "vertical",
-};
-
 export const metadata: Metadata = {
   metadataBase: new URL(config.host),
   ...sharedMetadata,
   title: {
-    template: `${config.name} - %s`,
-    default: config.name,
+    template: `${config.brand.name} - %s`,
+    default: config.brand.name,
   },
   openGraph: {
     title: {
-      template: `${config.name} - %s`,
-      default: config.name,
+      template: `${config.brand.name} - %s`,
+      default: config.brand.name,
     },
     ...sharedMetadata.openGraph,
   },
@@ -78,7 +71,6 @@ const RootLayout = ({ children, default: defaultSlot, public: publicSlot }: Prop
             "Marianne-Bold",
             "Marianne-Bold_Italic",
           ]}
-          doDisableFavicon
         />
       </head>
       <body>
@@ -104,10 +96,7 @@ const RootLayout = ({ children, default: defaultSlot, public: publicSlot }: Prop
                 ]}
               />
               <div className={styles.app}>
-                <PublicSlotFilter
-                  defaultChildren={<AuthHeader operatorLogo={operatorLogo} />}
-                  publicChildren={<PublicHeader operatorLogo={operatorLogo} />}
-                />
+                <PublicSlotFilter defaultChildren={<AuthHeader />} publicChildren={<PublicHeader />} />
                 <ClientAnimate as="main" id={contentId} className={styles.content}>
                   {config.env === "prod" ? (
                     <SystemMessageDisplay code="construction" noRedirect />
@@ -120,8 +109,8 @@ const RootLayout = ({ children, default: defaultSlot, public: publicSlot }: Prop
                   )}
                 </ClientAnimate>
                 <PublicSlotFilter
-                  defaultChildren={<AuthFooter id={footerId} operatorLogo={operatorLogo} />}
-                  publicChildren={<PublicFooter id={footerId} operatorLogo={operatorLogo} />}
+                  defaultChildren={<AuthFooter id={footerId} />}
+                  publicChildren={<PublicFooter id={footerId} />}
                 />
               </div>
             </SkeletonTheme>

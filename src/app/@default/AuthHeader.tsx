@@ -1,5 +1,5 @@
 import Badge from "@codegouvfr/react-dsfr/Badge";
-import Header, { type HeaderProps } from "@codegouvfr/react-dsfr/Header";
+import Header from "@codegouvfr/react-dsfr/Header";
 
 import { Brand } from "@/components/Brand";
 import { config } from "@/config";
@@ -7,20 +7,17 @@ import { config } from "@/config";
 import { LoginLogoutHeaderItem, UserHeaderItem } from "./AuthHeaderItems";
 import { Navigation } from "./Navigation";
 
-export interface AuthHeaderProps {
-  operatorLogo: HeaderProps["operatorLogo"];
-}
-export const AuthHeader = ({ operatorLogo }: AuthHeaderProps) => (
+export const AuthHeader = () => (
   <Header
     navigation={config.maintenance ? null : <Navigation />}
     brandTop={<Brand />}
     homeLinkProps={{
       href: "/",
-      title: `Accueil - ${config.name}`,
+      title: `Accueil - ${config.brand.name}`,
     }}
     serviceTitle={
       <>
-        {config.name}
+        {config.brand.name}
         &nbsp;
         <Badge as="span" noIcon severity="success">
           Beta
@@ -32,8 +29,8 @@ export const AuthHeader = ({ operatorLogo }: AuthHeaderProps) => (
         )}
       </>
     }
-    serviceTagline={config.tagline}
-    operatorLogo={operatorLogo}
+    serviceTagline={config.brand.tagline}
+    operatorLogo={config.brand.operator.enable ? config.brand.operator.logo : undefined}
     classes={{
       operator: "shimmer",
     }}

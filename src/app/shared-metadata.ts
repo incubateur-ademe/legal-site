@@ -2,7 +2,7 @@ import { type Metadata } from "next";
 
 import { config } from "@/config";
 
-const description = config.tagline;
+const description = config.brand.tagline;
 
 export const sharedMetadata: Metadata = {
   description,
@@ -11,11 +11,11 @@ export const sharedMetadata: Metadata = {
     type: "website",
     locale: "fr_FR",
     countryName: "France",
-    siteName: config.name,
+    siteName: config.brand.name,
     images: [
       {
         url: new URL(`/img/ademe-incubateur-logo.png`, config.host),
-        alt: config.name,
+        alt: config.brand.name,
       },
     ],
   },

@@ -5,6 +5,7 @@ interface GlobalErrorProps {
   reset: () => void;
 }
 
+// TODO : better error handling
 export default function GlobalError({ error, reset, ...rest }: GlobalErrorProps) {
   console.log("GLOBAL ERROR", { error, reset, rest });
   return (

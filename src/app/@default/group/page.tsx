@@ -66,7 +66,7 @@ const GroupListPage = async () => {
           let isInGroup = false;
           if (session) {
             const { isMember, isOwner } = await espaceMembreService.getMemberMembership(session.user.username, group);
-            isInGroup = config.api.templates.admins.includes(session.user.username) || isOwner || isMember;
+            isInGroup = config.templates.admins.includes(session.user.username) || isOwner || isMember;
           }
           return (
             <GridCol key={group.id} md={3}>

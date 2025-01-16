@@ -26,8 +26,8 @@ const Home = () => (
     <Container>
       <Grid haveGutters>
         <GridCol lg={7} className="fr-my-auto">
-          <h1>{config.name}</h1>
-          <p>{config.tagline}</p>
+          <h1>{config.brand.name}</h1>
+          <p>{config.brand.tagline}</p>
         </GridCol>
         <GridCol md={6} lg={5} className="fr-mx-auto">
           <ImgHero />

@@ -1,6 +1,6 @@
 {
-  "name": "legal-site",
-  "description": "Gestion des pages légales des services BetaGouv",
+  "name": "pages-legales-faciles",
+  "description": "Générateur de pages légales à partir de modèles",
   "version": "1.0.0",
   "private": true,
   "engines": {
@@ -10,21 +10,22 @@
     "predev": "react-dsfr update-icons",
     "prebuild": "react-dsfr update-icons",
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && cp -r public .next/standalone/ && cp -r .next/static .next/standalone/.next/",
     "postbuild": "next-sitemap",
-    "start": "next start",
+    "start": "node .next/standalone/server.js",
     "lint": "next lint",
     "export": "next export",
     "build:export": "npm run build && npm run export",
     "run-script": "ts-node --project scripts/tsconfig.json",
-    "generateEnvDeclaration": "yarn run-script scripts/generateEnvDeclaration.ts"
+    "generateEnvDeclaration": "yarn run-script scripts/generateEnvDeclaration.ts",
+    "seed": "yarn run-script scripts/seedGit.ts"
   },
   "dependencies": {
     "@auth/unstorage-adapter": "^2.7.4",
     "@codegouvfr/react-dsfr": "^1.16.5-rc.0",
     "@formkit/auto-animate": "^0.8.2",
     "@hookform/resolvers": "^3.9.1",
-    "@incubateur-ademe/next-auth-espace-membre-provider": "^0.1.0",
+    "@incubateur-ademe/next-auth-espace-membre-provider": "^0.1.1",
     "@mdx-js/react": "^3.1.0",
     "@monaco-editor/react": "^4.7.0-rc.0",
     "@next/mdx": "^15.1.0",

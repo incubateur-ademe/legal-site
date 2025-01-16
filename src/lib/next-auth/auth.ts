@@ -10,13 +10,19 @@ import unstorageRedisDriver from "unstorage/drivers/redis";
 import { config } from "@/config";
 
 const redis = createStorage({
-  driver: unstorageRedisDriver({
-    base: config.api.redis.base,
-    host: config.api.redis.host,
-    port: config.api.redis.port,
-    tls: config.api.redis.tls as unknown as ConnectionOptions, // https://unstorage.unjs.io/drivers/redis
-    password: config.api.redis.password,
-  }),
+  driver: unstorageRedisDriver(
+    config.redis.url
+      ? {
+          url: config.redis.url,
+        }
+      : {
+          base: config.redis.base,
+          host: config.redis.host,
+          port: config.redis.port,
+          tls: config.redis.tls as unknown as ConnectionOptions, // https://unstorage.unjs.io/drivers/redis
+          password: config.redis.password,
+        },
+  ),
 });
 
 declare module "next-auth" {
@@ -47,7 +53,7 @@ export const {
   signOut,
   handlers: { GET, POST },
 } = NextAuth({
-  secret: config.api.security.auth.secret,
+  secret: config.security.auth.secret,
   pages: {
     signIn: "/login",
     signOut: "/logout",
@@ -65,14 +71,14 @@ export const {
     espaceMembreProvider.ProviderWrapper(
       Nodemailer({
         server: {
-          host: config.api.mailer.host,
-          port: config.api.mailer.smtp.port,
+          host: config.mailer.host,
+          port: config.mailer.smtp.port,
           auth: {
-            user: config.api.mailer.smtp.login,
-            pass: config.api.mailer.smtp.password,
+            user: config.mailer.smtp.login,
+            pass: config.mailer.smtp.password,
           },
         },
-        from: config.api.mailer.from,
+        from: config.mailer.from,
       }),
     ),
     // TODO
@@ -93,7 +99,7 @@ export const {
             emailVerified: new Date(),
             username: espaceMembreMember.username,
             image: espaceMembreMember.avatar,
-            isAdmin: config.api.templates.admins.includes(espaceMembreMember.username),
+            isAdmin: config.templates.admins.includes(espaceMembreMember.username),
             uuid: espaceMembreMember.uuid,
           },
         };
