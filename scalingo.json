@@ -12,9 +12,6 @@
   },
   "addons": [
     {
-      "plan": "postgresql:postgresql-sandbox"
-    },
-    {
       "plan": "redis:redis-sandbox"
     }
   ],
