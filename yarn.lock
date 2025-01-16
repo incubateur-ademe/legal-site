@@ -253,10 +253,10 @@
   resolved "https://registry.yarnpkg.com/@img/sharp-win32-x64/-/sharp-win32-x64-0.33.5.tgz#56f00962ff0c4e0eb93d34a047d29fa995e3e342"
   integrity sha512-MpY/o8/8kj+EcnxwvrP4aTJSWw/aZ7JIGR4aBeZkZw5B7/Jn+tY9/VNwtcoGmdT7GfggGIU4kygOMSbYnOrAbg==
 
-"@incubateur-ademe/next-auth-espace-membre-provider@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@incubateur-ademe/next-auth-espace-membre-provider/-/next-auth-espace-membre-provider-0.1.1.tgz#bb316ee5d3ab46827c801a234ee6b139c2adcc67"
-  integrity sha512-aLw1Rh51Qa0razKipqheHda1uJFGU0itiSIDVljlNP0sSf5J0Rc8Wx3cVP2zUi5/kpN0wX8Ij0wx+PJwMne/fg==
+"@incubateur-ademe/next-auth-espace-membre-provider@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@incubateur-ademe/next-auth-espace-membre-provider/-/next-auth-espace-membre-provider-0.1.2.tgz#f556d5990bab7d81c8b80927990e49f86e1dc5e8"
+  integrity sha512-lcq25/aHPH5TiTf4dxU+al0oHEaWZz4re/gpKt6LSMq3AzqfCmTzG1yJJLCg7kuEN0gPbQmn89QG2avX0ElslA==
 
 "@ioredis/commands@^1.1.1":
   version "1.2.0"

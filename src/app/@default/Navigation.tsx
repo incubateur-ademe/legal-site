@@ -1,14 +1,12 @@
 "use client";
 
 import { MainNavigation } from "@codegouvfr/react-dsfr/MainNavigation";
-import { useSelectedLayoutSegment, useSelectedLayoutSegments } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { useSelectedLayoutSegment } from "next/navigation";
 
 export const Navigation = () => {
-  const segment = useSelectedLayoutSegment();
-  const segments = useSelectedLayoutSegments();
+  const segment = useSelectedLayoutSegment("default");
 
-  const { data: session, status } = useSession();
+  // const { data: session, status } = useSession();
 
   return (
     <MainNavigation
@@ -33,6 +31,13 @@ export const Navigation = () => {
             href: "/template",
           },
           isActive: segment === "template",
+        },
+        {
+          text: "Startups",
+          linkProps: {
+            href: "/startup",
+          },
+          isActive: segment === "startup",
         },
         // ...(status === "authenticated"
         //   ? ((): MainNavigationProps.Item[] => {
