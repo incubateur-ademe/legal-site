@@ -6,16 +6,15 @@ import { FooterPersonalDataPolicyItem } from "@/consentManagement";
 
 export interface AuthFooterProps {
   id: FooterProps["id"];
-  operatorLogo: FooterProps["operatorLogo"];
 }
 
-export const AuthFooter = ({ id, operatorLogo }: AuthFooterProps) => (
+export const AuthFooter = ({ id }: AuthFooterProps) => (
   <Footer
     id={id}
     accessibility="non compliant"
     accessibilityLinkProps={{ href: "/accessibilite" }}
-    contentDescription={`${config.name} est un service développé par l'accélérateur de la transition écologique de l'ADEME.`}
-    operatorLogo={operatorLogo}
+    contentDescription={`${config.brand.name} est un service développé par l'Accélérateur de la Transition Écologique de l'ADEME.`}
+    operatorLogo={config.brand.operator.enable ? config.brand.operator.logo : undefined}
     bottomItems={[
       {
         text: "CGU",

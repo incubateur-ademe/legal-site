@@ -1,0 +1,109 @@
+{
+  "$schema": "https://gist.githubusercontent.com/revolunet/3fe424cd20b9f51b31bcbb0f530619a8/raw/1cce48b775f6b7f91b4b730d4184f0fab427350e/scalingo.schema.json",
+  "name": "pages-legales-faciles",
+  "logo": "https://raw.githubusercontent.com/incubateur-ademe/pages-legales-faciles/refs/heads/main/public/pages-legales-faciles.webp",
+  "repository": "https://github.com/incubateur-ademe/pages-legales-faciles",
+  "website": "https://legal.beta.gouv.fr",
+  "formation": {
+    "web": {
+      "amount": 1,
+      "size": "M"
+    }
+  },
+  "addons": [
+    {
+      "plan": "postgresql:postgresql-sandbox"
+    },
+    {
+      "plan": "redis:redis-sandbox"
+    }
+  ],
+  "scripts": {
+    "first-deploy": "yarn seed"
+  },
+  "env": {
+    "APP_ENV": {
+      "description": "État applicatif custom. Valeurs possibles : 'staging', 'dev', ou 'prod'",
+      "value": "staging"
+    },
+    "MAINTENANCE_MODE": {
+      "description": "Affiche ou non une page de maintenance au lieu d'une navigation normale.",
+      "value": "false"
+    },
+    "NODE_ENV": {
+      "description": "Node environment",
+      "value": "production"
+    },
+    "ESPACE_MEMBRE_API_KEY": {
+      "description": "Clé d'API pour l'API Espace Membre",
+      "value": "",
+      "required": true
+    },
+    "TEMPLATES_GIT_MAIN_BRANCH": {
+      "description": "Nom de la branche principale du dépôt git contenant les templates",
+      "generator": "template",
+      "template": "%APP%"
+    },
+    "TEMPLATES_GIT_URL": {
+      "description": "URL du dépôt git contenant les templates",
+      "value": "https://github.com/incubateur-ademe/pages-legales-faciles-db-staging",
+      "required": true
+    },
+    "TEMPLATES_GIT_COMMITTER_EMAIL": {
+      "description": "Email du committer pour les modifications sur le dépôt git des templates",
+      "value": "",
+      "required": true
+    },
+    "TEMPLATES_GIT_COMMITTER_NAME": {
+      "description": "Nom du committer pour les modifications sur le dépôt git des templates",
+      "value": "",
+      "required": true
+    },
+    "MAILER_SMTP_HOST": {
+      "description": "Serveur SMTP pour l'envoi de mail",
+      "value": "",
+      "required": true
+    },
+    "MAILER_SMTP_PORT": {
+      "description": "Port du serveur SMTP pour l'envoi de mail",
+      "value": "1025",
+      "required": true
+    },
+    "MAILER_SMTP_PASSWORD": {
+      "description": "Mot de passe du serveur SMTP pour l'envoi de mail",
+      "value": "",
+      "required": true
+    },
+    "MAILER_SMTP_LOGIN": {
+      "description": "Login du serveur SMTP pour l'envoi de mail",
+      "value": "",
+      "required": true
+    },
+    "MAILER_SMTP_SSL": {
+      "description": "Utiliser SSL pour le serveur SMTP",
+      "value": "false",
+      "required": true
+    },
+    "SECURITY_JWT_SECRET": {
+      "description": "Secret pour la génération des JWT",
+      "generator": "secret"
+    },
+    "REDIS_URL": {
+      "description": "URL du serveur Redis",
+      "value": "$SCALINGO_REDIS_URL"
+    },
+    "NEXTAUTH_URL": {
+      "generator": "template",
+      "template": "%URL%/api/auth"
+    },
+    "NEXT_PUBLIC_REPOSITORY_URL": {
+      "description": "URL du dépôt git du projet",
+      "value": "https://github.com/incubateur-ademe/pages-legales-faciles",
+      "required": true
+    },
+    "NEXT_PUBLIC_SITE_URL": {
+      "description": "URL du site",
+      "generator": "url"
+    }
+  }
+}

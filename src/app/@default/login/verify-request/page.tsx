@@ -6,7 +6,7 @@ import { config } from "@/config";
 const VerifyRequestPage = () => (
   <SystemMessageDisplay
     code="custom"
-    title={`Connexion site ${config.name}`}
+    title={`Connexion site ${config.brand.name}`}
     headline="Email envoyé !"
     body={
       <>

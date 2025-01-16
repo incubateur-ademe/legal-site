@@ -4,14 +4,13 @@ import { config } from "@/config";
 
 export interface PublicFooterProps {
   id: FooterProps["id"];
-  operatorLogo: FooterProps["operatorLogo"];
 }
 
-export const PublicFooter = ({ id, operatorLogo }: PublicFooterProps) => (
+export const PublicFooter = ({ id }: PublicFooterProps) => (
   <Footer
     id={id}
     accessibility="non compliant"
-    operatorLogo={operatorLogo}
+    operatorLogo={config.brand.operator.enable ? config.brand.operator.logo : undefined}
     license={
       <>
         Sauf mention contraire, tous les contenus de ce site sont sous{" "}

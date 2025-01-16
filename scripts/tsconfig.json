@@ -13,12 +13,24 @@
     "resolveJsonModule": true,
     "baseUrl": "./",
     "paths": {
-      "@lib/*": [
-        "../src/lib/*"
+      "@/config": [
+        "../src/config.ts"
       ],
-      "@api/*": [
-        "../src/api/*"
+      "@/dsfr": [
+        "../src/dsfr/server.ts"
       ],
+      "@/dsfr/client": [
+        "../src/dsfr/client.ts"
+      ],
+      "@/dsfr/utils/*": [
+        "../src/dsfr/utils/*"
+      ],
+      "@/utils/*": [
+        "../src/lib/utils/*"
+      ],
+      "@/*": [
+        "../src/*"
+      ]
     }
   },
   "ts-node": {

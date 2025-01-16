@@ -10,23 +10,12 @@ import packageJson from "./package.json" with { type: "json" };
 
 const { version } = packageJson;
 
-const isDeployment = !!process.env.VERCEL_URL;
+const isDeployment = !!process.env.SOURCE_VERSION;
 
 const env = {
   NEXT_TELEMETRY_DISABLED: "1",
   NEXT_PUBLIC_APP_VERSION: version,
-  NEXT_PUBLIC_APP_VERSION_COMMIT: isDeployment ? process.env.VERCEL_GIT_COMMIT_SHA : "dev",
-  NEXT_PUBLIC_REPOSITORY_URL: isDeployment
-    ? `https://github.com/${process.env.VERCEL_GIT_REPO_OWNER}/${process.env.VERCEL_GIT_REPO_SLUG}`
-    : (process.env.NEXT_PUBLIC_APP_REPOSITORY_URL ?? "no repository"),
-  NEXT_PUBLIC_SITE_URL: isDeployment
-    ? (process.env.NEXT_PUBLIC_SITE_URL ?? `https://${process.env.VERCEL_BRANCH_URL}`)
-    : "http://localhost:3000",
-  NEXTAUTH_URL: `${
-    isDeployment
-      ? (process.env.NEXT_PUBLIC_SITE_URL ?? `https://${process.env.VERCEL_BRANCH_URL}`)
-      : "http://localhost:3000"
-  }/api/auth`,
+  NEXT_PUBLIC_APP_VERSION_COMMIT: isDeployment ? process.env.SOURCE_VERSION : "dev",
 };
 
 if (isDeployment) {
@@ -35,12 +24,7 @@ if (isDeployment) {
 
 const csp = {
   "default-src": ["'none'"],
-  "connect-src": [
-    "'self'",
-    "https://*.gouv.fr",
-    process.env.APP_ENV === "preprod" && "https://vercel.live",
-    process.env.NODE_ENV === "development" && "http://localhost",
-  ],
+  "connect-src": ["'self'", "https://*.gouv.fr", process.env.NODE_ENV === "development" && "http://localhost"],
   "font-src": ["'self'"],
   "media-src": ["'self'"],
   "img-src": ["'self'", "data:", "espace-membre.incubateur.net"],
@@ -48,7 +32,6 @@ const csp = {
     "'self'",
     "'unsafe-inline'",
     process.env.NEXT_PUBLIC_MATOMO_URL,
-    process.env.APP_ENV === "preprod" && "https://vercel.live",
     process.env.NODE_ENV === "development" && "'unsafe-eval' http://localhost",
   ],
   "style-src": ["'self'", "'unsafe-inline'"],
@@ -56,7 +39,7 @@ const csp = {
   "frame-ancestors": ["'self'"],
   "base-uri": ["'self'", "https://*.gouv.fr"],
   "form-action": ["'self'", "https://*.gouv.fr"],
-  "frame-src": [process.env.APP_ENV === "preprod" ? "https://vercel.live" : "'none'"],
+  "frame-src": ["'none'"],
   ...(process.env.NODE_ENV !== "development" && {
     "block-all-mixed-content": [],
     "upgrade-insecure-requests": [],
@@ -70,6 +53,7 @@ const ContentSecurityPolicy = Object.entries(csp)
 /** @type {import('next').NextConfig} */
 const config = {
   poweredByHeader: false,
+  output: "standalone",
   webpack: (/** @type {import("webpack").Configuration} */ config, options) => {
     config.module?.rules?.push({
       test: /\.(woff2|webmanifest|ttf)$/,
@@ -119,7 +103,7 @@ const config = {
       {
         protocol: "https",
         hostname: "espace-membre.incubateur.net",
-        pathname: "/api/member/*/image",
+        pathname: "/api/public/member/*/image",
         port: "",
         search: "",
       },

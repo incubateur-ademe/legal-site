@@ -18,10 +18,11 @@ export const UserHeaderItem = () => {
         <>
           {session.data.user.image ? (
             <Image
-              src={new URL(session.data.user.image, config.api.espaceMembre.url).toString()}
+              src={new URL(session.data.user.image, config.espaceMembre.url).toString()}
               alt="Avatar"
               width={40}
               height={40}
+              className="rounded-full"
             />
           ) : (
             <InitialsAvatar name={session.data.user.name || "Anon User"} />

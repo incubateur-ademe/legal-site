@@ -125,9 +125,6 @@ export const MembershipRuleSelect = <
 
             return (
               <Fragment key={field.id}>
-                {/* <input type="hidden" {...register(`${formKey}.${index}.rule`)} />
-                {withTtl && <input type="hidden" {...register(`${formKey}.${index}.ttlStart`)} />}
-                {withTtl && <input type="hidden" {...register(`${formKey}.${index}.ttlEnd`)} value={formattedTtlEnd} />} */}
                 <HoverToggler
                   className="flex-0"
                   normal={

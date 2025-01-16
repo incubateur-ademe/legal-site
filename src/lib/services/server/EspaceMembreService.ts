@@ -12,8 +12,8 @@ import { type Service } from "../types";
 
 export class EspaceMembreService implements Service {
   private readonly client = new EspaceMembreClient({
-    apiKey: config.api.espaceMembre.apiKey,
-    endpointUrl: config.api.espaceMembre.url,
+    apiKey: config.espaceMembre.apiKey,
+    endpointUrl: config.espaceMembre.url,
     fetchOptions: {
       next: {
         revalidate: 3600,

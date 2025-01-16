@@ -1,14 +1,10 @@
 import Badge from "@codegouvfr/react-dsfr/Badge";
-import Header, { type HeaderProps } from "@codegouvfr/react-dsfr/Header";
+import Header from "@codegouvfr/react-dsfr/Header";
 
 import { Brand } from "@/components/Brand";
 import { config } from "@/config";
 
-export interface PublicHeaderProps {
-  operatorLogo: HeaderProps["operatorLogo"];
-}
-
-export const PublicHeader = ({ operatorLogo }: PublicHeaderProps) => (
+export const PublicHeader = () => (
   <Header
     brandTop={<Brand />}
     homeLinkProps={{
@@ -17,7 +13,7 @@ export const PublicHeader = ({ operatorLogo }: PublicHeaderProps) => (
     }}
     serviceTitle={
       <>
-        {config.name}
+        {config.brand.name}
         &nbsp;
         <Badge as="span" noIcon severity="success">
           Beta
@@ -29,7 +25,7 @@ export const PublicHeader = ({ operatorLogo }: PublicHeaderProps) => (
         )}
       </>
     }
-    operatorLogo={operatorLogo}
+    operatorLogo={config.brand.operator.enable ? config.brand.operator.logo : undefined}
     classes={{
       operator: "shimmer",
     }}
