@@ -1,1 +1,1 @@
-web: import_gpg.sh && yarn start
+web: ./scripts/import_gpg.sh && yarn start
