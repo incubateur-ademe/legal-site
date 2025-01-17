@@ -20,37 +20,32 @@
   },
   "env": {
     "APP_ENV": {
-      "description": "État applicatif custom. Valeurs possibles : 'review', 'staging', 'dev', ou 'prod'",
       "value": "review"
     },
     "MAINTENANCE_MODE": {
-      "description": "Affiche ou non une page de maintenance au lieu d'une navigation normale.",
       "value": "false"
     },
     "NODE_ENV": {
-      "description": "Node environment",
       "value": "production"
     },
     "NEXT_PUBLIC_BRAND_NAME": {
-      "description": "Nom de la marque",
       "generator": "template",
       "template": "%APP%"
     },
     "TEMPLATES_GIT_MAIN_BRANCH": {
-      "description": "Nom de la branche principale du dépôt git contenant les templates",
       "generator": "template",
       "template": "%APP%"
     },
     "TEMPLATES_GIT_URL": {
-      "description": "URL du dépôt git contenant les templates",
       "value": "https://github.com/incubateur-ademe/pages-legales-faciles-db-staging"
     },
     "SECURITY_JWT_SECRET": {
-      "description": "Secret pour la génération des JWT",
+      "generator": "secret"
+    },
+    "SECURITY_WEBHOOK_SECRET": {
       "generator": "secret"
     },
     "REDIS_URL": {
-      "description": "URL du serveur Redis",
       "value": "$SCALINGO_REDIS_URL"
     },
     "AUTH_URL": {
@@ -61,11 +56,9 @@
       "value": "1"
     },
     "NEXT_PUBLIC_REPOSITORY_URL": {
-      "description": "URL du dépôt git du projet",
       "value": "https://github.com/incubateur-ademe/pages-legales-faciles"
     },
     "NEXT_PUBLIC_SITE_URL": {
-      "description": "URL du site",
       "generator": "url"
     }
   }
