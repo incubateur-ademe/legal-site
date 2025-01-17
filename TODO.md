@@ -31,7 +31,7 @@
 - [ ] possibilité de rollback à une version précédente (ajout d'une version rollback comme nouvelle version)
 - [x] anticiper le fait d'avoir plusieurs mentions legales si plusieurs produit (d'ou le "[variableId]"), sinon "default" par défaut 
 - [ ] GPG pour les commits
-- [ ] teardown "db" review app/pr avec github actions
+- [x] teardown "db" review app/pr avec github actions
 
 ## Navigation
 |- Accueil

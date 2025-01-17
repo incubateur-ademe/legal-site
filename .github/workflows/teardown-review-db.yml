@@ -1,0 +1,23 @@
+name: Teardown review db on PR close
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  teardown-review-db:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Teardown review db for ${{ vars.SCALINGO_STAGING_APP_NAME }}-pr${{ github.event.pull_request.id }}
+        env:
+          DB_STAGING_PAT: ${{ secrets.DB_STAGING_PAT }}
+        run: |
+          BRANCH_NAME="${{ vars.SCALINGO_STAGING_APP_NAME }}-pr${{ github.event.pull_request.id }}"
+          DB_STAGING_REPO="${{ vars.DB_STAGING_REPO }}"
+
+          curl -X DELETE \
+            -H "Authorization: token $DB_STAGING_PAT" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/$DB_STAGING_REPO/git/refs/heads/$BRANCH_NAME
