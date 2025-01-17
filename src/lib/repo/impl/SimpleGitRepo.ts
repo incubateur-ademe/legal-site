@@ -60,9 +60,8 @@ export class SimpleGitRepo implements IGitRepo {
     if (withPull) {
       await this.git.fetch(this.remote, ["-p"]);
       await this.git.checkout(config.templates.git.mainBranch);
-      await this.git.pull(this.remote, config.templates.git.mainBranch, {
-        // "--set-upstream-to": `${this.remote}/${config.templates.git.mainBranch}`,
-      });
+      await this.git.branch({ "--set-upstream-to": `${this.remote}/${config.templates.git.mainBranch}` });
+      await this.git.pull(this.remote, config.templates.git.mainBranch);
     }
   }
 
