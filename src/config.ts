@@ -2,7 +2,7 @@ import { ensureApiEnvVar, ensureNextEnvVar } from "@/utils/os";
 import { isTruthy } from "@/utils/string";
 
 export const config = {
-  env: ensureApiEnvVar<"dev" | "prod" | "staging">(process.env.APP_ENV, "dev"),
+  env: ensureApiEnvVar<"dev" | "prod" | "review" | "staging">(process.env.APP_ENV, "dev"),
   _seeding: ensureApiEnvVar(process.env._SEEDING, isTruthy, false),
   maintenance: ensureApiEnvVar(process.env.MAINTENANCE_MODE, isTruthy, false),
   host: ensureNextEnvVar(process.env.NEXT_PUBLIC_SITE_URL, "http://localhost:3000"),

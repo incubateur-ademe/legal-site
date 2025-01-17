@@ -15,7 +15,7 @@ export const GitManagement = () => {
       legend="Git management (all operations includes a revalidation of the layout cache)"
       elements={[
         <ButtonsGroup
-          key={0}
+          key={`git-buttons`}
           inlineLayoutWhen="sm and up"
           buttonsEquisized
           buttons={[
@@ -33,7 +33,7 @@ export const GitManagement = () => {
         />,
         <Input
           label="Git result"
-          key={1}
+          key={`git-result`}
           textArea
           disabled
           nativeTextAreaProps={{

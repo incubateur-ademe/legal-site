@@ -1,9 +1,11 @@
 import { unauthorized } from "next/navigation";
 
+import { ClientOnly } from "@/components/utils/ClientOnly";
 import { Container } from "@/dsfr";
 import { auth } from "@/lib/next-auth/auth";
 
 import { GitManagement } from "./GitManagement";
+import { RedisManagement } from "./RedisManagement";
 
 const AdminPage = async () => {
   const session = await auth();
@@ -15,7 +17,10 @@ const AdminPage = async () => {
   return (
     <Container my="4w">
       <h1>Admin</h1>
-      <GitManagement />
+      <ClientOnly>
+        <GitManagement />
+        <RedisManagement />
+      </ClientOnly>
     </Container>
   );
 };

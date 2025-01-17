@@ -3,27 +3,10 @@ import { EspaceMembreProvider } from "@incubateur-ademe/next-auth-espace-membre-
 import NextAuth from "next-auth";
 import { type Adapter, type AdapterUser } from "next-auth/adapters";
 import Nodemailer from "next-auth/providers/nodemailer";
-import { type ConnectionOptions } from "tls";
-import { createStorage } from "unstorage";
-import unstorageRedisDriver from "unstorage/drivers/redis";
 
 import { config } from "@/config";
 
-const redis = createStorage({
-  driver: unstorageRedisDriver(
-    config.redis.url
-      ? {
-          url: config.redis.url,
-        }
-      : {
-          base: config.redis.base,
-          host: config.redis.host,
-          port: config.redis.port,
-          tls: config.redis.tls as unknown as ConnectionOptions, // https://unstorage.unjs.io/drivers/redis
-          password: config.redis.password,
-        },
-  ),
-});
+import { redis } from "../db/redis/storage";
 
 declare module "next-auth" {
   interface Session {

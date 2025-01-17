@@ -7,7 +7,7 @@
   "formation": {
     "web": {
       "amount": 1,
-      "size": "M"
+      "size": "S"
     }
   },
   "addons": [
@@ -20,8 +20,8 @@
   },
   "env": {
     "APP_ENV": {
-      "description": "État applicatif custom. Valeurs possibles : 'staging', 'dev', ou 'prod'",
-      "value": "staging"
+      "description": "État applicatif custom. Valeurs possibles : 'review', 'staging', 'dev', ou 'prod'",
+      "value": "review"
     },
     "MAINTENANCE_MODE": {
       "description": "Affiche ou non une page de maintenance au lieu d'une navigation normale.",

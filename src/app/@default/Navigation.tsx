@@ -1,12 +1,13 @@
 "use client";
 
-import { MainNavigation } from "@codegouvfr/react-dsfr/MainNavigation";
+import { MainNavigation, type MainNavigationProps } from "@codegouvfr/react-dsfr/MainNavigation";
 import { useSelectedLayoutSegment } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export const Navigation = () => {
   const segment = useSelectedLayoutSegment("default");
 
-  // const { data: session, status } = useSession();
+  const { data: session, status } = useSession();
 
   return (
     <MainNavigation
@@ -39,46 +40,17 @@ export const Navigation = () => {
           },
           isActive: segment === "startup",
         },
-        // ...(status === "authenticated"
-        //   ? ((): MainNavigationProps.Item[] => {
-        //       switch (session.user.data.type) {
-        //         case "Membre":
-        //           return [
-        //             {
-        //               text: "Gérer vos CRA",
-        //               isActive: segments.includes("cra") && segments.includes("declaration"),
-        //               linkProps: {
-        //                 href: "/cra/declaration",
-        //               },
-        //             },
-        //           ];
-        //         case "Intra":
-        //           return [
-        //             {
-        //               text: "Suivre les CRA",
-        //               isActive: segments.includes("cra") && segments.includes("validation"),
-        //               linkProps: {
-        //                 href: "/cra/validation",
-        //               },
-        //             },
-        //             {
-        //               text: "Demander un devis",
-        //               isActive: segment === "cra",
-        //               linkProps: {
-        //                 href: "#",
-        //                 onClick(evt) {
-        //                   evt.preventDefault();
-        //                   alert(`"Demander un devis" en construction 🚧`);
-        //                 },
-        //               },
-        //             },
-        //           ];
-        //         case "Gestionnaire":
-        //         default:
-        //           return [];
-        //       }
-        //     })()
-        //   : []),
+        ...(((status === "authenticated" &&
+          session.user.isAdmin && [
+            {
+              text: "Admin",
+              linkProps: {
+                href: "/admin",
+              },
+              isActive: segment === "admin",
+            },
+          ]) ||
+          []) as MainNavigationProps["items"]),
       ]}
     />
   );

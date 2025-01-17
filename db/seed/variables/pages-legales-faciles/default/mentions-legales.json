@@ -7,11 +7,11 @@
   "variables": {
     "nom_produit": "Pages Légales Faciles",
     "nom_editeur": "Direction interministérielle du numérique (DINUM)",
-    "addresse_editeur": "20, avenue de Ségur - 75007 Paris",
+    "adresse_editeur": "20, avenue de Ségur - 75007 Paris",
     "telephone_editeur": "01 71 21 11 33",
     "email_editeur": "contact@beta.gouv.fr",
     "directeur_publication": "Directrice interministérielle du numérique",
     "nom_hebergeur": "Scalingo",
-    "addresse_hebergeur": "18 rue de la Ville l’Évêque, 75008 Paris"
+    "adresse_hebergeur": "18 rue de la Ville l’Évêque, 75008 Paris"
   }
 }
