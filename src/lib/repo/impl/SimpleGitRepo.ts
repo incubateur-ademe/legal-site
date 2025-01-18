@@ -18,7 +18,6 @@ import { CONFIG_EXT, GROUP_FILE, type IGitRepo, TEMPLATE_DIR, TEMPLATE_EXT, VARI
 
 export class SimpleGitRepo implements IGitRepo {
   private readonly git: SimpleGit;
-  // private readonly remote: "local" | "origin" = config.templates.git.provider === "local" ? "local" : "origin";
   private readonly remote = "origin";
   private configDone = false;
   private readonly tmpdir = path.resolve(config.templates.tmpdir);
@@ -48,10 +47,6 @@ export class SimpleGitRepo implements IGitRepo {
         .addConfig("user.name", config.templates.git.committer.name)
         .addConfig("pull.rebase", "false");
 
-      // const remotes = await this.git.getRemotes();
-      // if (!remotes.some(r => r.name === this.remote)) {
-      //   await this.git.addRemote(this.remote, this.getAuthRemoteUrl());
-      // }
       await this.git.removeRemote(this.remote).addRemote(this.remote, this.getAuthRemoteUrl());
 
       this.configDone = true;

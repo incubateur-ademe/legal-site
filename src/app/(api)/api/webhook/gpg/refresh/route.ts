@@ -17,7 +17,7 @@ export const GET = async (req: NextRequest) => {
   try {
     const { stderr, stdout } = await execFileAsync("./scripts/refresh_gpg_passphrase.sh");
     if (stderr) {
-      console.error(`[gpg-refresh] ${stderr}`);
+      console.error(`[gpg-refresh] ❌ ${stderr}`);
       return Response.json(
         {
           ok: false,
@@ -29,13 +29,14 @@ export const GET = async (req: NextRequest) => {
       );
     }
 
+    console.log(`[gpg-refresh] ✅ ${stdout}`);
     return Response.json({
       ok: true,
       message: stdout,
     });
   } catch (error) {
     const message = (error as Error).message;
-    console.error(`[gpg-refresh] ${message}`);
+    console.error(`[gpg-refresh] ❌ ${message}`);
     return Response.json(
       {
         ok: false,
