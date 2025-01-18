@@ -15,7 +15,7 @@ jobs:
         env:
           DB_STAGING_PAT: ${{ secrets.DB_STAGING_PAT }}
         run: |
-          BRANCH_NAME="${{ vars.SCALINGO_STAGING_APP_NAME }}-pr${{ github.event.pull_request.id }}"
+          BRANCH_NAME="${{ vars.SCALINGO_STAGING_APP_NAME }}-pr${{ github.event.pull_request.number }}"
           DB_STAGING_REPO="${{ vars.DB_STAGING_REPO }}"
 
           curl -X DELETE \
