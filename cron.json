@@ -1,7 +1,8 @@
 {
   "jobs": [
     {
-      "command": "0 0 * * * ./scripts/call_gpg_refresh_webhook.sh"
+      "command": "0 0 * * * ./scripts/call_gpg_refresh_webhook.sh",
+      "size": "S"
     }
   ]
 }
