@@ -1,8 +1,9 @@
 #!/bin/bash
 
+TEMPLATE_GIT_GPG_SIGNINKEY="$(gpg --list-secret-keys --keyid-format LONG | grep sec | awk '{print $2}' | cut -d'/' -f2)"
 # Vérifie et rafraîchit le cache GPG
 if [ -n "$TEMPLATES_GIT_GPG_PASSPHRASE" ]; then
-  echo "$TEMPLATES_GIT_GPG_PASSPHRASE" | gpg --batch --yes --pinentry-mode loopback --passphrase-fd 0 --sign <<< "refresh-cache" > /dev/null 2>&1
+  gpg --batch --yes --pinentry-mode loopback --default-key "$TEMPLATE_GIT_GPG_SIGNINKEY" --passphrase "$TEMPLATES_GIT_GPG_PASSPHRASE" --sign <<< "refresh-cache" > /dev/null 2>&1
   if [ $? -eq 0 ]; then
     echo "$(date): GPG cache refreshed successfully for 32 hours."
   else

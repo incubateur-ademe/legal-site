@@ -9,7 +9,7 @@ const priorities = {
 /** @type {import('next-sitemap').IConfig} */
 const config = {
   generateRobotsTxt: false,
-  siteUrl: isDeployment ? `https://${process.env.NEXT_PUBLIC_SITE_URL}` : "http://localhost:3000",
+  siteUrl: isDeployment ? `${process.env.NEXT_PUBLIC_SITE_URL}` : "http://localhost:3000",
   changefreq: "weekly",
   transform: async (config, path) => {
     return {
