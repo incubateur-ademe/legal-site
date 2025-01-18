@@ -12,36 +12,37 @@ variables:
   nom_hebergeur: Nom de l'hébergeur
   adresse_herbergeur: Adresse de l'hébergeur
 ---
-# Mentions légales de {{nom_produit}}
+# Mentions légales de {{ nom_produit }}
 
 ## Editeur de la Plateforme
-La Plateforme **{{nom_produit}}** est éditée par {{nom_editeur}} situé :
-<address>
-    {{ adresse_editeur }}
+La Plateforme **{{ nom_produit }}** est éditée par {{ nom_editeur }} situé :
+<address class="fr-mb-2w">
+    <span>{{ adresse_editeur }}</span>
     <br/>
-    <a href="tel:{{ telephone_editeur }}">{{ telephone_editeur }}</a>
+    <a class="fr-mt-0" href="tel:{{ telephone_editeur }}">{{ telephone_editeur }}</a>
     <br/>
     <a href="mailto:{{ email_editeur }}">{{ email_editeur }}</a>
 </address>
 
 ## Directeur de la publication
-{{directeur_publication}}
+{{ directeur_publication }}
 
 ## Hébergement de la Plateforme
-Ce site est hébergé en propre par {{ nom_hebergeur}} :
-<br />
-<address>{{ adresse_herbergeur }}</address>
+Ce site est hébergé en propre par {{ nom_hebergeur }} :
+
+<address class="fr-mb-2w">{{ adresse_herbergeur }}</address>
 
 ## Accessibilité
-La conformité aux normes d’accessibilité numérique est un objectif ultérieur mais nous tâchons de rendre ce site accessible à toutes et à tous.
+La conformité aux normes d'accessibilité numérique est un objectif ultérieur mais nous tâchons de rendre ce site accessible à toutes et à tous.
 
 ### Signaler un dysfonctionnement
-Si vous rencontrez un défaut d’accessibilité vous empêchant d’accéder à un contenu ou une fonctionnalité du site, merci de nous en faire part.
-Si vous n’obtenez pas de réponse rapide de notre part, vous êtes en droit de faire parvenir vos doléances ou une demande de saisine au Défenseur des droits.
+Si vous rencontrez un défaut d'accessibilité vous empêchant d'accéder à un contenu ou une fonctionnalité du site, merci de nous en faire part.
+Si vous n'obtenez pas de réponse rapide de notre part, vous êtes en droit de faire parvenir vos doléances ou une demande de saisine au Défenseur des droits.
 
 ### En savoir plus
-Pour en savoir plus sur la politique d’accessibilité numérique de l’État : http://references.modernisation.gouv.fr/accessibilite-numerique
+Pour en savoir plus sur la politique d'accessibilité numérique de l'État : [http://references.modernisation.gouv.fr/accessibilite-numerique](http://references.modernisation.gouv.fr/accessibilite-numerique)
 
 ## Sécurité
 Le site est protégé par un certificat électronique, matérialisé pour la grande majorité des navigateurs par un cadenas. Cette protection participe à la confidentialité des échanges.
-En aucun cas les services associés à la plateforme ne seront à l’origine d’envoi de courriels pour demander la saisie d’informations personnelles.
+En aucun cas les services associés à la plateforme ne seront à l'origine d'envoi de courriels pour demander la saisie d'informations personnelles.
+

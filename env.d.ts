@@ -107,12 +107,12 @@ Française`
          * No dist value.  
          * {@link [Local Env Dist](.env.development)}
          */
-        TEMPLATES_GIT_GPG_PRIVATE_KEY?: string;
+        TEMPLATES_GIT_GPG_PRIVATE_KEY_BASE64?: string;
         /**
          * No dist value.  
          * {@link [Local Env Dist](.env.development)}
          */
-        TEMPLATES_GIT_GPG_PASSPHRASE?: string;
+        TEMPLATES_GIT_GPG_PUBLIC_KEY_BASE64?: string;
         /**
          * Dist: `bot@email.com`  
          * {@link [Local Env Dist](.env.development)}
@@ -178,6 +178,11 @@ Française`
          * {@link [Local Env Dist](.env.development)}
          */
         SECURITY_JWT_SECRET?: string;
+        /**
+         * Dist: `="sikretfordevonly"`  
+         * {@link [Local Env Dist](.env.development)}
+         */
+        SECURITY_WEBHOOK_SECRET?: string;
         /**
          * Dist: `pages-legales-faciles`  
          * {@link [Local Env Dist](.env.development)}
@@ -291,8 +296,8 @@ declare type ProcessEnvCustomKeys =
     | 'TEMPLATES_TMPDIR'
     | 'TEMPLATES_ADMINS'
     | 'TEMPLATES_GIT_URL'
-    | 'TEMPLATES_GIT_GPG_PRIVATE_KEY'
-    | 'TEMPLATES_GIT_GPG_PASSPHRASE'
+    | 'TEMPLATES_GIT_GPG_PRIVATE_KEY_BASE64'
+    | 'TEMPLATES_GIT_GPG_PUBLIC_KEY_BASE64'
     | 'TEMPLATES_GIT_COMMITTER_EMAIL'
     | 'TEMPLATES_GIT_COMMITTER_NAME'
     | 'TEMPLATES_GIT_MAIN_BRANCH'
@@ -306,6 +311,7 @@ declare type ProcessEnvCustomKeys =
     | 'MAILER_SMTP_SSL'
     | 'MAILER_FROM_EMAIL'
     | 'SECURITY_JWT_SECRET'
+    | 'SECURITY_WEBHOOK_SECRET'
     | 'REDIS_BASE'
     | 'REDIS_HOST'
     | 'REDIS_PORT'

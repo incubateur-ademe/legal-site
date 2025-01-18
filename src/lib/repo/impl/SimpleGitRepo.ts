@@ -18,7 +18,6 @@ import { CONFIG_EXT, GROUP_FILE, type IGitRepo, TEMPLATE_DIR, TEMPLATE_EXT, VARI
 
 export class SimpleGitRepo implements IGitRepo {
   private readonly git: SimpleGit;
-  // private readonly remote: "local" | "origin" = config.templates.git.provider === "local" ? "local" : "origin";
   private readonly remote = "origin";
   private configDone = false;
   private readonly tmpdir = path.resolve(config.templates.tmpdir);
@@ -48,16 +47,6 @@ export class SimpleGitRepo implements IGitRepo {
         .addConfig("user.name", config.templates.git.committer.name)
         .addConfig("pull.rebase", "false");
 
-      if (config.templates.git.gpgPrivateKey) {
-        await this.git
-          .addConfig("user.signingkey", config.templates.git.gpgPrivateKey)
-          .addConfig("commit.gpgSign", "true");
-      }
-
-      // const remotes = await this.git.getRemotes();
-      // if (!remotes.some(r => r.name === this.remote)) {
-      //   await this.git.addRemote(this.remote, this.getAuthRemoteUrl());
-      // }
       await this.git.removeRemote(this.remote).addRemote(this.remote, this.getAuthRemoteUrl());
 
       this.configDone = true;
@@ -66,9 +55,8 @@ export class SimpleGitRepo implements IGitRepo {
     if (withPull) {
       await this.git.fetch(this.remote, ["-p"]);
       await this.git.checkout(config.templates.git.mainBranch);
-      await this.git.pull(this.remote, config.templates.git.mainBranch, {
-        // "--set-upstream-to": `${this.remote}/${config.templates.git.mainBranch}`,
-      });
+      await this.git.branch({ "--set-upstream-to": `${this.remote}/${config.templates.git.mainBranch}` });
+      await this.git.pull(this.remote, config.templates.git.mainBranch);
     }
   }
 
@@ -375,7 +363,8 @@ export class SimpleGitRepo implements IGitRepo {
     await this.init(false);
     const branches = await this.git.branch();
     if (branches.all.includes(config.templates.git.mainBranch)) {
-      throw new UnexpectedError(`Branch ${config.templates.git.mainBranch} already exists. Aborting seeding.`);
+      console.info(`Branch ${config.templates.git.mainBranch} already exists. Aborting seeding.`);
+      return;
     }
 
     console.info("↳ Creating branch", config.templates.git.mainBranch);
