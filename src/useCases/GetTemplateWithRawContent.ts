@@ -7,7 +7,7 @@ import { AbstractCachedUseCase } from "./AbstractCacheUseCase";
 export interface GetTemplateWithRawContentIntput {
   groupId: string;
   templateId: GitSha7;
-  type: TemplateType;
+  templateType: TemplateType;
 }
 
 export interface GetTemplateWithRawContentOutput {
@@ -31,10 +31,10 @@ export class GetTemplateWithRawContent extends AbstractCachedUseCase<
   public async cachedExecute({
     groupId,
     templateId,
-    type,
+    templateType,
   }: GetTemplateWithRawContentIntput): Promise<GetTemplateWithRawContentOutput> {
-    const template = await this.gitRepo.getTemplate(groupId, type, templateId);
-    const fullRaw = await this.gitRepo.getTemplateRaw(groupId, type, templateId);
+    const template = await this.gitRepo.getTemplate(groupId, templateType, templateId);
+    const fullRaw = await this.gitRepo.getTemplateRaw(groupId, templateType, templateId);
     const raw = this.mdxService.removeMetadataFromRaw(fullRaw);
 
     return {

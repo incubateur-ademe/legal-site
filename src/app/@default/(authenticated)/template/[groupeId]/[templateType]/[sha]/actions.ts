@@ -33,6 +33,7 @@ export async function saveTemplate(
       data: sha,
     };
   } catch (error) {
+    console.log("[saveTemplate]", error);
     return {
       ok: false,
       error: (error as Error).message,

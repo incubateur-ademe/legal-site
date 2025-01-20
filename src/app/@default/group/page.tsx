@@ -107,7 +107,7 @@ const GroupListPage = async () => {
                               text={
                                 <Link
                                   className={fr.cx("fr-mb-1v")}
-                                  href={`/template/${type}/${group.id}/${hasTemplate ? hasTemplate.sha : "new"}`}
+                                  href={`/template/${group.id}/${type}/${hasTemplate ? hasTemplate.sha : "new"}`}
                                 >
                                   {TemplateTypeName[type]}
                                 </Link>

@@ -22,20 +22,21 @@ import { type Template } from "@/lib/model/Template";
 import { getService } from "@/lib/services";
 import { type SimpleObject } from "@/utils/types";
 
-import { saveTemplate } from "../actions";
+import { saveTemplate } from "./[groupeId]/[templateType]/[sha]/actions";
 import styles from "./MdxEditor.module.scss";
 
 void preloadMonacoReact();
 
 const mdxEditorFormSchema = z
   .object({
+    description: z.string().optional().default(""),
     variables: z.array(
       z.object({
         name: z.string().min(1, "Le nom de la variable est requis"),
         description: z.string().optional().default(""),
       }),
     ),
-    mdxContent: z.string(),
+    mdxContent: z.string().nonempty("Le contenu ne peut pas être vide"),
   })
   .superRefine(({ variables, mdxContent }, ctx) => {
     const names = variables.map(({ name }) => name);
@@ -63,11 +64,12 @@ const mdxEditorFormSchema = z
 type MdxEditorFormType = z.infer<typeof mdxEditorFormSchema>;
 
 interface MdxEditorProps {
+  isNew?: boolean;
   raw: string;
   template: Template;
 }
 const mdx = getService("mdx");
-export const MdxEditor = ({ raw, template }: MdxEditorProps) => {
+export const MdxEditor = ({ raw, template, isNew }: MdxEditorProps) => {
   const { isDark } = useIsDark();
   const [mdxSource, setMdxSource] = useState<string>(raw);
   const [content, setContent] = useState<ReactElement | null>(null);
@@ -87,6 +89,7 @@ export const MdxEditor = ({ raw, template }: MdxEditorProps) => {
     mode: "onChange",
     resolver: zodResolver(mdxEditorFormSchema),
     defaultValues: {
+      description: template.description,
       variables: Object.entries(template.variables).map(([name, description]) => ({ name, description })),
       mdxContent: raw,
     },
@@ -109,12 +112,14 @@ export const MdxEditor = ({ raw, template }: MdxEditorProps) => {
       shouldDirty: true,
     });
     void trigger("variables");
+    void trigger("mdxContent");
   }
 
   async function onSubmit(data: MdxEditorFormType) {
     const response = await saveTemplate(
       {
         ...template,
+        description: data.description,
         variables: data.variables.reduce<SimpleObject<string>>((acc, { name, description }) => {
           acc[name] = description;
           return acc;
@@ -124,7 +129,7 @@ export const MdxEditor = ({ raw, template }: MdxEditorProps) => {
     );
 
     if (response.ok) {
-      redirect(`/template/${template.type}/${template.groupId}/${response.data}/edit`);
+      redirect(`/template/${template.groupId}/${template.type}/${response.data}/edit`);
     }
     setSaveError(response.error);
   }
@@ -140,43 +145,59 @@ export const MdxEditor = ({ raw, template }: MdxEditorProps) => {
         setContent(content);
       })();
     }
-  }, [mdxSource, getValues, isValid]);
+  }, [mdxSource, getValues, isValid, mdxService]);
 
   return (
     <>
       <Container>
         <ClientAnimate>
           {saveError && (
-            <Alert title="Erreur lors de la sauvegarde" description={saveError} severity="error" closable />
+            <Alert
+              className={fr.cx("fr-mb-4w")}
+              title="Erreur lors de la sauvegarde"
+              description={saveError}
+              severity="error"
+              closable
+            />
           )}
         </ClientAnimate>
       </Container>
       <form noValidate onSubmit={e => void handleSubmit(onSubmit)(e)}>
-        <ButtonsGroup
-          inlineLayoutWhen="sm and up"
-          buttonsEquisized
-          buttons={[
-            {
-              children: "Retour",
-              linkProps: {
-                href: "/template",
+        <Container className={fr.cx("fr-mb-4w")}>
+          <ButtonsGroup
+            inlineLayoutWhen="sm and up"
+            buttonsEquisized
+            buttons={[
+              {
+                children: "Retour",
+                linkProps: {
+                  href: "/template",
+                },
+                iconId: "fr-icon-arrow-left-line",
+                iconPosition: "left",
+                priority: "secondary",
               },
-              iconId: "fr-icon-arrow-left-line",
-              iconPosition: "left",
-              priority: "secondary",
-            },
-            {
-              children: "Sauvegarder",
-              disabled: !isValid || !isDirty,
-              nativeButtonProps: {
-                type: "submit",
+              {
+                children: "Sauvegarder",
+                disabled: !isValid || !isDirty,
+                nativeButtonProps: {
+                  type: "submit",
+                },
+                iconId: "fr-icon-save-line",
+                iconPosition: "right",
+                priority: "primary",
               },
-              iconId: "fr-icon-save-line",
-              iconPosition: "right",
-              priority: "primary",
-            },
-          ]}
-        />
+            ]}
+          />
+          <Input
+            label="Description"
+            state={errors.description && "error"}
+            stateRelatedMessage={errors.description?.message}
+            nativeInputProps={{
+              ...register("description"),
+            }}
+          />
+        </Container>
         <Grid haveGutters className={styles.editor}>
           <GridCol base={2} className="h-full overflow-y-auto">
             <RecapCard
@@ -255,9 +276,20 @@ export const MdxEditor = ({ raw, template }: MdxEditorProps) => {
                 wordWrap: "bounded",
               }}
             />
+            ,
           </GridCol>
           <GridCol base={5} className="overflow-y-auto h-full">
-            <RecapCard title="Aperçu" content={content} />
+            <RecapCard
+              title={
+                <>
+                  Aperçu{" "}
+                  {errors.mdxContent?.message && (
+                    <span className={fr.cx("fr-error-text")}>{errors.mdxContent.message}</span>
+                  )}
+                </>
+              }
+              content={content}
+            />
           </GridCol>
         </Grid>
       </form>

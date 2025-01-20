@@ -3,11 +3,15 @@ import { type IGitRepo } from "@/lib/repo/IGitRepo";
 
 import { type UseCase } from "./types";
 
-export class ListTemplates implements UseCase<never, Template[]> {
+export interface ListTemplatesInput {
+  groupId?: string;
+}
+
+export class ListTemplates implements UseCase<ListTemplatesInput, Template[]> {
   constructor(private readonly gitRepo: IGitRepo) {}
 
-  public async execute(): Promise<Template[]> {
-    const templates = await this.gitRepo.getAllTemplates();
+  public async execute({ groupId }: ListTemplatesInput): Promise<Template[]> {
+    const templates = await this.gitRepo.getAllTemplates(groupId);
     return templates;
   }
 }

@@ -20,7 +20,7 @@ import { toFrenchDateHour } from "@/utils/data";
 interface Params {
   groupId: string;
   sha: GitSha7;
-  type: TemplateType;
+  templateType: TemplateType;
 }
 
 interface Props {
@@ -29,12 +29,12 @@ interface Props {
 
 const TemplateView = async ({ params }: Props) => {
   const session = await auth();
-  const { groupId, sha, type } = await params;
+  const { groupId, sha, templateType } = await params;
   const mdxService = await getService("mdx");
 
   const useCase = new GetTemplateWithDisplayableContent(mdxService, gitRepo);
 
-  const { content, template, raw } = await useCase.execute({ groupId, templateId: sha, type });
+  const { content, template, raw } = await useCase.execute({ groupId, templateId: sha, templateType });
   const variablesEntries = Object.entries(template.variables);
 
   const hasNewerVersion = template.versions[0].sha !== sha;
@@ -71,7 +71,7 @@ const TemplateView = async ({ params }: Props) => {
             children: "Dupliquer",
             disabled: true,
             // linkProps: {
-            //   href: `/template/${type}/${groupId}/${sha}/duplicate`,
+            //   href: `/template/${groupId}/${type}/${sha}/duplicate`,
             // },
             iconId: "ri-file-copy-line",
             iconPosition: "right",
@@ -81,7 +81,7 @@ const TemplateView = async ({ params }: Props) => {
           {
             children: "Éditer",
             linkProps: {
-              href: `/template/${type}/${groupId}/${sha}/edit`,
+              href: `/template/${groupId}/${templateType}/${sha}/edit`,
             },
             iconId: "fr-icon-edit-line",
             iconPosition: "right",
@@ -97,7 +97,7 @@ const TemplateView = async ({ params }: Props) => {
           description={
             <>
               Vous regardez actuellement une ancienne version du template. Pour aller à la dernière version cliquez{" "}
-              <Link href={`/template/${type}/${groupId}/${template.versions[0].sha}`}>ici</Link>.
+              <Link href={`/template/${groupId}/${templateType}/${template.versions[0].sha}`}>ici</Link>.
             </>
           }
         />
@@ -117,7 +117,7 @@ const TemplateView = async ({ params }: Props) => {
                 <br />
                 Description : <b>{template.description}</b>
                 <br />
-                Type : <Tag small>{TemplateTypeName[type]}</Tag>
+                Type : <Tag small>{TemplateTypeName[templateType]}</Tag>
                 <br />
                 Groupe : <Tag small>{groupId}</Tag>
                 <br />
@@ -160,7 +160,7 @@ const TemplateView = async ({ params }: Props) => {
                       {version.sha === sha ? (
                         version.sha
                       ) : (
-                        <Link href={`/template/${type}/${groupId}/${version.sha}`}>{version.sha}</Link>
+                        <Link href={`/template/${groupId}/${templateType}/${version.sha}`}>{version.sha}</Link>
                       )}{" "}
                       <Tooltip title={version.comment || "(pas de commentaires)"} kind="hover" /> (
                       {toFrenchDateHour(version.date)}) {version.sha === sha && <Tag small>Actuelle</Tag>}

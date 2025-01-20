@@ -13,7 +13,7 @@ const Template = async () => {
   const session = await auth();
   const useCase = new ListTemplates(gitRepo);
 
-  const templates = await useCase.execute();
+  const templates = await useCase.execute({});
 
   return (
     <Container my="4w">
@@ -58,7 +58,7 @@ const Template = async () => {
           row: [
             {
               children: (
-                <Link href={`/template/${template.type}/${template.groupId}/${template.sha}`}>{template.groupId}</Link>
+                <Link href={`/template/${template.groupId}/${template.type}/${template.sha}`}>{template.groupId}</Link>
               ),
             },
             {

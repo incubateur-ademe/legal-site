@@ -27,6 +27,7 @@ export interface IGitRepo {
   getGroups(): Promise<Group[]>;
   getTemplate(groupId: string, type: TemplateType, templateVersion?: GitSha7): Promise<Template>;
   getTemplateRaw(groupId: string, type: TemplateType, templateVersion?: GitSha7): Promise<string>;
+  getTemplatesForGroup(groupId: string): Promise<Template[]>;
   getVariableForPage(
     startupId: IGitRepo.StartupId,
     variableId: IGitRepo.VariableId,

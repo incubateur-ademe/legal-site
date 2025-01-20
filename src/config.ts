@@ -77,6 +77,7 @@ export const config = {
       ],
     ),
     git: {
+      gpgEnabled: !!process.env.TEMPLATES_GIT_GPG_PRIVATE_KEY_BASE64 && process.env.TEMPLATES_GIT_GPG_PUBLIC_KEY_BASE64,
       url: ensureApiEnvVar(
         process.env.TEMPLATES_GIT_URL,
         "https://github.com/incubateur-ademe/legal-site-templates-test",

@@ -9,7 +9,7 @@ import { AbstractCachedUseCase } from "./AbstractCacheUseCase";
 export interface GetTemplateWithDisplayableContentIntput {
   groupId: string;
   templateId: GitSha7;
-  type: TemplateType;
+  templateType: TemplateType;
 }
 
 export interface GetTemplateWithDisplayableContentOutput {
@@ -34,10 +34,10 @@ export class GetTemplateWithDisplayableContent extends AbstractCachedUseCase<
   public async cachedExecute({
     groupId,
     templateId,
-    type,
+    templateType,
   }: GetTemplateWithDisplayableContentIntput): Promise<GetTemplateWithDisplayableContentOutput> {
-    const template = await this.gitRepo.getTemplate(groupId, type, templateId);
-    const fullRaw = await this.gitRepo.getTemplateRaw(groupId, type, templateId);
+    const template = await this.gitRepo.getTemplate(groupId, templateType, templateId);
+    const fullRaw = await this.gitRepo.getTemplateRaw(groupId, templateType, templateId);
     const content = await this.mdxService.renderRawAsComponentWithFakeVariables(fullRaw);
     const raw = this.mdxService.removeMetadataFromRaw(fullRaw);
 

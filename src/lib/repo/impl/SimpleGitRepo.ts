@@ -47,6 +47,10 @@ export class SimpleGitRepo implements IGitRepo {
         .addConfig("user.name", config.templates.git.committer.name)
         .addConfig("pull.rebase", "false");
 
+      if (!config.templates.git.gpgEnabled) {
+        await this.git.addConfig("commit.gpgSign", "false");
+      }
+
       await this.git.removeRemote(this.remote).addRemote(this.remote, this.getAuthRemoteUrl());
 
       this.configDone = true;
@@ -209,6 +213,10 @@ export class SimpleGitRepo implements IGitRepo {
     return this.git.show([`HEAD:${TEMPLATE_DIR}/${groupId}/${type}.${TEMPLATE_EXT}`]);
   }
 
+  public async getTemplatesForGroup(groupId: string): Promise<Template[]> {
+    return this.getAllTemplates(groupId);
+  }
+
   public async getVariableForPage(
     startupId: IGitRepo.StartupId,
     variableId: IGitRepo.VariableId,
@@ -233,8 +241,19 @@ export class SimpleGitRepo implements IGitRepo {
     comment?: string,
     author?: { email: string; name: string },
   ): Promise<GitSha7> {
-    const filePath = path.resolve(template.path);
-    const commitMessage = `template(${template.groupId}): ${template.type} - ${comment || "Update"}`;
+    let exists = false;
+    if (template.path) {
+      exists = fs.existsSync(template.path);
+    }
+
+    const filePath = exists
+      ? path.resolve(template.path)
+      : path.resolve(this.tmpdir, TEMPLATE_DIR, template.groupId, `${template.type}.${TEMPLATE_EXT}`);
+    if (!exists) {
+      await fsP.mkdir(path.dirname(filePath), { recursive: true });
+    }
+
+    const commitMessage = `template(${template.groupId}): ${template.type} - ${comment || exists ? "Update" : "Create"}`;
     await this.init();
     await fsP.writeFile(filePath, content);
     const commitResult = await this.git
