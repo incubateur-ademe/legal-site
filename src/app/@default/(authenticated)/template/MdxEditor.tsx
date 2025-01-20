@@ -22,7 +22,7 @@ import { type Template } from "@/lib/model/Template";
 import { getService } from "@/lib/services";
 import { type SimpleObject } from "@/utils/types";
 
-import { saveTemplate } from "./[groupeId]/[templateType]/[sha]/actions";
+import { saveTemplate } from "./actions";
 import styles from "./MdxEditor.module.scss";
 
 void preloadMonacoReact();
