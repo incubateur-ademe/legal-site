@@ -52,10 +52,10 @@
   resolved "https://registry.yarnpkg.com/@babel/helper-validator-identifier/-/helper-validator-identifier-7.25.9.tgz#24b64e2c3ec7cd3b3c547729b8d16871f22cbdc7"
   integrity sha512-Ed61U6XJc3CVRfkERJWDz4dJwKe7iLmmJsbOGu9wSloNSFttHV0I8g6UAgb7qnK5ly5bGLPd4oXZlxCdANBOWQ==
 
-"@codegouvfr/react-dsfr@^1.16.5-rc.0":
-  version "1.16.9"
-  resolved "https://registry.yarnpkg.com/@codegouvfr/react-dsfr/-/react-dsfr-1.16.9.tgz#7298e2a83e6c63b50364f6efb7cfbb9e3ec223df"
-  integrity sha512-I6298YKjmpEhONrOtr0HmwiGFCoPtU4hLr19xgiOHTcSG0xJ0c2yxtyNVd7Stn/vLCDn3tGU+cykanSNdp57AA==
+"@codegouvfr/react-dsfr@^1.16.10-rc.0":
+  version "1.16.10-rc.0"
+  resolved "https://registry.yarnpkg.com/@codegouvfr/react-dsfr/-/react-dsfr-1.16.10-rc.0.tgz#c2fe09fbce28256e492a0afad43989d776f1bbcf"
+  integrity sha512-ydHINP1nY6/hb7zStsmuDVfciZ76Ih8qrb2B7aFvUIcNYvkmHPtYgQi12p42H/onU75W351GIp84h0WLK+ieXA==
   dependencies:
     tsafe "^1.8.5"
     yargs-parser "^21.1.1"
@@ -253,10 +253,10 @@
   resolved "https://registry.yarnpkg.com/@img/sharp-win32-x64/-/sharp-win32-x64-0.33.5.tgz#56f00962ff0c4e0eb93d34a047d29fa995e3e342"
   integrity sha512-MpY/o8/8kj+EcnxwvrP4aTJSWw/aZ7JIGR4aBeZkZw5B7/Jn+tY9/VNwtcoGmdT7GfggGIU4kygOMSbYnOrAbg==
 
-"@incubateur-ademe/next-auth-espace-membre-provider@^0.1.2":
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/@incubateur-ademe/next-auth-espace-membre-provider/-/next-auth-espace-membre-provider-0.1.2.tgz#f556d5990bab7d81c8b80927990e49f86e1dc5e8"
-  integrity sha512-lcq25/aHPH5TiTf4dxU+al0oHEaWZz4re/gpKt6LSMq3AzqfCmTzG1yJJLCg7kuEN0gPbQmn89QG2avX0ElslA==
+"@incubateur-ademe/next-auth-espace-membre-provider@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@incubateur-ademe/next-auth-espace-membre-provider/-/next-auth-espace-membre-provider-0.1.4.tgz#a47e7e39eb6b8cd8d069d8748652ba05fc2d6746"
+  integrity sha512-zehPP753YigfegjyJ5INWoXfLe3rSP4iO/YMm7lr+RXEqvPLsWIm4QTMpVH8gRkrHzgZcJ8a8CrGRS+lq0zd1w==
 
 "@ioredis/commands@^1.1.1":
   version "1.2.0"

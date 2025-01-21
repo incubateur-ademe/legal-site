@@ -1,0 +1,13 @@
+.template-type-tag {
+    &.new:not(.disabled) {
+        color: var(--text-action-high-orange-terre-battue);
+        background-color: var(--background-action-low-orange-terre-battue);
+        --hover: var(--background-action-low-orange-terre-battue-hover);
+        --active: var(--background-action-low-orange-terre-battue-active);
+    }
+
+    .new-indicator {
+        color: var(--text-default-grey);
+        font-weight: bold;
+    }
+}

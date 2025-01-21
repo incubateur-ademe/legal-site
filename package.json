@@ -22,10 +22,10 @@
   },
   "dependencies": {
     "@auth/unstorage-adapter": "^2.7.4",
-    "@codegouvfr/react-dsfr": "^1.16.5-rc.0",
+    "@codegouvfr/react-dsfr": "^1.16.10-rc.0",
     "@formkit/auto-animate": "^0.8.2",
     "@hookform/resolvers": "^3.9.1",
-    "@incubateur-ademe/next-auth-espace-membre-provider": "^0.1.2",
+    "@incubateur-ademe/next-auth-espace-membre-provider": "^0.1.4",
     "@mdx-js/react": "^3.1.0",
     "@monaco-editor/react": "^4.7.0-rc.0",
     "@next/mdx": "^15.1.0",

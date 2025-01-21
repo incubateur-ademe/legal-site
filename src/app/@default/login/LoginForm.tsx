@@ -42,6 +42,9 @@ export const LoginForm = () => {
               type: "text",
               required: true,
               name: "username",
+              pattern: "^[A-Za-z.]+$",
+              title:
+                "Votre identifiant doit être composé de lettres et de points. Il ne s'agit pas de votre adresse email Beta.",
             }}
           />,
           <FormFieldset
